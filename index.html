@@ -14,12 +14,7 @@
             --input-bg: rgba(255, 255, 255, 0.05);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', 'Segoe UI', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
         body {
             background-color: var(--dark-navy);
@@ -29,7 +24,6 @@
             color: var(--text-light);
         }
 
-        /* Lado Esquerdo - Formulário */
         .login-container {
             flex: 1;
             display: flex;
@@ -40,15 +34,9 @@
             z-index: 2;
         }
 
-        .login-box {
-            width: 100%;
-            max-width: 400px;
-        }
+        .login-box { width: 100%; max-width: 400px; }
 
-        .brand {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+        .brand { text-align: center; margin-bottom: 40px; }
 
         .logo-img {
             width: 85px;
@@ -64,30 +52,16 @@
 
         .brand h1 {
             font-size: 2.2rem;
-            letter-spacing: -1px;
             background: linear-gradient(to right, #fff, #94a3b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .brand p {
-            color: #64748b;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 3px;
-            margin-top: 5px;
-        }
+        .brand p { color: #64748b; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px; margin-top: 5px; }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+        .form-group { margin-bottom: 20px; }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            color: #94a3b8;
-        }
+        label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: #94a3b8; }
 
         input {
             width: 100%;
@@ -101,11 +75,7 @@
             transition: 0.3s;
         }
 
-        input:focus {
-            border-color: var(--primary-blue);
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
-        }
+        input:focus { border-color: var(--primary-blue); background: rgba(255, 255, 255, 0.08); }
 
         .btn-entrar {
             width: 100%;
@@ -121,36 +91,12 @@
             margin-bottom: 20px;
         }
 
-        .btn-entrar:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-        }
+        .btn-entrar:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4); }
 
-        .divider {
-            margin: 25px 0;
-            text-align: center;
-            position: relative;
-        }
+        .divider { margin: 25px 0; text-align: center; position: relative; }
+        .divider::before { content: ""; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: rgba(255, 255, 255, 0.1); }
+        .divider span { background: var(--dark-navy); padding: 0 15px; position: relative; color: #64748b; font-size: 0.8rem; }
 
-        .divider::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .divider span {
-            background: var(--dark-navy);
-            padding: 0 15px;
-            position: relative;
-            color: #64748b;
-            font-size: 0.8rem;
-        }
-
-        /* Botão do Google Corrigido */
         .btn-google {
             width: 100%;
             padding: 12px;
@@ -164,19 +110,8 @@
             gap: 12px;
             cursor: pointer;
             transition: 0.3s;
-            font-size: 0.95rem;
         }
 
-        .btn-google:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.4);
-        }
-
-        .btn-google i {
-            font-size: 1.1rem;
-        }
-
-        /* Lado Direito - Imagem */
         .image-container {
             flex: 1.2;
             position: relative;
@@ -185,32 +120,9 @@
             background-position: center;
         }
 
-        .image-container::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to right, var(--dark-navy), transparent);
-        }
+        .image-container::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to right, var(--dark-navy), transparent); }
 
-        .overlay-text {
-            position: absolute;
-            bottom: 60px;
-            left: 60px;
-            right: 60px;
-            z-index: 3;
-        }
-
-        .overlay-text h2 {
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            line-height: 1.1;
-        }
-
-        /* Responsividade */
-        @media (max-width: 900px) {
-            .image-container { display: none; }
-            .login-container { background: var(--dark-navy); }
-        }
+        @media (max-width: 900px) { .image-container { display: none; } }
     </style>
 </head>
 <body>
@@ -225,24 +137,22 @@
                 <p>Aprender Juntos</p>
             </div>
 
-            <form onsubmit="event.preventDefault()">
+            <form id="loginForm">
                 <div class="form-group">
                     <label>E-mail ou Usuário</label>
-                    <input type="text" placeholder="seuemail@exemplo.com">
+                    <input type="text" id="email" placeholder="seuemail@exemplo.com" required>
                 </div>
 
                 <div class="form-group">
                     <label>Senha</label>
-                    <input type="password" placeholder="••••••••">
+                    <input type="password" id="password" placeholder="••••••••" required>
                 </div>
 
                 <button type="submit" class="btn-entrar">Entrar</button>
 
-                <div class="divider">
-                    <span>ou</span>
-                </div>
+                <div class="divider"><span>ou</span></div>
 
-                <button type="button" class="btn-google">
+                <button type="button" class="btn-google" onclick="simularGoogle()">
                     <i class="fab fa-google"></i>
                     Entrar com o Google
                 </button>
@@ -254,12 +164,29 @@
         </div>
     </div>
 
-    <div class="image-container">
-        <div class="overlay-text">
-            <h2>Aprender ficou mais fácil e conectado.</h2>
-            <p>Junte-se a milhares de estudantes que já organizam sua rotina acadêmica com o ClassConnect.</p>
-        </div>
-    </div>
+    <div class="image-container"></div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Impede a página de recarregar
+            
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+
+            if(email && pass) {
+                alert('Login realizado com sucesso! Bem-vindo ao ClassConnect, ' + email);
+                // Aqui você pode redirecionar para outra página se quiser:
+                // window.location.href = "landing-page.html";
+            }
+        });
+
+        function simularGoogle() {
+            alert('Conectando com o Google...');
+            setTimeout(() => {
+                alert('Conta Google vinculada com sucesso!');
+            }, 1000);
+        }
+    </script>
 
 </body>
 </html>
