@@ -1,25 +1,24 @@
 <!DOCTYPE html>
-<html lang="pt-pt">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClassConnect | Iniciar Sessão</title>
+    <title>Login | ClassConnect</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --dark-navy: #0d1b2a;
-            --medium-blue: #1b263b;
-            --accent-teal: #38b6ff;
-            --accent-green: #52b788;
-            --text-light: #e0e1dd;
-            --white: #ffffff;
+            --dark-navy: #0f172a;
+            --primary-blue: #3498db;
+            --accent-green: #2ecc71;
+            --text-light: #f8fafc;
+            --input-bg: rgba(255, 255, 255, 0.05);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
         }
 
         body {
@@ -27,10 +26,11 @@
             height: 100vh;
             display: flex;
             overflow: hidden;
+            color: var(--text-light);
         }
 
-        /* Lado Esquerdo: Formulário de Login */
-        .login-section {
+        /* Lado Esquerdo - Formulário */
+        .login-container {
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -38,242 +38,228 @@
             align-items: center;
             padding: 40px;
             z-index: 2;
-            background: linear-gradient(145deg, #0d1b2a 0%, #16213e 100%);
         }
 
         .login-box {
             width: 100%;
             max-width: 400px;
+        }
+
+        .brand {
             text-align: center;
+            margin-bottom: 40px;
         }
 
-        .logo-area {
-            margin-bottom: 30px;
+        .logo-img {
+            width: 85px;
+            height: 85px;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-green));
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
         }
 
-        /* Simulação da tua logo via CSS */
-        .logo-icon {
-            font-size: 3rem;
-            color: var(--accent-teal);
-            margin-bottom: 10px;
-            display: inline-block;
-            background: linear-gradient(to bottom right, var(--accent-teal), var(--accent-green));
+        .brand h1 {
+            font-size: 2.2rem;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #fff, #94a3b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .logo-text {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--white);
-            letter-spacing: -1px;
-        }
-
-        .logo-text span {
-            color: var(--accent-teal);
-        }
-
-        .tagline {
-            color: #8d99ae;
+        .brand p {
+            color: #64748b;
             text-transform: uppercase;
             font-size: 0.8rem;
             letter-spacing: 3px;
-            margin-bottom: 40px;
+            margin-top: 5px;
         }
 
-        /* Campos de Entrada */
         .form-group {
-            text-align: left;
             margin-bottom: 20px;
         }
 
-        .form-group label {
+        label {
             display: block;
-            color: var(--text-light);
             margin-bottom: 8px;
             font-size: 0.9rem;
+            color: #94a3b8;
         }
 
-        .form-group input {
+        input {
             width: 100%;
             padding: 14px;
-            border-radius: 10px;
+            background: var(--input-bg);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
             color: white;
+            font-size: 1rem;
             outline: none;
             transition: 0.3s;
         }
 
-        .form-group input:focus {
-            border-color: var(--accent-teal);
-            background: rgba(255, 255, 255, 0.1);
+        input:focus {
+            border-color: var(--primary-blue);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
         }
 
-        .options {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            font-size: 0.85rem;
-        }
-
-        .options a {
-            color: var(--accent-teal);
-            text-decoration: none;
-        }
-
-        /* Botões */
-        .btn-primary {
+        .btn-entrar {
             width: 100%;
-            padding: 15px;
+            padding: 14px;
+            background: linear-gradient(to right, var(--primary-blue), #2980b9);
             border: none;
-            border-radius: 10px;
-            background: linear-gradient(to right, #219ebc, #023047);
+            border-radius: 12px;
             color: white;
-            font-weight: bold;
+            font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
             transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
         }
 
-        .btn-primary:hover {
+        .btn-entrar:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(56, 182, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
         }
 
         .divider {
             margin: 25px 0;
-            color: #555;
+            text-align: center;
             position: relative;
         }
 
-        .divider::before, .divider::after {
+        .divider::before {
             content: "";
             position: absolute;
             top: 50%;
-            width: 40%;
+            left: 0;
+            width: 100%;
             height: 1px;
-            background: #333;
+            background: rgba(255, 255, 255, 0.1);
         }
 
-        .divider::before { left: 0; }
-        .divider::after { right: 0; }
+        .divider span {
+            background: var(--dark-navy);
+            padding: 0 15px;
+            position: relative;
+            color: #64748b;
+            font-size: 0.8rem;
+        }
 
+        /* Botão do Google Corrigido */
         .btn-google {
             width: 100%;
             padding: 12px;
-            border: 1px solid #444;
-            border-radius: 10px;
             background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             cursor: pointer;
             transition: 0.3s;
+            font-size: 0.95rem;
         }
 
         .btn-google:hover {
             background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.4);
         }
 
-        /* Lado Direito: Imagem e Conteúdo Visual */
-        .image-section {
+        .btn-google i {
+            font-size: 1.1rem;
+        }
+
+        /* Lado Direito - Imagem */
+        .image-container {
             flex: 1.2;
             position: relative;
-            background: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1950&q=80');
+            background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80');
             background-size: cover;
             background-position: center;
         }
 
-        .image-section::before {
+        .image-container::after {
             content: "";
             position: absolute;
             inset: 0;
             background: linear-gradient(to right, var(--dark-navy), transparent);
         }
 
-        .image-content {
+        .overlay-text {
             position: absolute;
             bottom: 60px;
             left: 60px;
             right: 60px;
-            color: white;
+            z-index: 3;
         }
 
-        .image-content h2 {
+        .overlay-text h2 {
             font-size: 2.5rem;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-
-        .image-content p {
-            font-size: 1.1rem;
-            opacity: 0.9;
+            margin-bottom: 15px;
+            line-height: 1.1;
         }
 
         /* Responsividade */
         @media (max-width: 900px) {
-            .image-section { display: none; }
-            .login-section { background: var(--dark-navy); }
+            .image-container { display: none; }
+            .login-container { background: var(--dark-navy); }
         }
     </style>
 </head>
 <body>
 
-    <main class="login-section">
+    <div class="login-container">
         <div class="login-box">
-            <div class="logo-area">
-                <div class="logo-icon">
-                    <i class="fas fa-book-open"></i>
+            <div class="brand">
+                <div class="logo-img">
+                    <i class="fas fa-graduation-cap fa-3x" style="color: white;"></i>
                 </div>
-                <h1 class="logo-text">Class<span>Connect</span></h1>
-                <p class="tagline">Aprender Juntos</p>
+                <h1>ClassConnect</h1>
+                <p>Aprender Juntos</p>
             </div>
 
-            <form>
+            <form onsubmit="event.preventDefault()">
                 <div class="form-group">
-                    <label for="email">E-mail ou Utilizador</label>
-                    <input type="text" id="email" placeholder="nome@exemplo.com">
+                    <label>E-mail ou Usuário</label>
+                    <input type="text" placeholder="seuemail@exemplo.com">
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Palavra-passe</label>
-                    <input type="password" id="password" placeholder="••••••••">
+                    <label>Senha</label>
+                    <input type="password" placeholder="••••••••">
                 </div>
 
-                <div class="options">
-                    <label style="color: #8d99ae;">
-                        <input type="checkbox" style="width: auto; margin-right: 5px;"> Lembrar-me
-                    </label>
-                    <a href="#">Esqueceu-se da senha?</a>
+                <button type="submit" class="btn-entrar">Entrar</button>
+
+                <div class="divider">
+                    <span>ou</span>
                 </div>
-
-                <button type="button" class="btn-primary">Iniciar Sessão</button>
-
-                <div class="divider">ou</div>
 
                 <button type="button" class="btn-google">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="18" alt="Google">
+                    <i class="fab fa-google"></i>
                     Entrar com o Google
                 </button>
             </form>
 
-            <p style="margin-top: 40px; color: #8d99ae; font-size: 0.9rem;">
-                Ainda não tem conta? <a href="#" style="color: var(--accent-teal); text-decoration: none; font-weight: bold;">Registe-se aqui</a>
+            <p style="text-align: center; margin-top: 30px; color: #64748b; font-size: 0.9rem;">
+                Novo por aqui? <a href="#" style="color: var(--accent-green); text-decoration: none; font-weight: 600;">Criar conta</a>
             </p>
         </div>
-    </main>
+    </div>
 
-    <aside class="image-section">
-        <div class="image-content">
-            <h2>Transforma a tua forma de aprender.</h2>
-            <p>Junta-te a milhares de estudantes e organiza o teu futuro académico num só lugar.</p>
+    <div class="image-container">
+        <div class="overlay-text">
+            <h2>Aprender ficou mais fácil e conectado.</h2>
+            <p>Junte-se a milhares de estudantes que já organizam sua rotina acadêmica com o ClassConnect.</p>
         </div>
-    </aside>
+    </div>
 
 </body>
 </html>
