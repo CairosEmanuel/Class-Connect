@@ -1,306 +1,279 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClassConnect | Sua Jornada Conectada</title>
+    <title>ClassConnect | Iniciar Sessão</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-blue: #3498db;
-            --dark-blue: #2c3e50;
-            --accent-green: #2ecc71;
-            --light-bg: #e8f4f8;
+            --dark-navy: #0d1b2a;
+            --medium-blue: #1b263b;
+            --accent-teal: #38b6ff;
+            --accent-green: #52b788;
+            --text-light: #e0e1dd;
             --white: #ffffff;
-            --text-color: #444;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: var(--light-bg);
-            color: var(--text-color);
-            overflow-x: hidden;
+            background-color: var(--dark-navy);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
         }
 
-        /* Navbar */
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 1rem 10%;
+        /* Lado Esquerdo: Formulário de Login */
+        .login-section {
+            flex: 1;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            position: fixed;
+            padding: 40px;
+            z-index: 2;
+            background: linear-gradient(145deg, #0d1b2a 0%, #16213e 100%);
+        }
+
+        .login-box {
             width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            max-width: 400px;
+            text-align: center;
         }
 
-        .logo {
-            font-size: 1.8rem;
+        .logo-area {
+            margin-bottom: 30px;
+        }
+
+        /* Simulação da tua logo via CSS */
+        .logo-icon {
+            font-size: 3rem;
+            color: var(--accent-teal);
+            margin-bottom: 10px;
+            display: inline-block;
+            background: linear-gradient(to bottom right, var(--accent-teal), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text {
+            font-size: 2rem;
             font-weight: 800;
-            color: var(--primary-blue);
-            text-decoration: none;
+            color: var(--white);
+            letter-spacing: -1px;
         }
 
-        nav a {
-            margin-left: 25px;
-            text-decoration: none;
-            color: var(--dark-blue);
-            font-weight: 500;
+        .logo-text span {
+            color: var(--accent-teal);
+        }
+
+        .tagline {
+            color: #8d99ae;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            margin-bottom: 40px;
+        }
+
+        /* Campos de Entrada */
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-light);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            outline: none;
             transition: 0.3s;
         }
 
-        nav a:hover {
-            color: var(--primary-blue);
+        .form-group input:focus {
+            border-color: var(--accent-teal);
+            background: rgba(255, 255, 255, 0.1);
         }
 
-        .btn-signup {
-            background: var(--primary-blue);
-            color: white !important;
-            padding: 10px 20px;
-            border-radius: 50px;
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            font-size: 0.85rem;
         }
 
-        /* Hero Section */
-        .hero {
-            padding: 150px 10% 80px;
+        .options a {
+            color: var(--accent-teal);
+            text-decoration: none;
+        }
+
+        /* Botões */
+        .btn-primary {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(to right, #219ebc, #023047);
+            color: white;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 182, 255, 0.2);
+        }
+
+        .divider {
+            margin: 25px 0;
+            color: #555;
+            position: relative;
+        }
+
+        .divider::before, .divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: #333;
+        }
+
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+
+        .btn-google {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #444;
+            border-radius: 10px;
+            background: transparent;
+            color: white;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            min-height: 80vh;
-            background: linear-gradient(135deg, #e8f4f8 0%, #ffffff 100%);
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.3s;
         }
 
-        .hero-text {
-            flex: 1;
-            padding-right: 50px;
+        .btn-google:hover {
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .hero-text h1 {
-            font-size: 3.5rem;
-            color: var(--dark-blue);
-            line-height: 1.2;
-            margin-bottom: 20px;
+        /* Lado Direito: Imagem e Conteúdo Visual */
+        .image-section {
+            flex: 1.2;
+            position: relative;
+            background: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
         }
 
-        .hero-text p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            color: #666;
+        .image-section::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, var(--dark-navy), transparent);
         }
 
-        .hero-image {
-            flex: 1;
-            text-align: center;
-        }
-
-        .hero-image img {
-            max-width: 100%;
-            filter: drop-shadow(10px 10px 20px rgba(0,0,0,0.1));
-            animation: float 4s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
-        }
-
-        .cta-main {
-            background: var(--primary-blue);
+        .image-content {
+            position: absolute;
+            bottom: 60px;
+            left: 60px;
+            right: 60px;
             color: white;
-            padding: 15px 35px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            display: inline-block;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
-            transition: 0.3s;
         }
 
-        .cta-main:hover {
-            transform: translateY(-3px);
-            background: #2980b9;
-        }
-
-        /* Features Section */
-        .features {
-            padding: 80px 10%;
-            background: white;
-            text-align: center;
-        }
-
-        .section-title {
-            margin-bottom: 50px;
-            font-size: 2rem;
-            color: var(--dark-blue);
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-
-        .feature-card {
-            padding: 40px;
-            background: var(--light-bg);
-            border-radius: 20px;
-            transition: 0.3s;
-            border: 1px solid transparent;
-        }
-
-        .feature-card:hover {
-            background: white;
-            border-color: var(--primary-blue);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            transform: translateY(-10px);
-        }
-
-        .feature-card i {
+        .image-content h2 {
             font-size: 2.5rem;
-            color: var(--primary-blue);
             margin-bottom: 20px;
+            line-height: 1.2;
         }
 
-        /* Portfolio Section */
-        .portfolio {
-            padding: 80px 10%;
-        }
-
-        .portfolio-container {
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .portfolio-box {
-            flex: 1;
-            min-width: 300px;
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            border-left: 6px solid var(--primary-blue);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        /* Footer */
-        footer {
-            background: var(--dark-blue);
-            color: white;
-            padding: 50px 10% 20px;
-            text-align: center;
-        }
-
-        .social-icons {
-            margin-bottom: 20px;
-        }
-
-        .social-icons a {
-            color: white;
-            font-size: 1.5rem;
-            margin: 0 15px;
-            transition: 0.3s;
-        }
-
-        .social-icons a:hover {
-            color: var(--primary-blue);
+        .image-content p {
+            font-size: 1.1rem;
+            opacity: 0.9;
         }
 
         /* Responsividade */
-        @media (max-width: 968px) {
-            .hero {
-                flex-direction: column;
-                text-align: center;
-                padding-top: 120px;
-            }
-            .hero-text {
-                padding-right: 0;
-                margin-bottom: 50px;
-            }
-            .hero-text h1 {
-                font-size: 2.5rem;
-            }
-            nav {
-                display: none; /* Simplificação para mobile */
-            }
+        @media (max-width: 900px) {
+            .image-section { display: none; }
+            .login-section { background: var(--dark-navy); }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <a href="#" class="logo">ClassConnect</a>
-        <nav>
-            <a href="#">Home</a>
-            <a href="#recursos">Recursos</a>
-            <a href="#portfolio">Portfólio</a>
-            <a href="#sobre">Sobre</a>
-            <a href="#" class="btn-signup">Cadastrar</a>
-        </nav>
-    </header>
+    <main class="login-section">
+        <div class="login-box">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h1 class="logo-text">Class<span>Connect</span></h1>
+                <p class="tagline">Aprender Juntos</p>
+            </div>
 
-    <section class="hero">
-        <div class="hero-text">
-            <h1>Sua jornada acadêmica, conectada.</h1>
-            <p>A plataforma definitiva para organizar estudos, gerenciar tarefas e potencializar o aprendizado para todas as idades.</p>
-            <a href="#portfolio" class="cta-main">Conheça o Projeto</a>
-        </div>
-        <div class="hero-image">
-            <img src="https://cdni.iconscout.com/illustration/premium/thumb/online-education-illustration-download-in-svg-png-gif-file-formats--e-learning-course-video-call-digital-pack-school-illustrations-4541577.png" alt="Ilustração ClassConnect">
-        </div>
-    </section>
+            <form>
+                <div class="form-group">
+                    <label for="email">E-mail ou Utilizador</label>
+                    <input type="text" id="email" placeholder="nome@exemplo.com">
+                </div>
 
-    <section id="recursos" class="features">
-        <h2 class="section-title">Funcionalidades</h2>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <i class="fas fa-calendar-check"></i>
-                <h3>Organização</h3>
-                <p>Centralize cronogramas, prazos e materiais em uma interface intuitiva e prática.</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-universal-access"></i>
-                <h3>Acessibilidade</h3>
-                <p>Design adaptável para estudantes de diferentes faixas etárias e níveis de tecnologia.</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-rocket"></i>
-                <h3>Produtividade</h3>
-                <p>Ferramentas focadas em manter o ritmo de estudo e eliminar a procrastinação.</p>
-            </div>
-        </div>
-    </section>
+                <div class="form-group">
+                    <label for="password">Palavra-passe</label>
+                    <input type="password" id="password" placeholder="••••••••">
+                </div>
 
-    <section id="portfolio" class="portfolio">
-        <h2 class="section-title" style="text-align: center;">Portfólio do Projeto</h2>
-        <div class="portfolio-container">
-            <div class="portfolio-box">
-                <h3>O Produto</h3>
-                <p>O ClassConnect é um ecossistema digital desenvolvido para resolver a fragmentação de informações no ambiente escolar. Ele permite que o aluno tenha uma visão 360º de suas obrigações acadêmicas em uma única plataforma modular.</p>
-            </div>
-            <div class="portfolio-box">
-                <h3>O Cliente</h3>
-                <p>Focado em instituições de ensino e estudantes autônomos que buscam uma solução robusta, priorizando a experiência do usuário (UX) e a clareza visual para facilitar o foco no que realmente importa: aprender.</p>
-            </div>
-        </div>
-    </section>
+                <div class="options">
+                    <label style="color: #8d99ae;">
+                        <input type="checkbox" style="width: auto; margin-right: 5px;"> Lembrar-me
+                    </label>
+                    <a href="#">Esqueceu-se da senha?</a>
+                </div>
 
-    <footer>
-        <div class="social-icons">
-            <a href="#"><i class="fab fa-github"></i></a>
-            <a href="#"><i class="fab fa-linkedin"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
+                <button type="button" class="btn-primary">Iniciar Sessão</button>
+
+                <div class="divider">ou</div>
+
+                <button type="button" class="btn-google">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" width="18" alt="Google">
+                    Entrar com o Google
+                </button>
+            </form>
+
+            <p style="margin-top: 40px; color: #8d99ae; font-size: 0.9rem;">
+                Ainda não tem conta? <a href="#" style="color: var(--accent-teal); text-decoration: none; font-weight: bold;">Registe-se aqui</a>
+            </p>
         </div>
-        <p>&copy; 2026 ClassConnect - Projeto Acadêmico | Desenvolvido por Cairos</p>
-    </footer>
+    </main>
+
+    <aside class="image-section">
+        <div class="image-content">
+            <h2>Transforma a tua forma de aprender.</h2>
+            <p>Junta-te a milhares de estudantes e organiza o teu futuro académico num só lugar.</p>
+        </div>
+    </aside>
 
 </body>
 </html>
