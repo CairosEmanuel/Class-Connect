@@ -3,65 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | ClassConnect</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>ClassConnect | Login & Plataforma</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
         :root {
             --dark-navy: #0f172a;
+            --deep-sidebar: #0b0f19;
             --primary-blue: #3498db;
             --accent-green: #2ecc71;
             --text-light: #f8fafc;
             --input-bg: rgba(255, 255, 255, 0.05);
+            --card-bg: #1e293b;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
 
         body {
             background-color: var(--dark-navy);
-            height: 100vh;
-            display: flex;
-            overflow: hidden;
             color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .login-container {
+        /* ==========================================================================
+           1. ESTILO DA TELA DE LOGIN (SPLIT SCREEN)
+           ========================================================================== */
+        #login-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            display: flex;
+            background-color: var(--dark-navy);
+            transition: var(--transition);
+        }
+
+        .login-side {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 40px;
-            z-index: 2;
         }
 
-        .login-box { width: 100%; max-width: 400px; }
+        .login-box {
+            width: 100%;
+            max-width: 400px;
+        }
 
-        .brand { text-align: center; margin-bottom: 40px; }
+        .brand-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
 
-        .logo-img {
+        .logo-box {
             width: 85px;
             height: 85px;
-            margin-bottom: 15px;
             background: linear-gradient(135deg, var(--primary-blue), var(--accent-green));
             border-radius: 20px;
-            display: inline-flex;
+            margin: 0 auto 15px;
+            display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 10px 25px rgba(0,0,0,0.4);
         }
 
-        .brand h1 {
+        .brand-header h1 {
+            font-family: 'Poppins', sans-serif;
             font-size: 2.2rem;
+            letter-spacing: -1px;
             background: linear-gradient(to right, #fff, #94a3b8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .brand p { color: #64748b; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px; margin-top: 5px; }
+        .brand-header p {
+            color: #64748b;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            margin-top: 5px;
+        }
 
-        .form-group { margin-bottom: 20px; }
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-        label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: #94a3b8; }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
 
         input {
             width: 100%;
@@ -75,7 +118,11 @@
             transition: 0.3s;
         }
 
-        input:focus { border-color: var(--primary-blue); background: rgba(255, 255, 255, 0.08); }
+        input:focus {
+            border-color: var(--primary-blue);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+        }
 
         .btn-entrar {
             width: 100%;
@@ -88,14 +135,36 @@
             font-size: 1rem;
             cursor: pointer;
             transition: 0.3s;
-            margin-bottom: 20px;
         }
 
-        .btn-entrar:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4); }
+        .btn-entrar:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
 
-        .divider { margin: 25px 0; text-align: center; position: relative; }
-        .divider::before { content: ""; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: rgba(255, 255, 255, 0.1); }
-        .divider span { background: var(--dark-navy); padding: 0 15px; position: relative; color: #64748b; font-size: 0.8rem; }
+        .divider {
+            margin: 25px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .divider span {
+            background: var(--dark-navy);
+            padding: 0 15px;
+            position: relative;
+            color: #64748b;
+            font-size: 0.8rem;
+        }
 
         .btn-google {
             width: 100%;
@@ -110,9 +179,14 @@
             gap: 12px;
             cursor: pointer;
             transition: 0.3s;
+            font-size: 0.95rem;
         }
 
-        .image-container {
+        .btn-google:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .image-side {
             flex: 1.2;
             position: relative;
             background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80');
@@ -120,73 +194,545 @@
             background-position: center;
         }
 
-        .image-container::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to right, var(--dark-navy), transparent); }
+        .image-side::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, var(--dark-navy), transparent);
+        }
 
-        @media (max-width: 900px) { .image-container { display: none; } }
+        .overlay-text {
+            position: absolute;
+            bottom: 60px;
+            left: 60px;
+            right: 60px;
+            z-index: 3;
+        }
+
+        .overlay-text h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            line-height: 1.1;
+        }
+
+        @media (max-width: 900px) {
+            .image-side { display: none; }
+        }
+
+        /* Overlay de Sucesso na Transição */
+        .success-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--dark-navy);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           2. ESTILO DA PÁGINA PRINCIPAL (LANDING PAGE PÓS-LOGIN)
+           ========================================================================== */
+        #main-site {
+            display: none; /* Fica escondido até fazer login */
+        }
+
+        header {
+            background-color: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.3rem;
+        }
+
+        .nav-logo i {
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-green));
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+        }
+
+        nav a {
+            color: #cbd5e1;
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 0.95rem;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary-blue);
+        }
+
+        .section {
+            padding: 80px 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title span {
+            background: linear-gradient(to right, var(--primary-blue), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Seção Funcionalidades (Cards) */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(52, 152, 219, 0.3);
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        /* Seção Conte-nos (Sobre Nós) */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-text p {
+            color: #cbd5e1;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .about-stats {
+            display: flex;
+            gap: 30px;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            flex: 1;
+        }
+
+        .stat-item h4 {
+            font-size: 2rem;
+            color: var(--accent-green);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Seção Planos (Pricing Table) */
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            align-items: stretch;
+        }
+
+        .plan-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .plan-card.featured {
+            border-color: var(--primary-blue);
+            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.15);
+            transform: scale(1.03);
+        }
+
+        .plan-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--primary-blue);
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .plan-header h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+
+        .plan-price {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin: 20px 0;
+        }
+
+        .plan-price span {
+            font-size: 1rem;
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        .plan-features {
+            list-style: none;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .plan-features li {
+            margin-bottom: 12px;
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .plan-features li i {
+            color: var(--accent-green);
+        }
+
+        .btn-plan {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            background: transparent;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .plan-card.featured .btn-plan {
+            background: linear-gradient(to right, var(--primary-blue), #2980b9);
+            border: none;
+        }
+
+        .btn-plan:hover {
+            background: white;
+            color: var(--dark-navy);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
 
-    <div class="login-container">
-        <div class="login-box">
-            <div class="brand">
-                <div class="logo-img">
-                    <i class="fas fa-graduation-cap fa-3x" style="color: white;"></i>
+    <div id="login-screen">
+        <div class="login-side">
+            <div class="login-box">
+                <div class="brand-header">
+                    <div class="logo-box">
+                        <i class="fas fa-graduation-cap fa-3x" style="color: white;"></i>
+                    </div>
+                    <h1>ClassConnect</h1>
+                    <p>Aprender Juntos</p>
                 </div>
-                <h1>ClassConnect</h1>
-                <p>Aprender Juntos</p>
+
+                <form id="loginForm" onsubmit="executarLogin(event)">
+                    <div class="form-group">
+                        <label>E-mail ou Usuário</label>
+                        <input type="text" id="loginUser" placeholder="seuemail@exemplo.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Senha</label>
+                        <input type="password" placeholder="••••••••" required>
+                    </div>
+
+                    <button type="submit" class="btn-entrar">Entrar</button>
+
+                    <div class="divider">
+                        <span>ou</span>
+                    </div>
+
+                    <button type="button" class="btn-google" onclick="simularLoginGoogle()">
+                        <i class="fab fa-google" style="color: #4285F4;"></i>
+                        Entrar com o Google
+                    </button>
+                </form>
+
+                <p style="text-align: center; margin-top: 30px; color: #64748b; font-size: 0.9rem;">
+                    Não tem uma conta? <a href="#" style="color: var(--accent-green); text-decoration: none; font-weight: 600;">Cadastre-se</a>
+                </p>
             </div>
+        </div>
 
-            <form id="loginForm">
-                <div class="form-group">
-                    <label>E-mail ou Usuário</label>
-                    <input type="text" id="email" placeholder="seuemail@exemplo.com" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Senha</label>
-                    <input type="password" id="password" placeholder="••••••••" required>
-                </div>
-
-                <button type="submit" class="btn-entrar">Entrar</button>
-
-                <div class="divider"><span>ou</span></div>
-
-                <button type="button" class="btn-google" onclick="simularGoogle()">
-                    <i class="fab fa-google"></i>
-                    Entrar com o Google
-                </button>
-            </form>
-
-            <p style="text-align: center; margin-top: 30px; color: #64748b; font-size: 0.9rem;">
-                Novo por aqui? <a href="#" style="color: var(--accent-green); text-decoration: none; font-weight: 600;">Criar conta</a>
-            </p>
+        <div class="image-side">
+            <div class="overlay-text">
+                <h2>Aprender ficou mais fácil e conectado.</h2>
+                <p>Junte-se a milhares de estudantes que já organizam sua rotina acadêmica com o ClassConnect.</p>
+            </div>
         </div>
     </div>
 
-    <div class="image-container"></div>
+    <div class="success-overlay" id="loading-overlay">
+        <div style="text-align: center;">
+            <i class="fas fa-circle-notch fa-spin fa-3x" style="color: var(--primary-blue); margin-bottom: 20px;"></i>
+            <p id="feedback-text">Autenticando...</p>
+        </div>
+    </div>
+
+
+    <div id="main-site">
+        <header>
+            <div class="nav-logo">
+                <i class="fas fa-graduation-cap" style="color: white;"></i>
+                ClassConnect
+            </div>
+            <nav>
+                <a href="#funcionalidades">Funcionalidades</a>
+                <a href="#conte-nos">Conte-nos</a>
+                <a href="#planos">Planos</a>
+                <a href="#" onclick="logout()" style="color: #ef4444;"><i class="fas fa-sign-out-alt"></i> Sair</a>
+            </nav>
+        </header>
+
+        <section class="section" style="text-align: center; padding-top: 100px;">
+            <h2 class="section-title" style="font-size: 3rem; margin-bottom: 20px;">Olá, <span id="user-display">Estudante</span>! <br>Bem-vindo à sua área principal</h2>
+            <p style="color: #94a3b8; font-size: 1.2rem; max-width: 600px; margin: 0 auto;">Você se conectou com sucesso. Explore abaixo os recursos e o ecossistema que preparamos para você.</p>
+        </section>
+
+        <section class="section" id="funcionalidades">
+            <h2 class="section-title">Nossas <span>Funcionalidades</span></h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-folder-open"></i>
+                    <h3>Organização Centralizada</h3>
+                    <p>Gerencie todas as suas matérias, cronogramas de provas, notas e PDFs de estudo em um único painel intuitivo.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Grupos Ativos</h3>
+                    <p>Monte salas de estudos interativas com seus colegas de classe com chat em tempo real e compartilhamento de arquivos.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Métricas de Evolução</h3>
+                    <p>Acompanhe seu rendimento através de gráficos detalhados que mostram onde você precisa focar mais esforços.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="conte-nos">
+            <h2 class="section-title"><span>Conte-nos</span> sobre nós</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>O ClassConnect foi criado por estudantes e para estudantes. Entendemos que a jornada acadêmica possui desafios imensos de organização e foco, e que o conhecimento retido aumenta drasticamente quando colaboramos.</p>
+                    <p>Nossa missão é aproximar as pessoas no ambiente educacional sob a filosofia de que o sucesso na aprendizagem é construído coletivamente. </p>
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <h4>+15k</h4>
+                            <p>Alunos Ativos</p>
+                        </div>
+                        <div class="stat-item">
+                            <h4>98%</h4>
+                            <p>Aprovação Acadêmica</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80" alt="Estudantes colaborando">
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="planos">
+            <h2 class="section-title">Escolha o seu <span>Plano</span></h2>
+            <div class="plans-grid">
+                
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <h3>Plano Gratuito</h3>
+                        <p style="color: #64748b;">O essencial para começar</p>
+                        <div class="plan-price">R$ 0<span>/mês</span></div>
+                    </div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> Acesso aos painéis básicos</li>
+                        <li><i class="fas fa-check"></i> Até 2 grupos de estudo</li>
+                        <li><i class="fas fa-check"></i> 1 GB de armazenamento Cloud</li>
+                    </ul>
+                    <button class="btn-plan">Começar Agora</button>
+                </div>
+
+                <div class="plan-card featured">
+                    <div class="plan-badge">Mais Popular</div>
+                    <div class="plan-header">
+                        <h3>Plano Super</h3>
+                        <p style="color: #3498db;">Para estudantes focados</p>
+                        <div class="plan-price">R$ 19,90<span>/mês</span></div>
+                    </div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> Tudo do plano gratuito</li>
+                        <li><i class="fas fa-check"></i> Grupos de estudo ilimitados</li>
+                        <li><i class="fas fa-check"></i> 20 GB de armazenamento Cloud</li>
+                        <li><i class="fas fa-check"></i> Suporte prioritário</li>
+                    </ul>
+                    <button class="btn-plan">Assinar Super</button>
+                </div>
+
+                <div class="plan-card">
+                    <div class="plan-header">
+                        <h3>Plano Ultra</h3>
+                        <p style="color: #64748b;">A experiência máxima</p>
+                        <div class="plan-price">R$ 49,90<span>/mês</span></div>
+                    </div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> Tudo do plano Super</li>
+                        <li><i class="fas fa-check"></i> Armazenamento ilimitado</li>
+                        <li><i class="fas fa-check"></i> Ferramentas de IA avançadas</li>
+                        <li><i class="fas fa-check"></i> Acesso antecipado a recursos</li>
+                    </ul>
+                    <button class="btn-plan">Assinar Ultra</button>
+                </div>
+
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2026 ClassConnect - Aprender Juntos. Todos os direitos reservados.</p>
+        </footer>
+    </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault(); // Impede a página de recarregar
+        const loginScreen = document.getElementById('login-screen');
+        const mainSite = document.getElementById('main-site');
+        const overlay = document.getElementById('loading-overlay');
+        const feedbackText = document.getElementById('feedback-text');
+        const userDisplay = document.getElementById('user-display');
+
+        // Função executada ao enviar o formulário clássico de login
+        function executarLogin(event) {
+            event.preventDefault(); // Impede a recarga da página
             
-            const email = document.getElementById('email').value;
-            const pass = document.getElementById('password').value;
+            const usuarioDigitado = document.getElementById('loginUser').value;
+            
+            // Ativa o overlay de loading
+            overlay.style.display = 'flex';
+            feedbackText.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Validando credenciais...';
 
-            if(email && pass) {
-                alert('Login realizado com sucesso! Bem-vindo ao ClassConnect, ' + email);
-                // Aqui você pode redirecionar para outra página se quiser:
-                // window.location.href = "landing-page.html";
-            }
-        });
-
-        function simularGoogle() {
-            alert('Conectando com o Google...');
             setTimeout(() => {
-                alert('Conta Google vinculada com sucesso!');
-            }, 1000);
+                feedbackText.innerHTML = '<i class="fas fa-check-circle" style="color: #2ecc71;"></i> Acesso Permitido!';
+                
+                setTimeout(() => {
+                    // Atualiza o nome exibido na tela principal
+                    userDisplay.textContent = usuarioDigitado;
+                    
+                    // Altera a exibição das telas
+                    overlay.style.display = 'none';
+                    loginScreen.style.display = 'none';
+                    mainSite.style.display = 'block';
+                }, 1000);
+            }, 1500);
+        }
+
+        // Função executada ao simular login com o Google
+        function simularLoginGoogle() {
+            overlay.style.display = 'flex';
+            feedbackText.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Conectando à conta Google...';
+
+            setTimeout(() => {
+                feedbackText.innerHTML = '<i class="fas fa-check-circle" style="color: #2ecc71;"></i> Sincronizado com Google!';
+                
+                setTimeout(() => {
+                    userDisplay.textContent = "Usuário Google";
+                    overlay.style.display = 'none';
+                    loginScreen.style.display = 'none';
+                    mainSite.style.display = 'block';
+                }, 1000);
+            }, 1500);
+        }
+
+        // Função de logout para voltar à tela de login
+        function logout() {
+            mainSite.style.display = 'none';
+            loginScreen.style.display = 'flex';
+            document.getElementById('loginForm').reset();
         }
     </script>
-
 </body>
 </html>
