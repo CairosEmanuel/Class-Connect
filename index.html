@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ClassConnect | Login & Plataforma</title>
+    <title>ClassConnect | Plataforma de Estudos Colaborativa</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -16,9 +16,21 @@
             --primary-blue: #3498db;
             --accent-green: #2ecc71;
             --text-light: #f8fafc;
+            --text-muted: #94a3b8;
             --input-bg: rgba(255, 255, 255, 0.05);
             --card-bg: #1e293b;
             --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        [data-theme="light"] {
+            --dark-navy: #f1f5f9;
+            --deep-sidebar: #e2e8f0;
+            --text-light: #0f172a;
+            --text-muted: #475569;
+            --input-bg: rgba(0, 0, 0, 0.05);
+            --card-bg: #ffffff;
+            --border-color: rgba(0, 0, 0, 0.1);
         }
 
         * {
@@ -33,17 +45,19 @@
             color: var(--text-light);
             min-height: 100vh;
             overflow-x: hidden;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         /* ==========================================================================
-           1. ESTILO DA TELA DE LOGIN (SPLIT SCREEN)
+           TELA DE LOGIN (SPLIT SCREEN)
            ========================================================================== */
         #login-screen {
             position: fixed;
             inset: 0;
             z-index: 999;
             display: flex;
-            background-color: var(--dark-navy);
+            background-color: #0f172a;
+            color: #f8fafc;
             transition: var(--transition);
         }
 
@@ -56,492 +70,272 @@
             padding: 40px;
         }
 
-        .login-box {
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .brand-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
+        .login-box { width: 100%; max-width: 400px; }
+        .brand-header { text-align: center; margin-bottom: 40px; }
+        
         .logo-box {
-            width: 85px;
-            height: 85px;
+            width: 85px; height: 85px;
             background: linear-gradient(135deg, var(--primary-blue), var(--accent-green));
-            border-radius: 20px;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border-radius: 20px; margin: 0 auto 15px;
+            display: flex; align-items: center; justify-content: center;
             box-shadow: 0 10px 25px rgba(0,0,0,0.4);
         }
+        .logo-box i { color: white; }
 
         .brand-header h1 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.2rem;
-            letter-spacing: -1px;
+            font-size: 2.2rem; font-family: 'Poppins', sans-serif;
             background: linear-gradient(to right, #fff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        .brand-header p {
-            color: #64748b;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 3px;
-            margin-top: 5px;
+        .brand-header p { color: #64748b; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px; margin-top: 5px; }
+        .form-group { margin-bottom: 20px; position: relative; }
+        label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: #94a3b8; }
+        .password-container { position: relative; display: flex; align-items: center; }
+        .toggle-password { position: absolute; right: 15px; color: #64748b; cursor: pointer; }
+        .toggle-password:hover { color: #fff; }
+        
+        .login-box input {
+            width: 100%; padding: 14px; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white;
+            font-size: 1rem; outline: none; transition: 0.3s;
         }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            color: #94a3b8;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px;
-            background: var(--input-bg);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        input:focus {
-            border-color: var(--primary-blue);
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
-        }
+        .login-box input:focus { border-color: var(--primary-blue); background: rgba(255, 255, 255, 0.08); }
 
         .btn-entrar {
-            width: 100%;
-            padding: 14px;
-            background: linear-gradient(to right, var(--primary-blue), #2980b9);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.3s;
+            width: 100%; padding: 14px; background: linear-gradient(to right, var(--primary-blue), #2980b9);
+            border: none; border-radius: 12px; color: white; font-weight: 600; cursor: pointer; transition: 0.3s;
         }
+        .btn-entrar:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4); }
 
-        .btn-entrar:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-        }
-
-        .divider {
-            margin: 25px 0;
-            text-align: center;
-            position: relative;
-        }
-
-        .divider::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .divider span {
-            background: var(--dark-navy);
-            padding: 0 15px;
-            position: relative;
-            color: #64748b;
-            font-size: 0.8rem;
-        }
+        .divider { margin: 25px 0; text-align: center; position: relative; }
+        .divider::before { content: ""; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: rgba(255, 255, 255, 0.1); }
+        .divider span { background: #0f172a; padding: 0 15px; position: relative; color: #64748b; font-size: 0.8rem; }
 
         .btn-google {
-            width: 100%;
-            padding: 12px;
-            background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 0.95rem;
+            width: 100%; padding: 12px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px; color: white; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; transition: 0.3s;
         }
-
-        .btn-google:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
+        .btn-google:hover { background: rgba(255, 255, 255, 0.05); }
+        .btn-google i { color: #4285F4; }
+        .signup-redirect { text-align: center; margin-top: 30px; color: #64748b; font-size: 0.9rem; }
+        .signup-redirect a { color: var(--accent-green); text-decoration: none; font-weight: 600; }
 
         .image-side {
-            flex: 1.2;
-            position: relative;
-            background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            background-position: center;
+            flex: 1.2; position: relative;
+            background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80') center/cover;
         }
+        .image-side::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to right, #0f172a, transparent); }
+        .overlay-text { position: absolute; bottom: 60px; left: 60px; right: 60px; z-index: 3; }
+        .overlay-text h2 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; margin-bottom: 15px; line-height: 1.1; }
 
-        .image-side::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to right, var(--dark-navy), transparent);
-        }
+        @media (max-width: 900px) { .image-side { display: none; } }
 
-        .overlay-text {
-            position: absolute;
-            bottom: 60px;
-            left: 60px;
-            right: 60px;
-            z-index: 3;
-        }
-
-        .overlay-text h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.5rem;
-            margin-bottom: 15px;
-            line-height: 1.1;
-        }
-
-        @media (max-width: 900px) {
-            .image-side { display: none; }
-        }
-
-        /* Overlay de Sucesso na Transição */
+        /* Overlays de Transição */
         .success-overlay {
-            position: fixed;
-            inset: 0;
-            background: var(--dark-navy);
-            z-index: 1000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.8rem;
-            font-weight: 600;
+            position: fixed; inset: 0; background: #0f172a; z-index: 1000;
+            display: none; justify-content: center; align-items: center; font-size: 1.8rem; color: white;
+        }
+        .success-overlay-content { text-align: center; }
+        .success-overlay-content i { color: var(--primary-blue); margin-bottom: 20px; }
+
+        /* ==========================================================================
+           INTERFACE PRINCIPAL DA HOME E HEADER
+           ========================================================================== */
+        #main-site { display: none; }
+
+        header {
+            background-color: var(--card-bg); border-bottom: 1px solid var(--border-color);
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 90; transition: background-color 0.3s;
+        }
+
+        .nav-logo { display: flex; align-items: center; gap: 10px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.3rem; }
+        .nav-logo i { background: linear-gradient(135deg, var(--primary-blue), var(--accent-green)); padding: 8px; border-radius: 8px; color: white; }
+        
+        .nav-actions { display: flex; align-items: center; gap: 20px; }
+        nav a { color: var(--text-muted); text-decoration: none; margin-left: 20px; font-size: 0.95rem; transition: 0.3s; }
+        nav a:hover { color: var(--primary-blue); }
+        
+        .btn-theme-toggle, .btn-accessibility {
+            background: transparent; border: none; color: var(--text-light); font-size: 1.1rem; cursor: pointer; padding: 5px; transition: 0.2s;
+        }
+        .btn-theme-toggle:hover, .btn-accessibility:hover { color: var(--primary-blue); }
+
+        /* Widget de Ofensiva (Foguinho) */
+        .streak-container {
+            display: flex; align-items: center; gap: 6px; background: rgba(230, 126, 34, 0.1);
+            padding: 6px 12px; border-radius: 20px; color: #e67e22; font-weight: bold; font-size: 0.9rem;
+        }
+        .streak-container.active i { animation: pulse 1.5s infinite alternate; color: #f39c12; }
+
+        @keyframes pulse { from { transform: scale(1); filter: drop-shadow(0 0 2px #e67e22); } to { transform: scale(1.2); filter: drop-shadow(0 0 8px #f1c40f); } }
+
+        .section { padding: 60px 5%; max-width: 1200px; margin: 0 auto; }
+        .hero-dashboard { text-align: center; padding-top: 40px; }
+        
+        .btn-checkin {
+            margin-top: 15px; padding: 12px 24px; background: linear-gradient(to right, #e67e22, #f39c12);
+            color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s;
+        }
+        .btn-checkin:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(230,126,34,0.3); }
+
+        .section-title { font-family: 'Poppins', sans-serif; font-size: 2rem; text-align: center; margin-bottom: 40px; }
+        .section-title.large { font-size: 3rem; margin-bottom: 15px; }
+        .section-title span { background: linear-gradient(to right, var(--primary-blue), var(--accent-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Barra de Acessibilidade (Lupa de Zoom) */
+        .accessibility-bar {
+            background: var(--card-bg); border: 1px solid var(--border-color); padding: 10px 20px;
+            border-radius: 8px; display: flex; align-items: center; gap: 15px; margin-bottom: 20px; font-size: 0.9rem;
         }
 
         /* ==========================================================================
-           2. ESTILO DA PÁGINA PRINCIPAL (LANDING PAGE PÓS-LOGIN)
+           MÓDULO DE MATÉRIAS E FILTRAGEM
            ========================================================================== */
-        #main-site {
-            display: none; /* Fica escondido até fazer login */
+        .search-wrapper { display: flex; gap: 10px; margin-bottom: 30px; }
+        .search-wrapper input {
+            flex: 1; padding: 14px; background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 10px; color: var(--text-light); font-size: 1rem; outline: none; transition: 0.3s;
+        }
+        .search-wrapper input:focus { border-color: var(--primary-blue); }
+        
+        .content-layout { display: grid; grid-template-columns: 320px 1fr; gap: 30px; }
+        
+        .subjects-sidebar {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 12px; max-height: 650px; overflow-y: auto; padding: 15px;
+        }
+        
+        .subject-menu-item {
+            padding: 12px 15px; border-radius: 8px; cursor: pointer; display: flex; align-items: center;
+            gap: 10px; font-size: 0.95rem; color: var(--text-muted); transition: 0.2s; margin-bottom: 5px;
+        }
+        .subject-menu-item:hover, .subject-menu-item.active { background: var(--input-bg); color: var(--primary-blue); font-weight: 500; }
+
+        .study-area {
+            background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 40px; min-height: 500px; display: flex; flex-direction: column; justify-content: space-between;
         }
 
-        header {
-            background-color: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 20px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 90;
-        }
+        /* Área de Leitura Dinâmica */
+        .dynamic-text-container { font-size: 16px; line-height: 1.7; transition: font-size 0.2s; }
+        .dynamic-text-container h2 { font-family: 'Poppins', sans-serif; margin-bottom: 20px; color: var(--primary-blue); }
+        .dynamic-text-container p { margin-bottom: 15px; }
 
-        .nav-logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            font-size: 1.3rem;
+        /* QUIZ */
+        .quiz-box {
+            margin-top: 35px; border-top: 2px dashed var(--border-color); padding-top: 25px;
         }
-
-        .nav-logo i {
-            background: linear-gradient(135deg, var(--primary-blue), var(--accent-green));
-            padding: 8px;
-            border-radius: 8px;
-            font-size: 1.1rem;
+        .quiz-title { font-family: 'Poppins', sans-serif; font-size: 1.2rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .quiz-options { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        
+        .quiz-option {
+            padding: 12px 20px; background: var(--input-bg); border: 1px solid var(--border-color);
+            border-radius: 8px; cursor: pointer; text-align: left; transition: 0.2s; color: var(--text-light); font-size: 0.95rem; outline: none;
         }
+        .quiz-option:hover { border-color: var(--primary-blue); background: rgba(52,152,219,0.05); }
+        .quiz-option.correct { background: rgba(46, 204, 113, 0.2) !important; border-color: var(--accent-green) !important; color: #2ecc71; font-weight: 600; }
+        .quiz-option.wrong { background: rgba(231, 76, 60, 0.2) !important; border-color: #e74c3c !important; color: #e74c3c; }
 
-        nav a {
-            color: #cbd5e1;
-            text-decoration: none;
-            margin-left: 25px;
-            font-size: 0.95rem;
-            transition: 0.3s;
+        /* ==========================================================================
+           COMUNIDADE (CHAT DE INTERAÇÃO)
+           ========================================================================== */
+        .community-container {
+            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px;
+            display: grid; grid-template-rows: auto 380px auto; overflow: hidden;
         }
+        .community-header { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; }
+        .community-header h3 { font-family: 'Poppins', sans-serif; }
+        
+        .chat-messages { padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background: rgba(0,0,0,0.05); }
+        
+        .msg-bubble { max-width: 80%; background: var(--input-bg); padding: 12px 16px; border-radius: 12px; border-top-left-radius: 2px; align-self: flex-start; line-height: 1.5; }
+        .msg-bubble.me { background: var(--primary-blue); color: white; border-radius: 12px; border-top-right-radius: 2px; border-top-left-radius: 12px; align-self: flex-end; }
+        .msg-meta { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 600; }
+        .msg-bubble.me .msg-meta { color: rgba(255,255,255,0.8); }
 
-        nav a:hover {
-            color: var(--primary-blue);
-        }
+        .chat-input-row { padding: 15px; border-top: 1px solid var(--border-color); display: flex; gap: 10px; }
+        .chat-input-row input { flex: 1; padding: 14px; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-light); outline: none; font-size: 0.95rem; }
+        .chat-input-row button { padding: 12px 24px; background: var(--primary-blue); border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: 0.2s; }
+        .chat-input-row button:hover { background: #2980b9; }
 
-        .section {
-            padding: 80px 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        /* ==========================================================================
+           FUNCIONALIDADES EXTRA E SEÇÕES ORIGINAIS (SOBRE/PLANOS)
+           ========================================================================== */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .feature-card { background-color: var(--card-bg); padding: 40px 30px; border-radius: 16px; border: 1px solid var(--border-color); transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
+        .feature-card:hover { transform: translateY(-5px); border-color: rgba(52, 152, 219, 0.3); }
+        .feature-card i { font-size: 2.5rem; color: var(--primary-blue); margin-bottom: 20px; }
+        .feature-card h3 { font-family: 'Poppins', sans-serif; font-size: 1.4rem; margin-bottom: 12px; }
+        .feature-card p { color: var(--text-muted); line-height: 1.6; }
 
-        .section-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 2.2rem;
-            text-align: center;
-            margin-bottom: 50px;
-        }
+        .about-content { display: flex; align-items: center; gap: 50px; flex-wrap: wrap; }
+        .about-text { flex: 1; min-width: 300px; }
+        .about-text p { color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 25px; }
+        .about-stats { display: flex; gap: 30px; }
+        .stat-item { background: var(--card-bg); border: 1px solid var(--border-color); padding: 20px; border-radius: 12px; text-align: center; flex: 1; }
+        .stat-item h4 { font-size: 2rem; color: var(--accent-green); font-family: 'Poppins', sans-serif; }
+        .about-image { flex: 1; min-width: 300px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .about-image img { width: 100%; height: auto; display: block; }
 
-        .section-title span {
-            background: linear-gradient(to right, var(--primary-blue), var(--accent-green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; align-items: stretch; }
+        .plan-card { background-color: var(--card-bg); border-radius: 20px; padding: 40px 30px; border: 1px solid var(--border-color); text-align: center; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: 0.3s; }
+        .plan-card.featured { border-color: var(--primary-blue); box-shadow: 0 10px 30px rgba(52, 152, 219, 0.15); transform: scale(1.03); }
+        .plan-badge { position: absolute; top: 15px; right: 15px; background: var(--primary-blue); color: white; font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; }
+        .plan-header h3 { font-family: 'Poppins', sans-serif; font-size: 1.6rem; margin-bottom: 10px; }
+        .plan-price { font-size: 2.2rem; font-weight: 700; color: var(--text-light); margin: 20px 0; }
+        .plan-price span { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
+        .plan-features { list-style: none; text-align: left; margin-bottom: 30px; }
+        .plan-features li { margin-bottom: 12px; color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: center; gap: 10px; }
+        .plan-features li i { color: var(--accent-green); }
+        .btn-plan { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; background: transparent; color: var(--text-light); font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .plan-card.featured .btn-plan { background: linear-gradient(to right, var(--primary-blue), #2980b9); border: none; color: white; }
+        .btn-plan:hover { background: var(--text-light); color: var(--dark-navy); }
 
-        /* Seção Funcionalidades (Cards) */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
+        footer { text-align: center; padding: 40px; color: #64748b; border-top: 1px solid var(--border-color); font-size: 0.9rem; margin-top: 40px; }
 
-        .feature-card {
-            background-color: var(--card-bg);
-            padding: 40px 30px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: 0.3s;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(52, 152, 219, 0.3);
-        }
-
-        .feature-card i {
-            font-size: 2.5rem;
-            color: var(--primary-blue);
-            margin-bottom: 20px;
-        }
-
-        .feature-card h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.4rem;
-            margin-bottom: 12px;
-        }
-
-        .feature-card p {
-            color: #94a3b8;
-            line-height: 1.6;
-        }
-
-        /* Seção Conte-nos (Sobre Nós) */
-        .about-content {
-            display: flex;
-            align-items: center;
-            gap: 50px;
-            flex-wrap: wrap;
-        }
-
-        .about-text {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .about-text p {
-            color: #cbd5e1;
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 25px;
-        }
-
-        .about-stats {
-            display: flex;
-            gap: 30px;
-        }
-
-        .stat-item {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            flex: 1;
-        }
-
-        .stat-item h4 {
-            font-size: 2rem;
-            color: var(--accent-green);
-            font-family: 'Poppins', sans-serif;
-        }
-
-        .about-image {
-            flex: 1;
-            min-width: 300px;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        }
-
-        .about-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        /* Seção Planos (Pricing Table) */
-        .plans-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            align-items: stretch;
-        }
-
-        .plan-card {
-            background-color: var(--card-bg);
-            border-radius: 20px;
-            padding: 40px 30px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            position: relative;
-            transition: 0.3s;
-        }
-
-        .plan-card.featured {
-            border-color: var(--primary-blue);
-            box-shadow: 0 10px 30px rgba(52, 152, 219, 0.15);
-            transform: scale(1.03);
-        }
-
-        .plan-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: var(--primary-blue);
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 20px;
-            text-transform: uppercase;
-        }
-
-        .plan-header h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.6rem;
-            margin-bottom: 10px;
-        }
-
-        .plan-price {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--text-light);
-            margin: 20px 0;
-        }
-
-        .plan-price span {
-            font-size: 1rem;
-            color: #94a3b8;
-            font-weight: 400;
-        }
-
-        .plan-features {
-            list-style: none;
-            text-align: left;
-            margin-bottom: 30px;
-        }
-
-        .plan-features li {
-            margin-bottom: 12px;
-            color: #cbd5e1;
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .plan-features li i {
-            color: var(--accent-green);
-        }
-
-        .btn-plan {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid rgba(255,255,255,0.2);
-            border-radius: 10px;
-            background: transparent;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .plan-card.featured .btn-plan {
-            background: linear-gradient(to right, var(--primary-blue), #2980b9);
-            border: none;
-        }
-
-        .btn-plan:hover {
-            background: white;
-            color: var(--dark-navy);
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: #64748b;
-            border-top: 1px solid rgba(255,255,255,0.05);
-            font-size: 0.9rem;
+        @media (max-width: 768px) {
+            .content-layout { grid-template-columns: 1fr; }
+            .subjects-sidebar { max-height: 280px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- ==========================================================================
+       1. TELA DE LOGIN (MÓDULO DE AUTENTICAÇÃO)
+       ========================================================================== */ -->
     <div id="login-screen">
         <div class="login-side">
             <div class="login-box">
                 <div class="brand-header">
-                    <div class="logo-box">
-                        <i class="fas fa-graduation-cap fa-3x" style="color: white;"></i>
-                    </div>
+                    <div class="logo-box"><i class="fas fa-graduation-cap fa-3x"></i></div>
                     <h1>ClassConnect</h1>
                     <p>Aprender Juntos</p>
                 </div>
 
                 <form id="loginForm" onsubmit="executarLogin(event)">
                     <div class="form-group">
-                        <label>E-mail ou Usuário</label>
+                        <label for="loginUser">E-mail ou Usuário</label>
                         <input type="text" id="loginUser" placeholder="seuemail@exemplo.com" required>
                     </div>
-
                     <div class="form-group">
-                        <label>Senha</label>
-                        <input type="password" placeholder="••••••••" required>
+                        <label for="loginPass">Senha</label>
+                        <div class="password-container">
+                            <input type="password" id="loginPass" placeholder="••••••••" required>
+                            <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility(this)"></i>
+                        </div>
                     </div>
-
                     <button type="submit" class="btn-entrar">Entrar</button>
-
-                    <div class="divider">
-                        <span>ou</span>
-                    </div>
-
+                    <div class="divider"><span>ou</span></div>
                     <button type="button" class="btn-google" onclick="simularLoginGoogle()">
-                        <i class="fab fa-google" style="color: #4285F4;"></i>
-                        Entrar com o Google
+                        <i class="fab fa-google"></i> Entrar com o Google
                     </button>
                 </form>
-
-                <p style="text-align: center; margin-top: 30px; color: #64748b; font-size: 0.9rem;">
-                    Não tem uma conta? <a href="#" style="color: var(--accent-green); text-decoration: none; font-weight: 600;">Cadastre-se</a>
-                </p>
+                <p class="signup-redirect">Não tem uma conta? <a href="#">Cadastre-se</a></p>
             </div>
         </div>
-
         <div class="image-side">
             <div class="overlay-text">
                 <h2>Aprender ficou mais fácil e conectado.</h2>
@@ -550,188 +344,410 @@
         </div>
     </div>
 
+    <!-- OVERLAY DE TRANSIÇÃO E FEEDBACK -->
     <div class="success-overlay" id="loading-overlay">
-        <div style="text-align: center;">
-            <i class="fas fa-circle-notch fa-spin fa-3x" style="color: var(--primary-blue); margin-bottom: 20px;"></i>
+        <div class="success-overlay-content">
+            <i class="fas fa-circle-notch fa-spin fa-3x"></i>
             <p id="feedback-text">Autenticando...</p>
         </div>
     </div>
 
-
+    <!-- ==========================================================================
+       2. ECOSSISTEMA PRINCIPAL DA PLATAFORMA (PÓS-LOGIN)
+       ========================================================================== */ -->
     <div id="main-site">
         <header>
-            <div class="nav-logo">
-                <i class="fas fa-graduation-cap" style="color: white;"></i>
-                ClassConnect
+            <div class="nav-logo"><i class="fas fa-graduation-cap"></i> ClassConnect</div>
+            <div class="nav-actions">
+                <!-- Controle de Ofensiva Gamificada (Foguinho) -->
+                <div class="streak-container active" id="streak-box" title="Sua ofensiva ativa de estudos!">
+                    <i class="fas fa-fire"></i> <span id="streak-count">0</span> dias
+                </div>
+                <nav>
+                    <a href="#estudos">Central de Estudos</a>
+                    <a href="#comunidade">Comunidade</a>
+                    <a href="#sobre-nos">Sobre Nós</a>
+                    <a href="#planos">Planos</a>
+                    <a href="#" onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                </nav>
+                <button class="btn-theme-toggle" onclick="toggleTheme()" title="Alternar Modo Escuro/Claro"><i class="fas fa-moon" id="theme-icon"></i></button>
             </div>
-            <nav>
-                <a href="#funcionalidades">Funcionalidades</a>
-                <a href="#conte-nos">Conte-nos</a>
-                <a href="#planos">Planos</a>
-                <a href="#" onclick="logout()" style="color: #ef4444;"><i class="fas fa-sign-out-alt"></i> Sair</a>
-            </nav>
         </header>
 
-        <section class="section" style="text-align: center; padding-top: 100px;">
-            <h2 class="section-title" style="font-size: 3rem; margin-bottom: 20px;">Olá, <span id="user-display">Estudante</span>! <br>Bem-vindo à sua área principal</h2>
-            <p style="color: #94a3b8; font-size: 1.2rem; max-width: 600px; margin: 0 auto;">Você se conectou com sucesso. Explore abaixo os recursos e o ecossistema que preparamos para você.</p>
-        </section>
+        <main>
+            <!-- Painel de Boas-Vindas & Gamificação -->
+            <section class="section hero-dashboard">
+                <h2 class="section-title large">Olá, <span id="user-display">Estudante</span>!</h2>
+                <p>Mantenha sua constância nos estudos ativa. Não deixe seu foguinho apagar hoje!</p>
+                <button class="btn-checkin" onclick="computarCheckin()"><i class="fas fa-calendar-check"></i> Registrar Check-in Diário</button>
+            </section>
 
-        <section class="section" id="funcionalidades">
-            <h2 class="section-title">Nossas <span>Funcionalidades</span></h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <i class="fas fa-folder-open"></i>
-                    <h3>Organização Centralizada</h3>
-                    <p>Gerencie todas as suas matérias, cronogramas de provas, notas e PDFs de estudo em um único painel intuitivo.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-users"></i>
-                    <h3>Grupos Ativos</h3>
-                    <p>Monte salas de estudos interativas com seus colegas de classe com chat em tempo real e compartilhamento de arquivos.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-chart-line"></i>
-                    <h3>Métricas de Evolução</h3>
-                    <p>Acompanhe seu rendimento através de gráficos detalhados que mostram onde você precisa focar mais esforços.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="conte-nos">
-            <h2 class="section-title"><span>Conte-nos</span> sobre nós</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>O ClassConnect foi criado por estudantes e para estudantes. Entendemos que a jornada acadêmica possui desafios imensos de organização e foco, e que o conhecimento retido aumenta drasticamente quando colaboramos.</p>
-                    <p>Nossa missão é aproximar as pessoas no ambiente educacional sob a filosofia de que o sucesso na aprendizagem é construído coletivamente. </p>
-                    <div class="about-stats">
-                        <div class="stat-item">
-                            <h4>+15k</h4>
-                            <p>Alunos Ativos</p>
-                        </div>
-                        <div class="stat-item">
-                            <h4>98%</h4>
-                            <p>Aprovação Acadêmica</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="about-image">
-                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80" alt="Estudantes colaborando">
-                </div>
-            </div>
-        </section>
-
-        <section class="section" id="planos">
-            <h2 class="section-title">Escolha o seu <span>Plano</span></h2>
-            <div class="plans-grid">
+            <!-- SEÇÃO INTEGRADA DE ESTUDOS COM BUSCA, FILTRO E LUPA -->
+            <section class="section" id="estudos">
+                <h2 class="section-title">Central de <span>Estudos Avançada</span></h2>
                 
-                <div class="plan-card">
-                    <div class="plan-header">
-                        <h3>Plano Gratuito</h3>
-                        <p style="color: #64748b;">O essencial para começar</p>
-                        <div class="plan-price">R$ 0<span>/mês</span></div>
-                    </div>
-                    <ul class="plan-features">
-                        <li><i class="fas fa-check"></i> Acesso aos painéis básicos</li>
-                        <li><i class="fas fa-check"></i> Até 2 grupos de estudo</li>
-                        <li><i class="fas fa-check"></i> 1 GB de armazenamento Cloud</li>
-                    </ul>
-                    <button class="btn-plan">Começar Agora</button>
+                <!-- Controles de Acessibilidade (Lupa de Fonte) -->
+                <div class="accessibility-bar">
+                    <span><i class="fas fa-search-plus"></i> Ajuste de Leitura (Lupa):</span>
+                    <button class="btn-accessibility" onclick="mudarFonte(2)" title="Aumentar Letra"><i class="fas fa-plus-circle"></i> Aumentar</button>
+                    <button class="btn-accessibility" onclick="mudarFonte(-2)" title="Diminuir Letra"><i class="fas fa-minus-circle"></i> Diminuir</button>
+                    <button class="btn-accessibility" onclick="mudarFonte(0)" title="Resetar Padrão"><i class="fas fa-undo"></i> Resetar</button>
                 </div>
 
-                <div class="plan-card featured">
-                    <div class="plan-badge">Mais Popular</div>
-                    <div class="plan-header">
-                        <h3>Plano Super</h3>
-                        <p style="color: #3498db;">Para estudantes focados</p>
-                        <div class="plan-price">R$ 19,90<span>/mês</span></div>
-                    </div>
-                    <ul class="plan-features">
-                        <li><i class="fas fa-check"></i> Tudo do plano gratuito</li>
-                        <li><i class="fas fa-check"></i> Grupos de estudo ilimitados</li>
-                        <li><i class="fas fa-check"></i> 20 GB de armazenamento Cloud</li>
-                        <li><i class="fas fa-check"></i> Suporte prioritário</li>
-                    </ul>
-                    <button class="btn-plan">Assinar Super</button>
+                <!-- Campo com Filtro de Conteúdo -->
+                <div class="search-wrapper">
+                    <input type="text" id="subject-search" placeholder="🔍 Digite uma matéria ou palavra-chave para realizar a filtragem imediata..." oninput="filtrarMaterias()">
                 </div>
 
-                <div class="plan-card">
-                    <div class="plan-header">
-                        <h3>Plano Ultra</h3>
-                        <p style="color: #64748b;">A experiência máxima</p>
-                        <div class="plan-price">R$ 49,90<span>/mês</span></div>
-                    </div>
-                    <ul class="plan-features">
-                        <li><i class="fas fa-check"></i> Tudo do plano Super</li>
-                        <li><i class="fas fa-check"></i> Armazenamento ilimitado</li>
-                        <li><i class="fas fa-check"></i> Ferramentas de IA avançadas</li>
-                        <li><i class="fas fa-check"></i> Acesso antecipado a recursos</li>
-                    </ul>
-                    <button class="btn-plan">Assinar Ultra</button>
-                </div>
+                <div class="content-layout">
+                    <!-- Lista Lateral de Matérias (Gerada via Script) -->
+                    <div class="subjects-sidebar" id="sidebar-lista"></div>
 
-            </div>
-        </section>
+                    <!-- Bloco de Conteúdo Didático & Leitura -->
+                    <div class="study-area">
+                        <div class="dynamic-text-container" id="conteudo-leitura">
+                            <h3>Selecione um conteúdo didático no menu ao lado para iniciar seus estudos!</h3>
+                            <p>Utilize o sistema de busca inteligente acima para filtrar matérias instantaneamente.</p>
+                        </div>
+                        
+                        <!-- Box Dinâmico do Quiz -->
+                        <div class="quiz-box" id="quiz-container" style="display: none;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- COMPARTILHAMENTO E INTERAÇÃO EM TEMPO REAL -->
+            <section class="section" id="comunidade">
+                <h2 class="section-title">Comunidade Ativa <span>ClassConnect</span></h2>
+                <div class="community-container">
+                    <div class="community-header">
+                        <i class="fas fa-comments" style="color: var(--primary-blue); font-size: 1.5rem;"></i>
+                        <div>
+                            <h3>Fórum Global de Compartilhamento</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Interaja, tire dúvidas e colabore com outros estudantes</p>
+                        </div>
+                    </div>
+                    <div class="chat-messages" id="chat-box">
+                        <div class="msg-bubble">
+                            <div class="msg-meta">Carlos_Eduardo</div>
+                            Alguém tem dicas de canais bons para estudar a parte de Geometria Plana? Estou com um pouco de dificuldades.
+                        </div>
+                        <div class="msg-bubble me">
+                            <div class="msg-meta">Você</div>
+                            Dá uma olhada no resumo de Geometria aqui do ClassConnect, o questionário de fixação ajuda muito!
+                        </div>
+                    </div>
+                    <div class="chat-input-row">
+                        <input type="text" id="chat-input" placeholder="Escreva seu comentário, dúvida ou conhecimento para a rede...">
+                        <button onclick="enviarMensagem()"><i class="fas fa-paper-plane"></i> Enviar</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SEÇÕES ADICIONAIS DO ESCOPO ORIGINAL -->
+            <section class="section" id="sobre-nos">
+                <h2 class="section-title"><span>Conheça</span> sobre nós</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>O ClassConnect foi criado por estudantes e para estudantes. Entendemos que a jornada acadêmica possui desafios imensos de organização e foco, e que o conhecimento retido aumenta drasticamente quando colaboramos.</p>
+                        <p>Nossa missão é aproximar as pessoas no ambiente educacional sob a filosofia de que o sucesso na aprendizagem é construído coletivamente.</p>
+                        <div class="about-stats">
+                            <div class="stat-item">
+                                <h4>+15k</h4>
+                                <p>Alunos Ativos</p>
+                            </div>
+                            <div class="stat-item">
+                                <h4>98%</h4>
+                                <p>Aprovação</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image">
+                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80" alt="Estudantes colaborando">
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="planos">
+                <h2 class="section-title">Escolha o seu <span>Plano</span></h2>
+                <div class="plans-grid">
+                    <div class="plan-card">
+                        <div class="plan-header">
+                            <h3>Plano Gratuito</h3>
+                            <p class="plan-card-subtext">O essencial para começar</p>
+                            <div class="plan-price">R$ 0<span>/mês</span></div>
+                        </div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Acesso aos painéis básicos</li>
+                            <li><i class="fas fa-check"></i> Filtro de 20 matérias base</li>
+                            <li><i class="fas fa-check"></i> 1 GB de armazenamento Cloud</li>
+                        </ul>
+                        <button class="btn-plan" onclick="alert('Plano Gratuito ativo por padrão!')">Aproveitar Agora</button>
+                    </div>
+                    <div class="plan-card featured">
+                        <div class="plan-badge">Mais Popular</div>
+                        <div class="plan-header">
+                            <h3>Plano Super</h3>
+                            <p class="plan-card-subtext">Para estudantes focados</p>
+                            <div class="plan-price">R$ 19,90<span>/mês</span></div>
+                        </div>
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Tudo do plano gratuito</li>
+                            <li><i class="fas fa-check"></i> Comunidade sem limites de envio</li>
+                            <li><i class="fas fa-check"></i> 20 GB de armazenamento Cloud</li>
+                        </ul>
+                        <button class="btn-plan" onclick="alert('Redirecionando para o ambiente de checkout seguro do Plano Super!')">Assinar Super</button>
+                    </div>
+                </div>
+            </section>
+        </main>
 
         <footer>
             <p>&copy; 2026 ClassConnect - Aprender Juntos. Todos os direitos reservados.</p>
         </footer>
     </div>
 
+    <!-- ==========================================================================
+       3. CAMADA LÓGICA E BANCO DE DADOS LOCAL (JAVASCRIPT)
+       ========================================================================== */ -->
     <script>
+        // BANCO DE DADOS DOS 20 CONTEÚDOS COM SEUS RESPECTIVOS QUIZZES SOLICITADOS
+        const baseConteudos = [
+            { id: "mat_basica", nome: "Matemática básica", desc: "Adição, subtração, multiplicação e divisão.", texto: "A aritmética fundamental estuda as quatro operações principais. A adição agrupa valores, a subtração remove quantidades, a multiplicação opera a soma de fatores idênticos e a divisão realiza a partição justa de um todo.", q: "Se você efetuar a operação (45 + 15) / 4, qual será o resultado correto?", o: ["12", "15", "20", "10"], c: 1 },
+            { id: "geometria", nome: "Geometria", desc: "Estudo das formas lineares, áreas e volumes espaciais.", texto: "Módulo focado no cálculo de perímetros, áreas (bidimensionais) e volumes (tridimensionais). Inclui o Teorema de Pitágoras e a análise de polígonos regulares.", q: "Qual a área de um quadrado com lados medindo 6cm?", o: ["24cm²", "36cm²", "12cm²", "18cm²"], c: 1 },
+            { id: "algebra", nome: "Álgebra", desc: "Expressões, equações de primeiro/segundo grau e incógnitas.", texto: "Uso de letras e caracteres simbólicos para representar variáveis numéricas indefinidas. Essencial para modelagem de problemas e gráficos de funções.", q: "Resolva a equação simples: 2x + 10 = 20. Qual o valor de x?", o: ["5", "10", "2", "8"], c: 0 },
+            { id: "estatistica", nome: "Estatística e probabilidade", desc: "Análise de frequência, amostragem e cálculo de chances.", texto: "Cálculo de probabilidade elementar e medidas estatísticas comuns como média aritmética simples, mediana estrutural e moda de amostragem.", q: "Em um lançamento de moeda perfeita, qual a probabilidade de cair 'Cara'?", o: ["25%", "50%", "75%", "100%"], c: 1 },
+            { id: "portugues", nome: "Língua Portuguesa – gramática", desc: "Morfologia, sintaxe, regras ortográficas e concordância.", texto: "Regras de regência verbal/nominal, crase padrão, acentuação pelo novo acordo, e classificação de termos da oração.", q: "Qual palavra está grafada CORRETAMENTE segundo a ortografia vigente?", o: ["Idéia", "Auto-estima", "Autoescola", "Vôo"], c: 2 },
+            { id: "redacao", nome: "Produção de texto / redação", desc: "Dissertação argumentativa e clareza textual.", texto: "Técnicas de coesão, coerência, estruturação de parágrafos de desenvolvimento e elaboração de teses válidas.", q: "Qual o principal objetivo de um texto dissertativo-argumentativo?", o: ["Contar uma história", "Defender um ponto de vista", "Descrever uma paisagem", "Instruir um manual"], c: 1 },
+            { id: "lit_br", nome: "Literatura brasileira", desc: "Do Quinhentismo às tendências contemporâneas.", texto: "Análise das principais correntes literárias nacionais como o Romantismo, Realismo Machadiano, e o Modernismo de 1922.", q: "Quem é o autor do clássico livro 'O Cortiço'?", o: ["Machado de Assis", "Aluísio Azevedo", "Jose de Alencar", "Lima Barreto"], c: 1 },
+            { id: "lit_mundial", nome: "Literatura mundial", desc: "Clássicos mundiais e épicos históricos.", texto: "Estudo de autores basilares como Shakespeare, Cervantes, Goethe, Homero e suas contribuições estéticas fundamentais.", q: "Quem escreveu o clássico épico espanhol 'Don Quixote'?", o: ["Miguel de Cervantes", "Gabriel García Márquez", "Luís de Camões", "Jorge Luis Borges"], c: 0 },
+            { id: "hist_br", nome: "História do Brasil", desc: "Do período Colonial à Nova República.", texto: "Linha cronológica nacional abrangendo o Brasil Colônia, o Império, a República Velha, Era Vargas e redemocratização.", q: "Quem proclamou a independência do Brasil em 1822?", o: ["Dom Pedro I", "Marechal Deodoro", "Dom Pedro II", "Tiradentes"], c: 0 },
+            { id: "hist_geral", nome: "História geral", desc: "Da antiguidade clássica ao mundo pós-guerra.", texto: "Revisão sobre o Feudalismo, Absolutismo, as Grandes Revoluções, as Duas Guerras Mundiais e a Globalização.", q: "Em qual continente teve início a Revolução Industrial?", o: ["América", "Ásia", "Europa", "África"], c: 2 },
+            { id: "geo_fisica", nome: "Geografia física", desc: "Climas, relevos, hidrografia e ecossistemas planetários.", texto: "Estrutura geomorfológica da Terra, placas tectônicas, dinâmica atmosférica e biomas continentais.", q: "Qual o maior oceano em extensão territorial do planeta?", o: ["Oceano Atlântico", "Oceano Índico", "Oceano Pacífico", "Oceano Ártico"], c: 2 },
+            { id: "geo_politica", nome: "Geografia política e econômica", desc: "Geopolítica, blocos comerciais e demografia.", texto: "Globalização, fluxos migratórios, industrialização contemporânea e relações de poder entre nações globais.", q: "Qual bloco econômico é composto por Brasil, Argentina, Paraguai e Uruguai?", o: ["União Europeia", "Mercosul", "NAFTA", "BRICS"], c: 1 },
+            { id: "ciencias", nome: "Ciências (noções gerais)", desc: "Estudo primário da matéria, energia e ecologia.", texto: "Estados físicos da matéria, transformações da energia e dinâmicas básicas do meio ambiente.", q: "Qual o estado físico da água em forma de gelo?", o: ["Líquido", "Sólido", "Gasoso", "Plasmático"], c: 1 },
+            { id: "biologia", nome: "Biologia", desc: "Citologia, ecologia, evolução e genética.", texto: "Funcionamento das células, DNA/RNA, seleção natural, cadeias alimentares e classificação dos reinos biológicos.", q: "Qual componente celular abriga o material genético (DNA) nas células eucariontes?", o: ["Citoplasma", "Núcleo", "Membrana", "Parede celular"], c: 1 },
+            { id: "fisica", nome: "Física", desc: "Mecânica clássica, óptica e eletromagnetismo.", texto: "Análise do movimento (Leis de Newton), termodinâmica, ondas, energia cinética e potencial.", q: "Quantas leis fundamentais do movimento foram propostas por Isaac Newton?", o: ["Uma", "Duas", "Três", "Quatro"], c: 2 },
+            { id: "quimica", nome: "Química", desc: "Estrutura do átomo, reações e tabela periódica.", texto: "Ligações químicas, balanceamento de equações, química orgânica elemental e soluções aquosas.", q: "Qual a fórmula química molecular da água pura?", o: ["CO2", "H2O", "NaCl", "O2"], c: 1 },
+            { id: "artes", nome: "Artes visuais", desc: "Movimentos artísticos das cavernas à contemporaneidade.", texto: "Estudo do Renascimento, Impressionismo, Expressionismo e as vanguardas estéticas modernas europeias.", q: "O movimento Cubista teve como um de seus maiores expoentes fundadores:", o: ["Leonardo da Vinci", "Pablo Picasso", "Salvador Dalí", "Vincent van Gogh"], c: 1 },
+            { id: "musica", nome: "Música", desc: "Teoria musical, notas e gêneros mundiais.", texto: "Análise das propriedades físicas do som: timbre, altura, intensidade e duração, além de ritmos tradicionais.", q: "Quantas notas musicais compõem a escala diatônica padrão?", o: ["5", "7", "12", "10"], c: 1 },
+            { id: "ed_fisica", nome: "Educação física", desc: "Fisiologia do exercício, saúde e práticas esportivas.", texto: "Benefícios do exercício físico regular para a homeostase humana, história das Olimpíadas e regras de desportos.", q: "O sedentarismo prolongado é um fator de risco associado diretamente a:", o: ["Melhora muscular", "Problemas cardiovasculares", "Aumento da longevidade", "Flexibilidade"], c: 1 },
+            { id: "ingles", nome: "Inglês", desc: "Leitura, interpretação textual e estruturas verbais.", texto: "Técnicas de varredura textual (skimming/scanning) e aplicação correta do Simple Present e Past Tense.", q: "Qual o significado correto do termo 'Actually' em português?", o: ["Atualmente", "Na verdade / Realmente", "Agir", "Acontecer"], c: 1 }
+        ];
+
+        let tamanhoFonteAtual = 16;
+        let materiaSelecionadaId = "";
+
+        // CONTROLE DO FOGUINHO DE OFENSIVA (PERSISTIDO EM LOCALSTORAGE)
+        function inicializarOfensiva() {
+            let streak = localStorage.getItem('classconnect_streak') || 0;
+            document.getElementById('streak-count').textContent = streak;
+        }
+
+        function computarCheckin() {
+            let streak = parseInt(localStorage.getItem('classconnect_streak') || 0);
+            let ultimaData = localStorage.getItem('classconnect_last_date');
+            let hoje = new Date().toDateString();
+
+            if (ultimaData === hoje) {
+                alert("Seu foguinho já está garantido hoje! Volte amanhã para aumentar sua sequência de estudos. 🔥");
+            } else {
+                streak += 1;
+                localStorage.setItem('classconnect_streak', streak);
+                localStorage.setItem('classconnect_last_date', hoje);
+                document.getElementById('streak-count').textContent = streak;
+                alert(`Check-in Concluído! Você está estudando de verdade. Sua ofensiva subiu para: ${streak} dias! 🔥`);
+            }
+        }
+
+        // ELEMENTOS INTERNOS DA INTERFACE
         const loginScreen = document.getElementById('login-screen');
         const mainSite = document.getElementById('main-site');
         const overlay = document.getElementById('loading-overlay');
         const feedbackText = document.getElementById('feedback-text');
         const userDisplay = document.getElementById('user-display');
 
-        // Função executada ao enviar o formulário clássico de login
-        function executarLogin(event) {
-            event.preventDefault(); // Impede a recarga da página
-            
-            const usuarioDigitado = document.getElementById('loginUser').value;
-            
-            // Ativa o overlay de loading
-            overlay.style.display = 'flex';
-            feedbackText.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Validando credenciais...';
+        function togglePasswordVisibility(btn) {
+            const passInput = document.getElementById('loginPass');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                btn.className = 'fas fa-eye-slash toggle-password';
+            } else {
+                passInput.type = 'password';
+                btn.className = 'fas fa-eye toggle-password';
+            }
+        }
 
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const themeIcon = document.getElementById('theme-icon');
+            if (currentTheme === 'light') {
+                document.documentElement.removeAttribute('data-theme');
+                themeIcon.className = 'fas fa-moon';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeIcon.className = 'fas fa-sun';
+            }
+        }
+
+        // LUPA DE AJUSTE DINÂMICO DE FONTE
+        function mudarFonte(acao) {
+            const container = document.getElementById('conteudo-leitura');
+            if (acao === 0) tamanhoFonteAtual = 16;
+            else tamanhoFonteAtual += acao;
+
+            if (tamanhoFonteAtual < 12) tamanhoFonteAtual = 12;
+            if (tamanhoFonteAtual > 26) tamanhoFonteAtual = 26;
+
+            container.style.fontSize = tamanhoFonteAtual + 'px';
+        }
+
+        // COMPORTAMENTO DO SISTEMA DE FILTRAGEM E RENDERIZAÇÃO
+        function renderizarMenuMaterias(lista) {
+            const sidebar = document.getElementById('sidebar-lista');
+            sidebar.innerHTML = "";
+            
+            lista.forEach(item => {
+                const div = document.createElement('div');
+                div.className = `subject-menu-item ${materiaSelecionadaId === item.id ? 'active' : ''}`;
+                div.innerHTML = `<i class="fas fa-book"></i> ${item.nome}`;
+                div.onclick = () => carregarConteudoMateria(item.id);
+                sidebar.appendChild(div);
+            });
+
+            if (lista.length === 0) {
+                sidebar.innerHTML = "<p style='color:var(--text-muted); font-size:0.85rem; text-align:center; padding:10px;'>Nenhum conteúdo localizado.</p>";
+            }
+        }
+
+        function filtrarMaterias() {
+            const busca = document.getElementById('subject-search').value.toLowerCase();
+            const filtrados = baseConteudos.filter(item => 
+                item.nome.toLowerCase().includes(busca) || 
+                item.desc.toLowerCase().includes(busca)
+            );
+            renderizarMenuMaterias(filtrados);
+        }
+
+        function carregarConteudoMateria(id) {
+            materiaSelecionadaId = id;
+            
+            // Re-renderiza o menu para setar a classe active no item certo
+            const busca = document.getElementById('subject-search').value.toLowerCase();
+            const filtrados = baseConteudos.filter(item => item.nome.toLowerCase().includes(busca) || item.desc.toLowerCase().includes(busca));
+            renderizarMenuMaterias(filtrados);
+
+            const materia = baseConteudos.find(m => m.id === id);
+            if (!materia) return;
+
+            const areaLeitura = document.getElementById('conteudo-leitura');
+            areaLeitura.innerHTML = `
+                <h2>${materia.nome}</h2>
+                <p style="font-weight:600; color:var(--text-muted); margin-bottom: 15px;">${materia.desc}</p>
+                <div>${materia.texto}</div>
+            `;
+
+            // Configuração do Quiz acoplado à explicação
+            const quizContainer = document.getElementById('quiz-container');
+            quizContainer.style.display = "block";
+            quizContainer.innerHTML = `
+                <div class="quiz-title"><i class="fas fa-tasks"></i> Teste Seu Conhecimento Prático</div>
+                <p style="margin-bottom:12px;"><strong>Questão:</strong> ${materia.q}</p>
+                <div class="quiz-options">
+                    ${materia.o.map((opcao, idx) => `
+                        <button class="quiz-option" onclick="validarResposta(this, ${idx}, ${materia.c})">${opcao}</button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function validarResposta(botao, idx, correto) {
+            const opcoes = botao.parentElement.querySelectorAll('.quiz-option');
+            opcoes.forEach(b => b.removeAttribute('onclick')); // Bloqueia novos cliques
+
+            if (idx === correto) {
+                botao.classList.add('correct');
+            } else {
+                botao.classList.add('wrong');
+                opcoes[correto].classList.add('correct');
+            }
+        }
+
+        // SISTEMA SIMULADO DE INTERAÇÃO DA COMUNIDADE
+        function enviarMensagem() {
+            const input = document.getElementById('chat-input');
+            const msgTexto = input.value.trim();
+            if (!msgTexto) return;
+
+            const chatBox = document.getElementById('chat-box');
+            const novaMsg = document.createElement('div');
+            novaMsg.className = "msg-bubble me";
+            novaMsg.innerHTML = `<div class="msg-meta">Você</div>${msgTexto}`;
+            chatBox.appendChild(novaMsg);
+            input.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Simulação de resposta inteligente de parceiro de classe após 1.5s
             setTimeout(() => {
-                feedbackText.innerHTML = '<i class="fas fa-check-circle" style="color: #2ecc71;"></i> Acesso Permitido!';
+                const respostasDisponiveis = [
+                    "Que da hora! Acabei de resolver o quiz dessa matéria aqui também.",
+                    "Excelente contribuição, anotado no meu caderno de resumos!",
+                    "Valeu mesmo por compartilhar, estava revisando isso agora.",
+                    "Se quiserem criar uma sala privada de estudos depois, contem comigo!"
+                ];
+                const respostaAleatoria = respostasDisponiveis[Math.floor(Math.random() * respostasDisponiveis.length)];
                 
-                setTimeout(() => {
-                    // Atualiza o nome exibido na tela principal
-                    userDisplay.textContent = usuarioDigitado;
-                    
-                    // Altera a exibição das telas
-                    overlay.style.display = 'none';
-                    loginScreen.style.display = 'none';
-                    mainSite.style.display = 'block';
-                }, 1000);
+                const msgBot = document.createElement('div');
+                msgBot.className = "msg-bubble";
+                msgBot.innerHTML = `<div class="msg-meta">Estudante_Parceiro</div>${respostaAleatoria}`;
+                chatBox.appendChild(msgBot);
+                chatBox.scrollTop = chatBox.scrollHeight;
             }, 1500);
         }
 
-        // Função executada ao simular login com o Google
+        // ENTRADA E SAÍDA (LÓGICA DO LOGIN)
+        function executarLogin(event) {
+            event.preventDefault();
+            const user = document.getElementById('loginUser').value;
+            
+            overlay.style.display = 'flex';
+            feedbackText.textContent = "Autenticando...";
+            
+            setTimeout(() => {
+                userDisplay.textContent = user;
+                overlay.style.display = 'none';
+                loginScreen.style.display = 'none';
+                mainSite.style.display = 'block';
+                
+                inicializarOfensiva();
+                renderizarMenuMaterias(baseConteudos);
+            }, 1000);
+        }
+
         function simularLoginGoogle() {
             overlay.style.display = 'flex';
-            feedbackText.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Conectando à conta Google...';
-
+            feedbackText.textContent = "Sincronizando com Google...";
+            
             setTimeout(() => {
-                feedbackText.innerHTML = '<i class="fas fa-check-circle" style="color: #2ecc71;"></i> Sincronizado com Google!';
+                userDisplay.textContent = "Usuário Google";
+                overlay.style.display = 'none';
+                loginScreen.style.display = 'none';
+                mainSite.style.display = 'block';
                 
-                setTimeout(() => {
-                    userDisplay.textContent = "Usuário Google";
-                    overlay.style.display = 'none';
-                    loginScreen.style.display = 'none';
-                    mainSite.style.display = 'block';
-                }, 1000);
-            }, 1500);
+                inicializarOfensiva();
+                renderizarMenuMaterias(baseConteudos);
+            }, 1000);
         }
 
-        // Função de logout para voltar à tela de login
         function logout() {
             mainSite.style.display = 'none';
             loginScreen.style.display = 'flex';
             document.getElementById('loginForm').reset();
+            document.getElementById('quiz-container').style.display = "none";
+            document.getElementById('conteudo-leitura').innerHTML = `
+                <h3>Selecione um conteúdo didático no menu ao lado para iniciar seus estudos!</h3>
+                <p>Utilize o sistema de busca inteligente acima para filtrar matérias instantaneamente.</p>
+            `;
         }
     </script>
 </body>
