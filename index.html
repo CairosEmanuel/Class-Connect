@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
         :root {
             --dark-navy: #0f172a;
@@ -21,6 +23,7 @@
             --card-bg: #1e293b;
             --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             --border-color: rgba(255, 255, 255, 0.05);
+            --grid-color: #334155;
         }
 
         [data-theme="light"] {
@@ -31,6 +34,7 @@
             --input-bg: rgba(0, 0, 0, 0.05);
             --card-bg: #ffffff;
             --border-color: rgba(0, 0, 0, 0.1);
+            --grid-color: #cbd5e1;
         }
 
         * {
@@ -171,7 +175,7 @@
 
         @keyframes pulse { from { transform: scale(1); filter: drop-shadow(0 0 2px #e67e22); } to { transform: scale(1.2); filter: drop-shadow(0 0 8px #f1c40f); } }
 
-        .section { padding: 60px 5%; max-width: 1200px; margin: 0 auto; }
+        .section { padding: 40px 5%; max-width: 1200px; margin: 0 auto; }
         .hero-dashboard { text-align: center; padding-top: 40px; }
         
         .btn-checkin {
@@ -183,6 +187,40 @@
         .section-title { font-family: 'Poppins', sans-serif; font-size: 2rem; text-align: center; margin-bottom: 40px; }
         .section-title.large { font-size: 3rem; margin-bottom: 15px; }
         .section-title span { background: linear-gradient(to right, var(--primary-blue), var(--accent-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        /* Container do Gráfico Interativo */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .chart-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .chart-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .chart-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+        }
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+        }
 
         /* Barra de Acessibilidade (Lupa de Zoom) */
         .accessibility-bar {
@@ -303,9 +341,6 @@
 </head>
 <body>
 
-    <!-- ==========================================================================
-       1. TELA DE LOGIN (MÓDULO DE AUTENTICAÇÃO)
-       ========================================================================== */ -->
     <div id="login-screen">
         <div class="login-side">
             <div class="login-box">
@@ -344,7 +379,6 @@
         </div>
     </div>
 
-    <!-- OVERLAY DE TRANSIÇÃO E FEEDBACK -->
     <div class="success-overlay" id="loading-overlay">
         <div class="success-overlay-content">
             <i class="fas fa-circle-notch fa-spin fa-3x"></i>
@@ -352,14 +386,10 @@
         </div>
     </div>
 
-    <!-- ==========================================================================
-       2. ECOSSISTEMA PRINCIPAL DA PLATAFORMA (PÓS-LOGIN)
-       ========================================================================== */ -->
     <div id="main-site">
         <header>
             <div class="nav-logo"><i class="fas fa-graduation-cap"></i> ClassConnect</div>
             <div class="nav-actions">
-                <!-- Controle de Ofensiva Gamificada (Foguinho) -->
                 <div class="streak-container active" id="streak-box" title="Sua ofensiva ativa de estudos!">
                     <i class="fas fa-fire"></i> <span id="streak-count">0</span> dias
                 </div>
@@ -375,18 +405,25 @@
         </header>
 
         <main>
-            <!-- Painel de Boas-Vindas & Gamificação -->
             <section class="section hero-dashboard">
                 <h2 class="section-title large">Olá, <span id="user-display">Estudante</span>!</h2>
                 <p>Mantenha sua constância nos estudos ativa. Não deixe seu foguinho apagar hoje!</p>
                 <button class="btn-checkin" onclick="computarCheckin()"><i class="fas fa-calendar-check"></i> Registrar Check-in Diário</button>
+                
+                <div class="dashboard-grid">
+                    <div class="chart-card">
+                        <h3><i class="fas fa-chart-line" style="color: var(--primary-blue);"></i> Desempenho e Evolução Acadêmica</h3>
+                        <p>Acompanhe seu rendimento médio nos simulados e testes de fixação mensais.</p>
+                        <div class="canvas-container">
+                            <canvas id="graficoEvolucao"></canvas>
+                        </div>
+                    </div>
+                </div>
             </section>
 
-            <!-- SEÇÃO INTEGRADA DE ESTUDOS COM BUSCA, FILTRO E LUPA -->
             <section class="section" id="estudos">
                 <h2 class="section-title">Central de <span>Estudos Avançada</span></h2>
                 
-                <!-- Controles de Acessibilidade (Lupa de Fonte) -->
                 <div class="accessibility-bar">
                     <span><i class="fas fa-search-plus"></i> Ajuste de Leitura (Lupa):</span>
                     <button class="btn-accessibility" onclick="mudarFonte(2)" title="Aumentar Letra"><i class="fas fa-plus-circle"></i> Aumentar</button>
@@ -394,29 +431,24 @@
                     <button class="btn-accessibility" onclick="mudarFonte(0)" title="Resetar Padrão"><i class="fas fa-undo"></i> Resetar</button>
                 </div>
 
-                <!-- Campo com Filtro de Conteúdo -->
                 <div class="search-wrapper">
                     <input type="text" id="subject-search" placeholder="🔍 Digite uma matéria ou palavra-chave para realizar a filtragem imediata..." oninput="filtrarMaterias()">
                 </div>
 
                 <div class="content-layout">
-                    <!-- Lista Lateral de Matérias (Gerada via Script) -->
                     <div class="subjects-sidebar" id="sidebar-lista"></div>
 
-                    <!-- Bloco de Conteúdo Didático & Leitura -->
                     <div class="study-area">
                         <div class="dynamic-text-container" id="conteudo-leitura">
                             <h3>Selecione um conteúdo didático no menu ao lado para iniciar seus estudos!</h3>
                             <p>Utilize o sistema de busca inteligente acima para filtrar matérias instantaneamente.</p>
                         </div>
                         
-                        <!-- Box Dinâmico do Quiz -->
                         <div class="quiz-box" id="quiz-container" style="display: none;"></div>
                     </div>
                 </div>
             </section>
 
-            <!-- COMPARTILHAMENTO E INTERAÇÃO EM TEMPO REAL -->
             <section class="section" id="comunidade">
                 <h2 class="section-title">Comunidade Ativa <span>ClassConnect</span></h2>
                 <div class="community-container">
@@ -444,7 +476,6 @@
                 </div>
             </section>
 
-            <!-- SEÇÕES ADICIONAIS DO ESCOPO ORIGINAL -->
             <section class="section" id="sobre-nos">
                 <h2 class="section-title"><span>Conheça</span> sobre nós</h2>
                 <div class="about-content">
@@ -507,13 +538,10 @@
         </footer>
     </div>
 
-    <!-- ==========================================================================
-       3. CAMADA LÓGICA E BANCO DE DADOS LOCAL (JAVASCRIPT)
-       ========================================================================== */ -->
     <script>
-        // BANCO DE DADOS DOS 20 CONTEÚDOS COM SEUS RESPECTIVOS QUIZZES SOLICITADOS
+        // BANCO DE DADOS DOS 20 CONTEÚDOS
         const baseConteudos = [
-            { id: "mat_basica", nome: "Matemática básica", desc: "Adição, subtração, multiplicação e divisão.", texto: "A aritmética fundamental estuda as quatro operações principais. A adição agrupa valores, a subtração remove quantidades, a multiplicação opera a soma de fatores idênticos e a divisão realiza a partição justa de um todo.", q: "Se você efetuar a operação (45 + 15) / 4, qual será o resultado correto?", o: ["12", "15", "20", "10"], c: 1 },
+            { id: "mat_basica", nome: "Matemática básica", desc: "Adição, subtração, multiplicação e divisão.", texto: "A aritmética fundamental estuda as quatro operações principais. A adição agrupa valores, a subtração remove quantidades, a multiplicação opera a soma de fatores idênticos e a divisão realiza a partição justa de um todo.", q: "Se você efetuar a operation (45 + 15) / 4, qual será o resultado correto?", o: ["12", "15", "20", "10"], c: 1 },
             { id: "geometria", nome: "Geometria", desc: "Estudo das formas lineares, áreas e volumes espaciais.", texto: "Módulo focado no cálculo de perímetros, áreas (bidimensionais) e volumes (tridimensionais). Inclui o Teorema de Pitágoras e a análise de polígonos regulares.", q: "Qual a área de um quadrado com lados medindo 6cm?", o: ["24cm²", "36cm²", "12cm²", "18cm²"], c: 1 },
             { id: "algebra", nome: "Álgebra", desc: "Expressões, equações de primeiro/segundo grau e incógnitas.", texto: "Uso de letras e caracteres simbólicos para representar variáveis numéricas indefinidas. Essencial para modelagem de problemas e gráficos de funções.", q: "Resolva a equação simples: 2x + 10 = 20. Qual o valor de x?", o: ["5", "10", "2", "8"], c: 0 },
             { id: "estatistica", nome: "Estatística e probabilidade", desc: "Análise de frequência, amostragem e cálculo de chances.", texto: "Cálculo de probabilidade elementar e medidas estatísticas comuns como média aritmética simples, mediana estrutural e moda de amostragem.", q: "Em um lançamento de moeda perfeita, qual a probabilidade de cair 'Cara'?", o: ["25%", "50%", "75%", "100%"], c: 1 },
@@ -537,6 +565,7 @@
 
         let tamanhoFonteAtual = 16;
         let materiaSelecionadaId = "";
+        let meuGrafico = null; // Instância global do gráfico
 
         // CONTROLE DO FOGUINHO DE OFENSIVA (PERSISTIDO EM LOCALSTORAGE)
         function inicializarOfensiva() {
@@ -584,9 +613,11 @@
             if (currentTheme === 'light') {
                 document.documentElement.removeAttribute('data-theme');
                 themeIcon.className = 'fas fa-moon';
+                atualizarCoresGrafico('#f8fafc', '#334155');
             } else {
                 document.documentElement.setAttribute('data-theme', 'light');
                 themeIcon.className = 'fas fa-sun';
+                atualizarCoresGrafico('#0f172a', '#cbd5e1');
             }
         }
 
@@ -632,7 +663,6 @@
         function carregarConteudoMateria(id) {
             materiaSelecionadaId = id;
             
-            // Re-renderiza o menu para setar a classe active no item certo
             const busca = document.getElementById('subject-search').value.toLowerCase();
             const filtrados = baseConteudos.filter(item => item.nome.toLowerCase().includes(busca) || item.desc.toLowerCase().includes(busca));
             renderizarMenuMaterias(filtrados);
@@ -647,7 +677,6 @@
                 <div>${materia.texto}</div>
             `;
 
-            // Configuração do Quiz acoplado à explicação
             const quizContainer = document.getElementById('quiz-container');
             quizContainer.style.display = "block";
             quizContainer.innerHTML = `
@@ -663,7 +692,7 @@
 
         function validarResposta(botao, idx, correto) {
             const opcoes = botao.parentElement.querySelectorAll('.quiz-option');
-            opcoes.forEach(b => b.removeAttribute('onclick')); // Bloqueia novos cliques
+            opcoes.forEach(b => b.removeAttribute('onclick'));
 
             if (idx === correto) {
                 botao.classList.add('correct');
@@ -673,7 +702,7 @@
             }
         }
 
-        // SISTEMA SIMULADO DE INTERAÇÃO DA COMUNIDADE
+        // FÓRUM DA COMUNIDADE
         function enviarMensagem() {
             const input = document.getElementById('chat-input');
             const msgTexto = input.value.trim();
@@ -687,7 +716,6 @@
             input.value = "";
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // Simulação de resposta inteligente de parceiro de classe após 1.5s
             setTimeout(() => {
                 const respostasDisponiveis = [
                     "Que da hora! Acabei de resolver o quiz dessa matéria aqui também.",
@@ -705,7 +733,60 @@
             }, 1500);
         }
 
-        // ENTRADA E SAÍDA (LÓGICA DO LOGIN)
+        // CONFIGURAÇÃO DO GRÁFICO INTERATIVO (CHART.JS)
+        function inicializarGrafico() {
+            const ctx = document.getElementById('graficoEvolucao').getContext('2d');
+            
+            meuGrafico = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
+                    datasets: [{
+                        label: 'Desempenho Médio (%)',
+                        data: [45, 58, 62, 75, 81, 93],
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.3,
+                        pointBackgroundColor: '#2ecc71',
+                        pointRadius: 5,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#f8fafc', font: { family: 'Inter' } } },
+                        tooltip: { backgroundColor: '#1e293b', titleColor: '#3498db', bodyColor: '#f8fafc' }
+                    },
+                    scales: {
+                        y: {
+                            min: 0, max: 100,
+                            grid: { color: '#334155' },
+                            ticks: { color: '#94a3b8', callback: function(v) { return v + '%'; } }
+                        },
+                        x: {
+                            grid: { color: '#334155' },
+                            ticks: { color: '#94a3b8' }
+                        }
+                    },
+                    animation: { duration: 1500, easing: 'easeOutQuart' }
+                }
+            });
+        }
+
+        function atualizarCoresGrafico(textColor, gridColor) {
+            if (!meuGrafico) return;
+            meuGrafico.options.plugins.legend.labels.color = textColor;
+            meuGrafico.options.scales.y.grid.color = gridColor;
+            meuGrafico.options.scales.x.grid.color = gridColor;
+            meuGrafico.options.scales.y.ticks.color = textColor;
+            meuGrafico.options.scales.x.ticks.color = textColor;
+            meuGrafico.update();
+        }
+
+        // SESSÃO DE ENTRADA E SAÍDA
         function executarLogin(event) {
             event.preventDefault();
             const user = document.getElementById('loginUser').value;
@@ -721,6 +802,7 @@
                 
                 inicializarOfensiva();
                 renderizarMenuMaterias(baseConteudos);
+                inicializarGrafico(); // Inicializa o gráfico dinâmico
             }, 1000);
         }
 
@@ -736,10 +818,14 @@
                 
                 inicializarOfensiva();
                 renderizarMenuMaterias(baseConteudos);
+                inicializarGrafico(); // Inicializa o gráfico dinâmico
             }, 1000);
         }
 
         function logout() {
+            if (meuGrafico) {
+                meuGrafico.destroy(); // Destrói o gráfico anterior para não acumular lixo na memória
+            }
             mainSite.style.display = 'none';
             loginScreen.style.display = 'flex';
             document.getElementById('loginForm').reset();
