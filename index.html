@@ -52,9 +52,6 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
-        /* ==========================================================================
-           TELA DE LOGIN (SPLIT SCREEN)
-           ========================================================================== */
         #login-screen {
             position: fixed;
             inset: 0;
@@ -135,7 +132,6 @@
 
         @media (max-width: 900px) { .image-side { display: none; } }
 
-        /* Overlays de Transição */
         .success-overlay {
             position: fixed; inset: 0; background: #0f172a; z-index: 1000;
             display: none; justify-content: center; align-items: center; font-size: 1.8rem; color: white;
@@ -143,9 +139,6 @@
         .success-overlay-content { text-align: center; }
         .success-overlay-content i { color: var(--primary-blue); margin-bottom: 20px; }
 
-        /* ==========================================================================
-           INTERFACE PRINCIPAL DA HOME E HEADER
-           ========================================================================== */
         #main-site { display: none; }
 
         header {
@@ -154,19 +147,18 @@
             position: sticky; top: 0; z-index: 90; transition: background-color 0.3s;
         }
 
-        .nav-logo { display: flex; align-items: center; gap: 10px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.3rem; }
+        .nav-logo { display: flex; align-items: center; gap: 10px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.3rem; cursor: pointer; }
         .nav-logo i { background: linear-gradient(135deg, var(--primary-blue), var(--accent-green)); padding: 8px; border-radius: 8px; color: white; }
         
         .nav-actions { display: flex; align-items: center; gap: 20px; }
-        nav a { color: var(--text-muted); text-decoration: none; margin-left: 20px; font-size: 0.95rem; transition: 0.3s; }
-        nav a:hover { color: var(--primary-blue); }
+        nav a { color: var(--text-muted); text-decoration: none; margin-left: 20px; font-size: 0.95rem; transition: 0.3s; cursor: pointer; }
+        nav a:hover, nav a.active { color: var(--primary-blue); }
         
         .btn-theme-toggle, .btn-accessibility {
             background: transparent; border: none; color: var(--text-light); font-size: 1.1rem; cursor: pointer; padding: 5px; transition: 0.2s;
         }
         .btn-theme-toggle:hover, .btn-accessibility:hover { color: var(--primary-blue); }
 
-        /* Widget de Ofensiva (Foguinho) */
         .streak-container {
             display: flex; align-items: center; gap: 6px; background: rgba(230, 126, 34, 0.1);
             padding: 6px 12px; border-radius: 20px; color: #e67e22; font-weight: bold; font-size: 0.9rem;
@@ -175,7 +167,8 @@
 
         @keyframes pulse { from { transform: scale(1); filter: drop-shadow(0 0 2px #e67e22); } to { transform: scale(1.2); filter: drop-shadow(0 0 8px #f1c40f); } }
 
-        .section { padding: 40px 5%; max-width: 1200px; margin: 0 auto; }
+        .section { padding: 40px 5%; max-width: 1200px; margin: 0 auto; display: none; }
+        .section.active { display: block; }
         .hero-dashboard { text-align: center; padding-top: 40px; }
         
         .btn-checkin {
@@ -188,7 +181,6 @@
         .section-title.large { font-size: 3rem; margin-bottom: 15px; }
         .section-title span { background: linear-gradient(to right, var(--primary-blue), var(--accent-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        /* Container do Gráfico Interativo */
         .dashboard-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -222,15 +214,11 @@
             height: 350px;
         }
 
-        /* Barra de Acessibilidade (Lupa de Zoom) */
         .accessibility-bar {
             background: var(--card-bg); border: 1px solid var(--border-color); padding: 10px 20px;
             border-radius: 8px; display: flex; align-items: center; gap: 15px; margin-bottom: 20px; font-size: 0.9rem;
         }
 
-        /* ==========================================================================
-           MÓDULO DE MATÉRIAS E FILTRAGEM
-           ========================================================================== */
         .search-wrapper { display: flex; gap: 10px; margin-bottom: 30px; }
         .search-wrapper input {
             flex: 1; padding: 14px; background: var(--card-bg); border: 1px solid var(--border-color);
@@ -256,12 +244,21 @@
             border-radius: 12px; padding: 40px; min-height: 500px; display: flex; flex-direction: column; justify-content: space-between;
         }
 
-        /* Área de Leitura Dinâmica */
+        .level-selectors {
+            display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px;
+        }
+        .btn-level {
+            padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border-color); background: var(--input-bg);
+            color: var(--text-muted); font-weight: 600; cursor: pointer; transition: 0.2s;
+        }
+        .btn-level.active {
+            background: var(--primary-blue); color: white; border-color: var(--primary-blue);
+        }
+
         .dynamic-text-container { font-size: 16px; line-height: 1.7; transition: font-size 0.2s; }
         .dynamic-text-container h2 { font-family: 'Poppins', sans-serif; margin-bottom: 20px; color: var(--primary-blue); }
         .dynamic-text-container p { margin-bottom: 15px; }
 
-        /* QUIZ */
         .quiz-box {
             margin-top: 35px; border-top: 2px dashed var(--border-color); padding-top: 25px;
         }
@@ -276,9 +273,45 @@
         .quiz-option.correct { background: rgba(46, 204, 113, 0.2) !important; border-color: var(--accent-green) !important; color: #2ecc71; font-weight: 600; }
         .quiz-option.wrong { background: rgba(231, 76, 60, 0.2) !important; border-color: #e74c3c !important; color: #e74c3c; }
 
-        /* ==========================================================================
-           COMUNIDADE (CHAT DE INTERAÇÃO)
-           ========================================================================== */
+        .btn-concluir-quiz {
+            margin-top: 20px; padding: 12px 24px; background: var(--accent-green); color: white; border: none;
+            border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; display: none;
+        }
+        .btn-concluir-quiz:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(46,204,113,0.3); }
+
+        /* TELA DE CHECK-IN DEDICADA */
+        .checkin-container {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;
+        }
+        .checkin-card {
+            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 30px;
+        }
+        .calendar-mock {
+            display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-top: 20px; text-align: center;
+        }
+        .calendar-day {
+            padding: 10px; background: var(--input-bg); border-radius: 8px; font-size: 0.9rem; color: var(--text-muted);
+        }
+        .calendar-day.checked {
+            background: rgba(230, 126, 34, 0.2); color: #e67e22; font-weight: bold; border: 1px solid #e67e22;
+        }
+        .avatar-box {
+            text-align: center; padding: 20px; background: var(--input-bg); border-radius: 12px; margin-top: 20px;
+        }
+        .avatar-display {
+            width: 120px; height: 120px; border-radius: 60px; background: var(--grid-color); margin: 0 auto 15px;
+            display: flex; align-items: center; justify-content: center; font-size: 3rem; border: 3px solid var(--primary-blue);
+        }
+
+        /* PLANILHA DE ESTUDOS CRONOGRAMA */
+        .schedule-table {
+            width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--card-bg); border-radius: 12px; overflow: hidden;
+        }
+        .schedule-table th, .schedule-table td {
+            padding: 15px; text-align: left; border-bottom: 1px solid var(--border-color);
+        }
+        .schedule-table th { background: var(--input-bg); color: var(--primary-blue); font-family: 'Poppins', sans-serif; }
+
         .community-container {
             background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px;
             display: grid; grid-template-rows: auto 380px auto; overflow: hidden;
@@ -298,9 +331,6 @@
         .chat-input-row button { padding: 12px 24px; background: var(--primary-blue); border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: 0.2s; }
         .chat-input-row button:hover { background: #2980b9; }
 
-        /* ==========================================================================
-           FUNCIONALIDADES EXTRA E SEÇÕES ORIGINAIS (SOBRE/PLANOS)
-           ========================================================================== */
         .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
         .feature-card { background-color: var(--card-bg); padding: 40px 30px; border-radius: 16px; border: 1px solid var(--border-color); transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
         .feature-card:hover { transform: translateY(-5px); border-color: rgba(52, 152, 219, 0.3); }
@@ -336,6 +366,7 @@
         @media (max-width: 768px) {
             .content-layout { grid-template-columns: 1fr; }
             .subjects-sidebar { max-height: 280px; }
+            .checkin-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -388,34 +419,61 @@
 
     <div id="main-site">
         <header>
-            <div class="nav-logo"><i class="fas fa-graduation-cap"></i> ClassConnect</div>
+            <div class="nav-logo" onclick="navegarPara('dashboard')"><i class="fas fa-graduation-cap"></i> ClassConnect</div>
             <div class="nav-actions">
-                <div class="streak-container active" id="streak-box" title="Sua ofensiva ativa de estudos!">
+                <div class="streak-container active" id="streak-box" title="Sua ofensiva ativa de estudos!" onclick="navegarPara('checkin')" style="cursor:pointer;">
                     <i class="fas fa-fire"></i> <span id="streak-count">0</span> dias
                 </div>
-                <nav>
-                    <a href="#estudos">Central de Estudos</a>
-                    <a href="#comunidade">Comunidade</a>
-                    <a href="#sobre-nos">Sobre Nós</a>
-                    <a href="#planos">Planos</a>
-                    <a href="#" onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>
+                <nav id="main-nav">
+                    <a onclick="navegarPara('dashboard')" id="nav-dashboard" class="active">Dashboard</a>
+                    <a onclick="navegarPara('estudos')" id="nav-estudos">Central de Estudos</a>
+                    <a onclick="navegarPara('cronograma')" id="nav-cronograma">Cronograma</a>
+                    <a onclick="navegarPara('comunidade')" id="nav-comunidade">Comunidade</a>
+                    <a onclick="navegarPara('sobre-nos')" id="nav-sobre-nos">Sobre Nós</a>
+                    <a onclick="navegarPara('planos')" id="nav-planos">Planos</a>
+                    <a onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>
                 </nav>
                 <button class="btn-theme-toggle" onclick="toggleTheme()" title="Alternar Modo Escuro/Claro"><i class="fas fa-moon" id="theme-icon"></i></button>
             </div>
         </header>
 
         <main>
-            <section class="section hero-dashboard">
-                <h2 class="section-title large">Olá, <span id="user-display">Estudante</span>!</h2>
-                <p>Mantenha sua constância nos estudos ativa. Não deixe seu foguinho apagar hoje!</p>
-                <button class="btn-checkin" onclick="computarCheckin()"><i class="fas fa-calendar-check"></i> Registrar Check-in Diário</button>
-                
-                <div class="dashboard-grid">
-                    <div class="chart-card">
-                        <h3><i class="fas fa-chart-line" style="color: var(--primary-blue);"></i> Desempenho e Evolução Acadêmica</h3>
-                        <p>Acompanhe seu rendimento médio nos simulados e testes de fixação mensais.</p>
-                        <div class="canvas-container">
-                            <canvas id="graficoEvolucao"></canvas>
+            <section class="section active" id="dashboard">
+                <div class="hero-dashboard">
+                    <h2 class="section-title large">Olá, <span id="user-display">Estudante</span>!</h2>
+                    <p>Mantenha sua constância nos estudos ativa. Não deixe seu foguinho apagar hoje!</p>
+                    <button class="btn-checkin" onclick="navegarPara('checkin')"><i class="fas fa-calendar-check"></i> Ir para Check-in Diário</button>
+                    
+                    <div class="dashboard-grid">
+                        <div class="chart-card">
+                            <h3><i class="fas fa-chart-line" style="color: var(--primary-blue);"></i> Desempenho e Evolução Acadêmica</h3>
+                            <p>Acompanhe seu rendimento médio nos simulados e testes de fixação mensais.</p>
+                            <div class="canvas-container">
+                                <canvas id="graficoEvolucao"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section" id="checkin">
+                <h2 class="section-title">Painel do <span>Check-in Diário</span></h2>
+                <div class="checkin-container">
+                    <div class="checkin-card">
+                        <h3>Sua Constância</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 20px;">Valide seu acesso diário realizando atividades ou clicando abaixo.</p>
+                        <h1 style="font-size: 2.5rem; color: #e67e22; margin-bottom: 20px;"><i class="fas fa-fire"></i> <span id="checkin-streak-display">0</span> Dias Seguidos</h1>
+                        <button class="btn-checkin" style="margin-top:0; width:100%;" onclick="computarCheckinManual()">Registrar Presença de Hoje</button>
+                        
+                        <div class="calendar-mock" id="calendario-dias"></div>
+                    </div>
+                    <div class="checkin-card" style="text-align: center;">
+                        <h3>Seu Avatar e Recompensas</h3>
+                        <p style="color: var(--text-muted);">Acumule pontos resolvendo questionários para liberar customizações.</p>
+                        <div class="avatar-box">
+                            <div class="avatar-display" id="avatar-icon">🧑‍🎓</div>
+                            <h4 style="font-size: 1.2rem; margin-bottom: 10px;">Pontos Disponíveis: <span id="points-display" style="color:var(--accent-green)">0</span> PTS</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Próximo item cosmético desbloqueia com 50 pontos.</p>
                         </div>
                     </div>
                 </div>
@@ -439,14 +497,44 @@
                     <div class="subjects-sidebar" id="sidebar-lista"></div>
 
                     <div class="study-area">
-                        <div class="dynamic-text-container" id="conteudo-leitura">
+                        <div id="materia-content-wrapper" style="display: none;">
+                            <div class="level-selectors">
+                                <button class="btn-level active" onclick="mudarNivelMateria('basico')">Básico</button>
+                                <button class="btn-level" onclick="mudarNivelMateria('intermediario')">Intermediário</button>
+                                <button class="btn-level" onclick="mudarNivelMateria('avancado')">Avançado</button>
+                            </div>
+                            <div class="dynamic-text-container" id="conteudo-leitura"></div>
+                            <div class="quiz-box" id="quiz-container"></div>
+                            <button class="btn-concluir-quiz" id="btn-concluir" onclick="concluirExercicioFinal()">Concluir Matéria (+10 PTS)</button>
+                        </div>
+                        <div id="materia-placeholder" class="dynamic-text-container">
                             <h3>Selecione um conteúdo didático no menu ao lado para iniciar seus estudos!</h3>
                             <p>Utilize o sistema de busca inteligente acima para filtrar matérias instantaneamente.</p>
                         </div>
-                        
-                        <div class="quiz-box" id="quiz-container" style="display: none;"></div>
                     </div>
                 </div>
+            </section>
+
+            <section class="section" id="cronograma">
+                <h2 class="section-title">Seu <span>Cronograma de Estudos</span> Semanal</h2>
+                <p style="text-align:center; color: var(--text-muted); margin-bottom: 30px;">Sugestão automatizada de matérias com base na organização da sua trilha acadêmica.</p>
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Dia da Semana</th>
+                            <th>Matéria Sugerida</th>
+                            <th>Foco Recomendado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>Segunda-feira</strong></td><td>Matemática Básica / Álgebra</td><td>Operações e Funções de 1º Grau</td></tr>
+                        <tr><td><strong>Terça-feira</strong></td><td>Língua Portuguesa / Redação</td><td>Sintaxe e Estrutura Dissertativa</td></tr>
+                        <tr><td><strong>Quarta-feira</strong></td><td>História Geral / do Brasil</td><td>Brasil Império e Revoluções Industriais</td></tr>
+                        <tr><td><strong>Quinta-feira</strong></td><td>Biologia / Química</td><td>Citologia e Estruturas Atômicas</td></tr>
+                        <tr><td><strong>Sexta-feira</strong></td><td>Inglês / Geografia</td><td>Leitura Dinâmica e Geopolítica Regional</td></tr>
+                        <tr><td><strong>Sábado</strong></td><td>Artes / Física</td><td>Vanguardas Europeias e Leis de Newton</td></tr>
+                    </tbody>
+                </table>
             </section>
 
             <section class="section" id="comunidade">
@@ -455,8 +543,8 @@
                     <div class="community-header">
                         <i class="fas fa-comments" style="color: var(--primary-blue); font-size: 1.5rem;"></i>
                         <div>
-                            <h3>Fórum Global de Compartilhamento</h3>
-                            <p style="font-size: 0.85rem; color: var(--text-muted);">Interaja, tire dúvidas e colabore com outros estudantes</p>
+                            <h3>Fórum Global em Tempo Real</h3>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">Interaja, tire dúvidas e colabore instantaneamente com outros estudantes logados</p>
                         </div>
                     </div>
                     <div class="chat-messages" id="chat-box">
@@ -464,13 +552,9 @@
                             <div class="msg-meta">Carlos_Eduardo</div>
                             Alguém tem dicas de canais bons para estudar a parte de Geometria Plana? Estou com um pouco de dificuldades.
                         </div>
-                        <div class="msg-bubble me">
-                            <div class="msg-meta">Você</div>
-                            Dá uma olhada no resumo de Geometria aqui do ClassConnect, o questionário de fixação ajuda muito!
-                        </div>
                     </div>
                     <div class="chat-input-row">
-                        <input type="text" id="chat-input" placeholder="Escreva seu comentário, dúvida ou conhecimento para a rede...">
+                        <input type="text" id="chat-input" placeholder="Escreva seu comentário, dúvida ou conhecimento para a rede..." onkeypress="checarEnterChat(event)">
                         <button onclick="enviarMensagem()"><i class="fas fa-paper-plane"></i> Enviar</button>
                     </div>
                 </div>
@@ -539,41 +623,140 @@
     </div>
 
     <script>
-        // BANCO DE DADOS DOS 20 CONTEÚDOS
+        // BANCO DE DADOS ATUALIZADO COM TRÊS NÍVEIS SEPARADOS
         const baseConteudos = [
-            { id: "mat_basica", nome: "Matemática básica", desc: "Adição, subtração, multiplicação e divisão.", texto: "A aritmética fundamental estuda as quatro operações principais. A adição agrupa valores, a subtração remove quantidades, a multiplicação opera a soma de fatores idênticos e a divisão realiza a partição justa de um todo.", q: "Se você efetuar a operation (45 + 15) / 4, qual será o resultado correto?", o: ["12", "15", "20", "10"], c: 1 },
-            { id: "geometria", nome: "Geometria", desc: "Estudo das formas lineares, áreas e volumes espaciais.", texto: "Módulo focado no cálculo de perímetros, áreas (bidimensionais) e volumes (tridimensionais). Inclui o Teorema de Pitágoras e a análise de polígonos regulares.", q: "Qual a área de um quadrado com lados medindo 6cm?", o: ["24cm²", "36cm²", "12cm²", "18cm²"], c: 1 },
-            { id: "algebra", nome: "Álgebra", desc: "Expressões, equações de primeiro/segundo grau e incógnitas.", texto: "Uso de letras e caracteres simbólicos para representar variáveis numéricas indefinidas. Essencial para modelagem de problemas e gráficos de funções.", q: "Resolva a equação simples: 2x + 10 = 20. Qual o valor de x?", o: ["5", "10", "2", "8"], c: 0 },
-            { id: "estatistica", nome: "Estatística e probabilidade", desc: "Análise de frequência, amostragem e cálculo de chances.", texto: "Cálculo de probabilidade elementar e medidas estatísticas comuns como média aritmética simples, mediana estrutural e moda de amostragem.", q: "Em um lançamento de moeda perfeita, qual a probabilidade de cair 'Cara'?", o: ["25%", "50%", "75%", "100%"], c: 1 },
-            { id: "portugues", nome: "Língua Portuguesa – gramática", desc: "Morfologia, sintaxe, regras ortográficas e concordância.", texto: "Regras de regência verbal/nominal, crase padrão, acentuação pelo novo acordo, e classificação de termos da oração.", q: "Qual palavra está grafada CORRETAMENTE segundo a ortografia vigente?", o: ["Idéia", "Auto-estima", "Autoescola", "Vôo"], c: 2 },
-            { id: "redacao", nome: "Produção de texto / redação", desc: "Dissertação argumentativa e clareza textual.", texto: "Técnicas de coesão, coerência, estruturação de parágrafos de desenvolvimento e elaboração de teses válidas.", q: "Qual o principal objetivo de um texto dissertativo-argumentativo?", o: ["Contar uma história", "Defender um ponto de vista", "Descrever uma paisagem", "Instruir um manual"], c: 1 },
-            { id: "lit_br", nome: "Literatura brasileira", desc: "Do Quinhentismo às tendências contemporâneas.", texto: "Análise das principais correntes literárias nacionais como o Romantismo, Realismo Machadiano, e o Modernismo de 1922.", q: "Quem é o autor do clássico livro 'O Cortiço'?", o: ["Machado de Assis", "Aluísio Azevedo", "Jose de Alencar", "Lima Barreto"], c: 1 },
-            { id: "lit_mundial", nome: "Literatura mundial", desc: "Clássicos mundiais e épicos históricos.", texto: "Estudo de autores basilares como Shakespeare, Cervantes, Goethe, Homero e suas contribuições estéticas fundamentais.", q: "Quem escreveu o clássico épico espanhol 'Don Quixote'?", o: ["Miguel de Cervantes", "Gabriel García Márquez", "Luís de Camões", "Jorge Luis Borges"], c: 0 },
-            { id: "hist_br", nome: "História do Brasil", desc: "Do período Colonial à Nova República.", texto: "Linha cronológica nacional abrangendo o Brasil Colônia, o Império, a República Velha, Era Vargas e redemocratização.", q: "Quem proclamou a independência do Brasil em 1822?", o: ["Dom Pedro I", "Marechal Deodoro", "Dom Pedro II", "Tiradentes"], c: 0 },
-            { id: "hist_geral", nome: "História geral", desc: "Da antiguidade clássica ao mundo pós-guerra.", texto: "Revisão sobre o Feudalismo, Absolutismo, as Grandes Revoluções, as Duas Guerras Mundiais e a Globalização.", q: "Em qual continente teve início a Revolução Industrial?", o: ["América", "Ásia", "Europa", "África"], c: 2 },
-            { id: "geo_fisica", nome: "Geografia física", desc: "Climas, relevos, hidrografia e ecossistemas planetários.", texto: "Estrutura geomorfológica da Terra, placas tectônicas, dinâmica atmosférica e biomas continentais.", q: "Qual o maior oceano em extensão territorial do planeta?", o: ["Oceano Atlântico", "Oceano Índico", "Oceano Pacífico", "Oceano Ártico"], c: 2 },
-            { id: "geo_politica", nome: "Geografia política e econômica", desc: "Geopolítica, blocos comerciais e demografia.", texto: "Globalização, fluxos migratórios, industrialização contemporânea e relações de poder entre nações globais.", q: "Qual bloco econômico é composto por Brasil, Argentina, Paraguai e Uruguai?", o: ["União Europeia", "Mercosul", "NAFTA", "BRICS"], c: 1 },
-            { id: "ciencias", nome: "Ciências (noções gerais)", desc: "Estudo primário da matéria, energia e ecologia.", texto: "Estados físicos da matéria, transformações da energia e dinâmicas básicas do meio ambiente.", q: "Qual o estado físico da água em forma de gelo?", o: ["Líquido", "Sólido", "Gasoso", "Plasmático"], c: 1 },
-            { id: "biologia", nome: "Biologia", desc: "Citologia, ecologia, evolução e genética.", texto: "Funcionamento das células, DNA/RNA, seleção natural, cadeias alimentares e classificação dos reinos biológicos.", q: "Qual componente celular abriga o material genético (DNA) nas células eucariontes?", o: ["Citoplasma", "Núcleo", "Membrana", "Parede celular"], c: 1 },
-            { id: "fisica", nome: "Física", desc: "Mecânica clássica, óptica e eletromagnetismo.", texto: "Análise do movimento (Leis de Newton), termodinâmica, ondas, energia cinética e potencial.", q: "Quantas leis fundamentais do movimento foram propostas por Isaac Newton?", o: ["Uma", "Duas", "Três", "Quatro"], c: 2 },
-            { id: "quimica", nome: "Química", desc: "Estrutura do átomo, reações e tabela periódica.", texto: "Ligações químicas, balanceamento de equações, química orgânica elemental e soluções aquosas.", q: "Qual a fórmula química molecular da água pura?", o: ["CO2", "H2O", "NaCl", "O2"], c: 1 },
-            { id: "artes", nome: "Artes visuais", desc: "Movimentos artísticos das cavernas à contemporaneidade.", texto: "Estudo do Renascimento, Impressionismo, Expressionismo e as vanguardas estéticas modernas europeias.", q: "O movimento Cubista teve como um de seus maiores expoentes fundadores:", o: ["Leonardo da Vinci", "Pablo Picasso", "Salvador Dalí", "Vincent van Gogh"], c: 1 },
-            { id: "musica", nome: "Música", desc: "Teoria musical, notas e gêneros mundiais.", texto: "Análise das propriedades físicas do som: timbre, altura, intensidade e duração, além de ritmos tradicionais.", q: "Quantas notas musicais compõem a escala diatônica padrão?", o: ["5", "7", "12", "10"], c: 1 },
-            { id: "ed_fisica", nome: "Educação física", desc: "Fisiologia do exercício, saúde e práticas esportivas.", texto: "Benefícios do exercício físico regular para a homeostase humana, história das Olimpíadas e regras de desportos.", q: "O sedentarismo prolongado é um fator de risco associado diretamente a:", o: ["Melhora muscular", "Problemas cardiovasculares", "Aumento da longevidade", "Flexibilidade"], c: 1 },
-            { id: "ingles", nome: "Inglês", desc: "Leitura, interpretação textual e estruturas verbais.", texto: "Técnicas de varredura textual (skimming/scanning) e aplicação correta do Simple Present e Past Tense.", q: "Qual o significado correto do termo 'Actually' em português?", o: ["Atualmente", "Na verdade / Realmente", "Agir", "Acontecer"], c: 1 }
+            { 
+                id: "mat_basica", 
+                nome: "Matemática básica", 
+                desc: "Adição, subtração, multiplicação e divisão.",
+                basico: {
+                    texto: "O nível básico aborda a aritmética fundamental. A adição junta quantidades e a subtração calcula a diferença entre valores numéricos elementares.",
+                    q: "Quanto é 45 + 15?", o: ["50", "60", "65", "55"], c: 1
+                },
+                intermediario: {
+                    texto: "O nível intermediário expande para multiplicação e divisão. A multiplicação agrupa fatores iguais, enquanto a divisão fatia as quantidades de maneira equitativa.",
+                    q: "Se dividirmos 60 por 4, qual o resultado?", o: ["12", "15", "20", "10"], c: 1
+                },
+                avancado: {
+                    texto: "No nível avançado, combinamos as operações em expressões complexas que exigem prioridade matemática de execução (parênteses, chaves e ordem operacional).",
+                    q: "Qual o resultado da expressão: (45 + 15) / 4 + 5?", o: ["20", "15", "25", "30"], c: 0
+                }
+            },
+            { 
+                id: "geometria", 
+                nome: "Geometria", 
+                desc: "Estudo das formas lineares, áreas e volumes espaciais.",
+                basico: {
+                    texto: "Aborda os conceitos iniciais de perímetro e formas planas simples como quadrados e triângulos retângulos regulares.",
+                    q: "Qual o perímetro de um quadrado de lado 5cm?", o: ["20cm", "25cm", "15cm", "10cm"], c: 0
+                },
+                intermediario: {
+                    texto: "Estudo das áreas bidimensionais de figuras planas e aplicação básica do Teorema de Pitágoras.",
+                    q: "Qual a área de um quadrado com lados medindo 6cm?", o: ["24cm²", "36cm²", "12cm²", "18cm²"], c: 1
+                },
+                avancado: {
+                    texto: "Análise avançada tridimensional incluindo o cálculo estrutural de volumes de prismas e pirâmides complexas.",
+                    q: "Qual o volume de um cubo com aresta de 3cm?", o: ["9cm³", "18cm³", "27cm³", "36cm³"], c: 2
+                }
+            },
+            { 
+                id: "algebra", 
+                nome: "Álgebra", 
+                desc: "Expressões, equações de primeiro/segundo grau e incógnitas.",
+                basico: {
+                    texto: "Introdução ao conceito de variáveis e resolução de equações elementares do primeiro grau.",
+                    q: "Se x + 5 = 12, qual o valor de x?", o: ["5", "6", "7", "8"], c: 2
+                },
+                intermediario: {
+                    texto: "Uso de letras para modelagem e resolução de equações de primeiro grau mais elaboradas com múltiplos termos.",
+                    q: "Resolva a equação: 2x + 10 = 20. Qual o valor de x?", o: ["5", "10", "2", "8"], c: 0
+                },
+                avancado: {
+                    texto: "Estruturas polinomiais mais profundas e regras de equações quadráticas de segundo grau.",
+                    q: "Qual o valor positivo de x na equação x² - 9 = 0?", o: ["1", "2", "3", "4"], c: 2
+                }
+            },
+            { 
+                id: "estatistica", 
+                nome: "Estatística e probabilidade", 
+                desc: "Análise de frequência, amostragem e cálculo de chances.",
+                basico: {
+                    texto: "Entendimento inicial sobre probabilidade direta e médias aritméticas simples de um conjunto.",
+                    q: "Qual a média aritmética simples entre os números 4, 6 e 8?", o: ["5", "6", "7", "8"], c: 1
+                },
+                intermediario: {
+                    texto: "Cálculo de probabilidade elemental de eventos independentes, como jogadas de dados ou moedas.",
+                    q: "Em um lançamento de moeda perfeita, qual a probabilidade de cair 'Cara'?", o: ["25%", "50%", "75%", "100%"], c: 1
+                },
+                avancado: {
+                    texto: "Leitura de gráficos complexos, cálculo de desvio padrão conceitual e conceitos de mediana estrutural e moda.",
+                    q: "Em um conjunto [2, 3, 3, 5, 7], qual número representa a Moda?", o: ["2", "3", "5", "7"], c: 1
+                }
+            },
+            { 
+                id: "portugues", 
+                nome: "Língua Portuguesa – gramática", 
+                desc: "Morfologia, sintaxe, regras ortográficas e concordância.",
+                basico: {
+                    texto: "Uso e identificação correta de classes gramaticais primárias, substantivos e adjetivos estruturais.",
+                    q: "Na frase 'O céu azul acalma', a palavra 'azul' é um:", o: ["Substantivo", "Verbo", "Adjetivo", "Artigo"], c: 2
+                },
+                intermediario: {
+                    texto: "Aplicação da acentuação gráfica regular pelo novo acordo ortográfico da Língua Portuguesa.",
+                    q: "Qual palavra está grafada CORRETAMENTE segundo a ortografia vigente?", o: ["Idéia", "Auto-estima", "Autoescola", "Vôo"], c: 2
+                },
+                avancado: {
+                    texto: "Regras complexas de regência verbal, concordância nominal refinada e uso obrigatório ou facultativo da crase.",
+                    q: "Assinale a frase onde a crase foi empregada CORRETAMENTE:", o: ["Fui à feira", "Disse à ele", "Andou à cavalo", "Dia à dia"], c: 0
+                }
+            }
         ];
 
         let tamanhoFonteAtual = 16;
         let materiaSelecionadaId = "";
-        let meuGrafico = null; // Instância global do gráfico
+        let nivelSelecionado = "basico";
+        let meuGrafico = null;
+        let quizRespondidoCorretamente = false;
 
-        // CONTROLE DO FOGUINHO DE OFENSIVA (PERSISTIDO EM LOCALSTORAGE)
+        function navegarPara(idSecao) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('#main-nav a').forEach(a => a.classList.remove('active'));
+            
+            const secaoAlvo = document.getElementById(idSecao);
+            if (secaoAlvo) secaoAlvo.classList.add('active');
+            
+            const navLink = document.getElementById(`nav-${idSecao}`);
+            if (navLink) navLink.classList.add('active');
+
+            if (idSecao === 'checkin') {
+                renderizarCalendario();
+                atualizarDisplaysPontuacao();
+            }
+        }
+
         function inicializarOfensiva() {
             let streak = localStorage.getItem('classconnect_streak') || 0;
             document.getElementById('streak-count').textContent = streak;
         }
 
-        function computarCheckin() {
+        function atualizarDisplaysPontuacao() {
+            let streak = localStorage.getItem('classconnect_streak') || 0;
+            let pontos = localStorage.getItem('classconnect_points') || 0;
+            
+            document.getElementById('streak-count').textContent = streak;
+            if(document.getElementById('checkin-streak-display')) {
+                document.getElementById('checkin-streak-display').textContent = streak;
+                document.getElementById('points-display').textContent = pontos;
+                
+                // Evolução visual do avatar baseada nos pontos obtidos
+                const avatarIcon = document.getElementById('avatar-icon');
+                if (pontos >= 50) avatarIcon.textContent = "🧙‍♂️";
+                else if (pontos >= 20) avatarIcon.textContent = "🚀";
+                else avatarIcon.textContent = "🧑‍🎓";
+            }
+        }
+
+        function computarCheckinManual() {
             let streak = parseInt(localStorage.getItem('classconnect_streak') || 0);
             let ultimaData = localStorage.getItem('classconnect_last_date');
             let hoje = new Date().toDateString();
@@ -584,12 +767,34 @@
                 streak += 1;
                 localStorage.setItem('classconnect_streak', streak);
                 localStorage.setItem('classconnect_last_date', hoje);
-                document.getElementById('streak-count').textContent = streak;
-                alert(`Check-in Concluído! Você está estudando de verdade. Sua ofensiva subiu para: ${streak} dias! 🔥`);
+                renderizarCalendario();
+                atualizarDisplaysPontuacao();
+                alert(`Check-in Concluído! Sua ofensiva subiu para: ${streak} dias! 🔥`);
             }
         }
 
-        // ELEMENTOS INTERNOS DA INTERFACE
+        function renderizarCalendario() {
+            const container = document.getElementById('calendario-dias');
+            if (!container) return;
+            container.innerHTML = "";
+            let hojeDia = new Date().getDate();
+            
+            for (let i = 1; i <= 14; i++) {
+                const diaDiv = document.createElement('div');
+                let ultimaData = localStorage.getItem('classconnect_last_date');
+                let fezHoje = (ultimaData === new Date().toDateString());
+                
+                if (i === hojeDia && fezHoje) {
+                    diaDiv.className = "calendar-day checked";
+                    diaDiv.innerHTML = `<i class="fas fa-fire"></i><br>${i}`;
+                } else {
+                    diaDiv.className = "calendar-day";
+                    diaDiv.innerHTML = `<i class="fas fa-calendar-alt"></i><br>${i}`;
+                }
+                container.appendChild(diaDiv);
+            }
+        }
+
         const loginScreen = document.getElementById('login-screen');
         const mainSite = document.getElementById('main-site');
         const overlay = document.getElementById('loading-overlay');
@@ -621,7 +826,6 @@
             }
         }
 
-        // LUPA DE AJUSTE DINÂMICO DE FONTE
         function mudarFonte(acao) {
             const container = document.getElementById('conteudo-leitura');
             if (acao === 0) tamanhoFonteAtual = 16;
@@ -633,7 +837,6 @@
             container.style.fontSize = tamanhoFonteAtual + 'px';
         }
 
-        // COMPORTAMENTO DO SISTEMA DE FILTRAGEM E RENDERIZAÇÃO
         function renderizarMenuMaterias(lista) {
             const sidebar = document.getElementById('sidebar-lista');
             sidebar.innerHTML = "";
@@ -662,29 +865,50 @@
 
         function carregarConteudoMateria(id) {
             materiaSelecionadaId = id;
+            quizRespondidoCorretamente = false;
+            document.getElementById('btn-concluir').style.display = "none";
             
-            const busca = document.getElementById('subject-search').value.toLowerCase();
-            const filtrados = baseConteudos.filter(item => item.nome.toLowerCase().includes(busca) || item.desc.toLowerCase().includes(busca));
-            renderizarMenuMaterias(filtrados);
+            document.getElementById('materia-placeholder').style.display = "none";
+            document.getElementById('materia-content-wrapper').style.display = "block";
 
-            const materia = baseConteudos.find(m => m.id === id);
+            document.querySelectorAll('.btn-level').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.btn-level:nth-child(1)`).classList.add('active');
+            nivelSelecionado = "basico";
+
+            renderizarEstruturaMateriaDoNivel();
+        }
+
+        function mudarNivelMateria(nivel) {
+            nivelSelecionado = nivel;
+            quizRespondidoCorretamente = false;
+            document.getElementById('btn-concluir').style.display = "none";
+
+            document.querySelectorAll('.btn-level').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+
+            renderizarEstruturaMateriaDoNivel();
+        }
+
+        function renderizarEstruturaMateriaDoNivel() {
+            const materia = baseConteudos.find(m => m.id === materiaSelecionadaId);
             if (!materia) return;
+
+            const dadosNivel = materia[nivelSelecionado];
 
             const areaLeitura = document.getElementById('conteudo-leitura');
             areaLeitura.innerHTML = `
-                <h2>${materia.nome}</h2>
+                <h2>${materia.nome} (${nivelSelecionado.toUpperCase()})</h2>
                 <p style="font-weight:600; color:var(--text-muted); margin-bottom: 15px;">${materia.desc}</p>
-                <div>${materia.texto}</div>
+                <div>${dadosNivel.texto}</div>
             `;
 
             const quizContainer = document.getElementById('quiz-container');
-            quizContainer.style.display = "block";
             quizContainer.innerHTML = `
                 <div class="quiz-title"><i class="fas fa-tasks"></i> Teste Seu Conhecimento Prático</div>
-                <p style="margin-bottom:12px;"><strong>Questão:</strong> ${materia.q}</p>
+                <p style="margin-bottom:12px;"><strong>Questão:</strong> ${dadosNivel.q}</p>
                 <div class="quiz-options">
-                    ${materia.o.map((opcao, idx) => `
-                        <button class="quiz-option" onclick="validarResposta(this, ${idx}, ${materia.c})">${opcao}</button>
+                    ${dadosNivel.o.map((opcao, idx) => `
+                        <button class="quiz-option" onclick="validarResposta(this, ${idx}, ${dadosNivel.c})">${opcao}</button>
                     `).join('')}
                 </div>
             `;
@@ -696,13 +920,49 @@
 
             if (idx === correto) {
                 botao.classList.add('correct');
+                quizRespondidoCorretamente = true;
+                document.getElementById('btn-concluir').style.display = "inline-block";
             } else {
                 botao.classList.add('wrong');
                 opcoes[correto].classList.add('correct');
+                quizRespondidoCorretamente = false;
             }
         }
 
-        // FÓRUM DA COMUNIDADE
+        function concluirExercicioFinal() {
+            if (!quizRespondidoCorretamente) return;
+
+            let chaveProgresso = `progresso_${materiaSelecionadaId}_${nivelSelecionado}`;
+            let hojeStr = new Date().toDateString();
+            let jaFeitoHoje = localStorage.getItem(chaveProgresso);
+
+            if (jaFeitoHoje === hojeStr) {
+                alert("Você já ganhou pontos nesta matéria e nível hoje! Continue estudando outros conteúdos para pontuar.");
+                return;
+            }
+
+            // Atribui pontos acumulativos
+            let pontos Atuais = parseInt(localStorage.getItem('classconnect_points') || 0);
+            pontosAtuais += 10;
+            localStorage.setItem('classconnect_points', pontosAtuais);
+            localStorage.setItem(chaveProgresso, hojeStr);
+
+            // Validação automática da Ofensiva diária
+            let streak = parseInt(localStorage.getItem('classconnect_streak') || 0);
+            let ultimaData = localStorage.getItem('classconnect_last_date');
+
+            if (ultimaData !== hojeStr) {
+                streak += 1;
+                localStorage.setItem('classconnect_streak', streak);
+                localStorage.setItem('classconnect_last_date', hojeStr);
+            }
+
+            atualizarDisplaysPontuacao();
+            alert("Parabéns! +10 Pontos de Customização adicionados e sua ofensiva diária está garantida! 🔥");
+            document.getElementById('btn-concluir').style.display = "none";
+        }
+
+        // CHAT GLOBAL SIMULADO (TEMPO REAL)
         function enviarMensagem() {
             const input = document.getElementById('chat-input');
             const msgTexto = input.value.trim();
@@ -715,28 +975,36 @@
             chatBox.appendChild(novaMsg);
             input.value = "";
             chatBox.scrollTop = chatBox.scrollHeight;
-
-            setTimeout(() => {
-                const respostasDisponiveis = [
-                    "Que da hora! Acabei de resolver o quiz dessa matéria aqui também.",
-                    "Excelente contribuição, anotado no meu caderno de resumos!",
-                    "Valeu mesmo por compartilhar, estava revisando isso agora.",
-                    "Se quiserem criar uma sala privada de estudos depois, contem comigo!"
-                ];
-                const respostaAleatoria = respostasDisponiveis[Math.floor(Math.random() * respostasDisponiveis.length)];
-                
-                const msgBot = document.createElement('div');
-                msgBot.className = "msg-bubble";
-                msgBot.innerHTML = `<div class="msg-meta">Estudante_Parceiro</div>${respostaAleatoria}`;
-                chatBox.appendChild(msgBot);
-                chatBox.scrollTop = chatBox.scrollHeight;
-            }, 1500);
         }
 
-        // CONFIGURAÇÃO DO GRÁFICO INTERATIVO (CHART.JS)
+        function checarEnterChat(event) {
+            if (event.key === 'Enter') {
+                enviarMensagem();
+            }
+        }
+
+        // Feed de dados simulando usuários globais ativos trocando mensagens
+        setInterval(() => {
+            const chatBox = document.getElementById('chat-box');
+            if (!chatBox) return;
+
+            const mensagensGlobais = [
+                { user: "Mariana_Silva", msg: "Alguém conseguiu resolver o quiz avançado de álgebra?" },
+                { user: "Marcos_Dev", msg: "O sistema de ofensivas tá me salvando, 12 dias direto já!" },
+                { user: "Rodrigo_Gama", msg: "Terminei o módulo básico de matemática aqui agora, bora pros próximos." },
+                { user: "Amanda_K", msg: "Essa planilha de cronograma ajudou muito a dividir minhas tarefas da semana." }
+            ];
+
+            const escolha = mensagensGlobais[Math.floor(Math.random() * mensagensGlobais.length)];
+            const msgBot = document.createElement('div');
+            msgBot.className = "msg-bubble";
+            msgBot.innerHTML = `<div class="msg-meta">${escolha.user}</div>${escolha.msg}`;
+            chatBox.appendChild(msgBot);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }, 18000); // Roda dinamicamente a cada 18 segundos
+
         function inicializarGrafico() {
             const ctx = document.getElementById('graficoEvolucao').getContext('2d');
-            
             meuGrafico = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -770,8 +1038,7 @@
                             grid: { color: '#334155' },
                             ticks: { color: '#94a3b8' }
                         }
-                    },
-                    animation: { duration: 1500, easing: 'easeOutQuart' }
+                    }
                 }
             });
         }
@@ -786,7 +1053,6 @@
             meuGrafico.update();
         }
 
-        // SESSÃO DE ENTRADA E SAÍDA
         function executarLogin(event) {
             event.preventDefault();
             const user = document.getElementById('loginUser').value;
@@ -802,7 +1068,7 @@
                 
                 inicializarOfensiva();
                 renderizarMenuMaterias(baseConteudos);
-                inicializarGrafico(); // Inicializa o gráfico dinâmico
+                inicializarGrafico();
             }, 1000);
         }
 
@@ -818,22 +1084,20 @@
                 
                 inicializarOfensiva();
                 renderizarMenuMaterias(baseConteudos);
-                inicializarGrafico(); // Inicializa o gráfico dinâmico
+                inicializarGrafico();
             }, 1000);
         }
 
         function logout() {
             if (meuGrafico) {
-                meuGrafico.destroy(); // Destrói o gráfico anterior para não acumular lixo na memória
+                meuGrafico.destroy();
             }
             mainSite.style.display = 'none';
             loginScreen.style.display = 'flex';
             document.getElementById('loginForm').reset();
-            document.getElementById('quiz-container').style.display = "none";
-            document.getElementById('conteudo-leitura').innerHTML = `
-                <h3>Selecione um conteúdo didático no menu ao lado para iniciar seus estudos!</h3>
-                <p>Utilize o sistema de busca inteligente acima para filtrar matérias instantaneamente.</p>
-            `;
+            document.getElementById('materia-content-wrapper').style.display = "none";
+            document.getElementById('materia-placeholder').style.display = "block";
+            navegarPara('dashboard');
         }
     </script>
 </body>
