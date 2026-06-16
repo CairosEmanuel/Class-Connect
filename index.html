@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ClassConnect | Plataforma de Estudos Colaborativa</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+
     <style>
         :root {
             --dark-navy: #0f172a;
@@ -21,27 +22,16 @@
             --text-muted: #94a3b8;
             --input-bg: rgba(255, 255, 255, 0.05);
             --card-bg: #1e293b;
-            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition: all 0.3s ease;
             --border-color: rgba(255, 255, 255, 0.05);
-            --grid-color: #334155;
-        }
-
-        [data-theme="light"] {
-            --dark-navy: #f1f5f9;
-            --deep-sidebar: #e2e8f0;
-            --text-light: #0f172a;
-            --text-muted: #475569;
-            --input-bg: rgba(0, 0, 0, 0.05);
-            --card-bg: #ffffff;
-            --border-color: rgba(0, 0, 0, 0.1);
-            --grid-color: #cbd5e1;
+            --streak-fire: #e67e22;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Poppins', 'Inter', sans-serif;
         }
 
         body {
@@ -49,1055 +39,955 @@
             color: var(--text-light);
             min-height: 100vh;
             overflow-x: hidden;
-            transition: background-color 0.3s, color 0.3s;
         }
 
-        #login-screen {
+        /* TELA DE LOADING */
+        #overlay {
             position: fixed;
-            inset: 0;
-            z-index: 999;
-            display: flex;
-            background-color: #0f172a;
-            color: #f8fafc;
-            transition: var(--transition);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 15, 25, 0.95);
+            z-index: 9999;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
         }
 
-        .login-side {
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--input-bg);
+            border-top: 5px solid var(--primary-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0 { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* TELA DE LOGIN */
+        #loginScreen {
+            display: flex;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        .login-left {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 40px;
+            background-color: var(--deep-sidebar);
         }
 
-        .login-box { width: 100%; max-width: 400px; }
-        .brand-header { text-align: center; margin-bottom: 40px; }
-        
-        .logo-box {
-            width: 85px; height: 85px;
-            background: linear-gradient(135deg, var(--primary-blue), var(--accent-green));
-            border-radius: 20px; margin: 0 auto 15px;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-        }
-        .logo-box i { color: white; }
-
-        .brand-header h1 {
-            font-size: 2.2rem; font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to right, #fff, #94a3b8);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        .login-right {
+            flex: 1.2;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.85), rgba(11, 15, 25, 0.95)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 60px;
         }
 
-        .brand-header p { color: #64748b; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 3px; margin-top: 5px; }
-        .form-group { margin-bottom: 20px; position: relative; }
-        label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: #94a3b8; }
-        .password-container { position: relative; display: flex; align-items: center; }
-        .toggle-password { position: absolute; right: 15px; color: #64748b; cursor: pointer; }
-        .toggle-password:hover { color: #fff; }
-        
-        .login-box input {
-            width: 100%; padding: 14px; background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white;
-            font-size: 1rem; outline: none; transition: 0.3s;
-        }
-        .login-box input:focus { border-color: var(--primary-blue); background: rgba(255, 255, 255, 0.08); }
-
-        .btn-entrar {
-            width: 100%; padding: 14px; background: linear-gradient(to right, var(--primary-blue), #2980b9);
-            border: none; border-radius: 12px; color: white; font-weight: 600; cursor: pointer; transition: 0.3s;
-        }
-        .btn-entrar:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4); }
-
-        .divider { margin: 25px 0; text-align: center; position: relative; }
-        .divider::before { content: ""; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: rgba(255, 255, 255, 0.1); }
-        .divider span { background: #0f172a; padding: 0 15px; position: relative; color: #64748b; font-size: 0.8rem; }
-
-        .btn-google {
-            width: 100%; padding: 12px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px; color: white; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer; transition: 0.3s;
-        }
-        .btn-google:hover { background: rgba(255, 255, 255, 0.05); }
-        .btn-google i { color: #4285F4; }
-        .signup-redirect { text-align: center; margin-top: 30px; color: #64748b; font-size: 0.9rem; }
-        .signup-redirect a { color: var(--accent-green); text-decoration: none; font-weight: 600; }
-
-        .image-side {
-            flex: 1.2; position: relative;
-            background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80') center/cover;
-        }
-        .image-side::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to right, #0f172a, transparent); }
-        .overlay-text { position: absolute; bottom: 60px; left: 60px; right: 60px; z-index: 3; }
-        .overlay-text h2 { font-family: 'Poppins', sans-serif; font-size: 2.5rem; margin-bottom: 15px; line-height: 1.1; }
-
-        @media (max-width: 900px) { .image-side { display: none; } }
-
-        .success-overlay {
-            position: fixed; inset: 0; background: #0f172a; z-index: 1000;
-            display: none; justify-content: center; align-items: center; font-size: 1.8rem; color: white;
-        }
-        .success-overlay-content { text-align: center; }
-        .success-overlay-content i { color: var(--primary-blue); margin-bottom: 20px; }
-
-        #main-site { display: none; }
-
-        header {
-            background-color: var(--card-bg); border-bottom: 1px solid var(--border-color);
-            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 90; transition: background-color 0.3s;
+        @media (max-width: 900px) {
+            .login-right { display: none; }
         }
 
-        .nav-logo { display: flex; align-items: center; gap: 10px; font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 1.3rem; cursor: pointer; }
-        .nav-logo i { background: linear-gradient(135deg, var(--primary-blue), var(--accent-green)); padding: 8px; border-radius: 8px; color: white; }
-        
-        .nav-actions { display: flex; align-items: center; gap: 20px; }
-        nav a { color: var(--text-muted); text-decoration: none; margin-left: 20px; font-size: 0.95rem; transition: 0.3s; cursor: pointer; }
-        nav a:hover, nav a.active { color: var(--primary-blue); }
-        
-        .btn-theme-toggle, .btn-accessibility {
-            background: transparent; border: none; color: var(--text-light); font-size: 1.1rem; cursor: pointer; padding: 5px; transition: 0.2s;
+        .login-box {
+            width: 100%;
+            max-width: 400px;
         }
-        .btn-theme-toggle:hover, .btn-accessibility:hover { color: var(--primary-blue); }
 
-        .streak-container {
-            display: flex; align-items: center; gap: 6px; background: rgba(230, 126, 34, 0.1);
-            padding: 6px 12px; border-radius: 20px; color: #e67e22; font-weight: bold; font-size: 0.9rem;
+        .login-box h2 {
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+            background: linear-gradient(to right, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .streak-container.active i { animation: pulse 1.5s infinite alternate; color: #f39c12; }
 
-        @keyframes pulse { from { transform: scale(1); filter: drop-shadow(0 0 2px #e67e22); } to { transform: scale(1.2); filter: drop-shadow(0 0 8px #f1c40f); } }
-
-        .section { padding: 40px 5%; max-width: 1200px; margin: 0 auto; display: none; }
-        .section.active { display: block; }
-        .hero-dashboard { text-align: center; padding-top: 40px; }
-        
-        .btn-checkin {
-            margin-top: 15px; padding: 12px 24px; background: linear-gradient(to right, #e67e22, #f39c12);
-            color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s;
+        .login-box p {
+            color: var(--text-muted);
+            margin-bottom: 30px;
         }
-        .btn-checkin:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(230,126,34,0.3); }
 
-        .section-title { font-family: 'Poppins', sans-serif; font-size: 2rem; text-align: center; margin-bottom: 40px; }
-        .section-title.large { font-size: 3rem; margin-bottom: 15px; }
-        .section-title span { background: linear-gradient(to right, var(--primary-blue), var(--accent-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-            margin-top: 30px;
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
         }
-        
-        .chart-card {
-            background: var(--card-bg);
+
+        .input-group i.input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            background: var(--input-bg);
             border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            color: var(--text-light);
+            outline: none;
+            transition: var(--transition);
         }
-        .chart-card h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.3rem;
+
+        .input-group input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 12px rgba(52, 152, 219, 0.25);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary-blue);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 15px;
+        }
+
+        .btn-login:hover { background: #2980b9; transform: translateY(-1px); }
+
+        .btn-alt {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-light);
+            cursor: pointer;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
+            transition: var(--transition);
         }
-        .chart-card p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
+
+        .btn-alt:hover {
+            background: var(--input-bg);
+            border-color: var(--text-muted);
+        }
+
+        /* SITE PRINCIPAL / DASHBOARD */
+        #mainSite {
+            display: none;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--deep-sidebar);
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .user-profile-bar {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar-container {
+            position: relative;
+            width: 48px;
+            height: 48px;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid var(--primary-blue);
+            background: #252f44;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .streak-badge {
+            position: absolute;
+            bottom: -3px;
+            right: -3px;
+            background: var(--streak-fire);
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            padding: 30px 40px;
+        }
+
+        @media (max-width: 1100px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid var(--border-color);
             margin-bottom: 25px;
         }
-        .canvas-container {
-            position: relative;
-            width: 100%;
-            height: 350px;
+
+        .card h3 {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.15rem;
         }
 
-        .accessibility-bar {
-            background: var(--card-bg); border: 1px solid var(--border-color); padding: 10px 20px;
-            border-radius: 8px; display: flex; align-items: center; gap: 15px; margin-bottom: 20px; font-size: 0.9rem;
-        }
-
-        .search-wrapper { display: flex; gap: 10px; margin-bottom: 30px; }
-        .search-wrapper input {
-            flex: 1; padding: 14px; background: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 10px; color: var(--text-light); font-size: 1rem; outline: none; transition: 0.3s;
-        }
-        .search-wrapper input:focus { border-color: var(--primary-blue); }
-        
-        .content-layout { display: grid; grid-template-columns: 320px 1fr; gap: 30px; }
-        
-        .subjects-sidebar {
-            background: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 12px; max-height: 650px; overflow-y: auto; padding: 15px;
-        }
-        
-        .subject-menu-item {
-            padding: 12px 15px; border-radius: 8px; cursor: pointer; display: flex; align-items: center;
-            gap: 10px; font-size: 0.95rem; color: var(--text-muted); transition: 0.2s; margin-bottom: 5px;
-        }
-        .subject-menu-item:hover, .subject-menu-item.active { background: var(--input-bg); color: var(--primary-blue); font-weight: 500; }
-
-        .study-area {
-            background: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 12px; padding: 40px; min-height: 500px; display: flex; flex-direction: column; justify-content: space-between;
-        }
-
-        .level-selectors {
-            display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px;
-        }
-        .btn-level {
-            padding: 8px 16px; border-radius: 20px; border: 1px solid var(--border-color); background: var(--input-bg);
-            color: var(--text-muted); font-weight: 600; cursor: pointer; transition: 0.2s;
-        }
-        .btn-level.active {
-            background: var(--primary-blue); color: white; border-color: var(--primary-blue);
-        }
-
-        .dynamic-text-container { font-size: 16px; line-height: 1.7; transition: font-size 0.2s; }
-        .dynamic-text-container h2 { font-family: 'Poppins', sans-serif; margin-bottom: 20px; color: var(--primary-blue); }
-        .dynamic-text-container p { margin-bottom: 15px; }
-
-        .quiz-box {
-            margin-top: 35px; border-top: 2px dashed var(--border-color); padding-top: 25px;
-        }
-        .quiz-title { font-family: 'Poppins', sans-serif; font-size: 1.2rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        .quiz-options { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-        
-        .quiz-option {
-            padding: 12px 20px; background: var(--input-bg); border: 1px solid var(--border-color);
-            border-radius: 8px; cursor: pointer; text-align: left; transition: 0.2s; color: var(--text-light); font-size: 0.95rem; outline: none;
-        }
-        .quiz-option:hover { border-color: var(--primary-blue); background: rgba(52,152,219,0.05); }
-        .quiz-option.correct { background: rgba(46, 204, 113, 0.2) !important; border-color: var(--accent-green) !important; color: #2ecc71; font-weight: 600; }
-        .quiz-option.wrong { background: rgba(231, 76, 60, 0.2) !important; border-color: #e74c3c !important; color: #e74c3c; }
-
-        .btn-concluir-quiz {
-            margin-top: 20px; padding: 12px 24px; background: var(--accent-green); color: white; border: none;
-            border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; display: none;
-        }
-        .btn-concluir-quiz:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(46,204,113,0.3); }
-
-        /* TELA DE CHECK-IN DEDICADA */
+        /* CHECK-IN DIÁRIO */
         .checkin-container {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;
-        }
-        .checkin-card {
-            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; padding: 30px;
-        }
-        .calendar-mock {
-            display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-top: 20px; text-align: center;
-        }
-        .calendar-day {
-            padding: 10px; background: var(--input-bg); border-radius: 8px; font-size: 0.9rem; color: var(--text-muted);
-        }
-        .calendar-day.checked {
-            background: rgba(230, 126, 34, 0.2); color: #e67e22; font-weight: bold; border: 1px solid #e67e22;
-        }
-        .avatar-box {
-            text-align: center; padding: 20px; background: var(--input-bg); border-radius: 12px; margin-top: 20px;
-        }
-        .avatar-display {
-            width: 120px; height: 120px; border-radius: 60px; background: var(--grid-color); margin: 0 auto 15px;
-            display: flex; align-items: center; justify-content: center; font-size: 3rem; border: 3px solid var(--primary-blue);
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 15px;
         }
 
-        /* PLANILHA DE ESTUDOS CRONOGRAMA */
-        .schedule-table {
-            width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--card-bg); border-radius: 12px; overflow: hidden;
+        .day-box {
+            background: var(--dark-navy);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            transition: var(--transition);
         }
-        .schedule-table th, .schedule-table td {
-            padding: 15px; text-align: left; border-bottom: 1px solid var(--border-color);
+
+        .day-box.completed {
+            border-color: var(--streak-fire);
+            background: rgba(230, 126, 34, 0.1);
         }
-        .schedule-table th { background: var(--input-bg); color: var(--primary-blue); font-family: 'Poppins', sans-serif; }
 
-        .community-container {
-            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px;
-            display: grid; grid-template-rows: auto 380px auto; overflow: hidden;
+        .day-box.completed i {
+            color: var(--streak-fire);
         }
-        .community-header { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px; }
-        .community-header h3 { font-family: 'Poppins', sans-serif; }
-        
-        .chat-messages { padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background: rgba(0,0,0,0.05); }
-        
-        .msg-bubble { max-width: 80%; background: var(--input-bg); padding: 12px 16px; border-radius: 12px; border-top-left-radius: 2px; align-self: flex-start; line-height: 1.5; }
-        .msg-bubble.me { background: var(--primary-blue); color: white; border-radius: 12px; border-top-right-radius: 2px; border-top-left-radius: 12px; align-self: flex-end; }
-        .msg-meta { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; font-weight: 600; }
-        .msg-bubble.me .msg-meta { color: rgba(255,255,255,0.8); }
 
-        .chat-input-row { padding: 15px; border-top: 1px solid var(--border-color); display: flex; gap: 10px; }
-        .chat-input-row input { flex: 1; padding: 14px; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-light); outline: none; font-size: 0.95rem; }
-        .chat-input-row button { padding: 12px 24px; background: var(--primary-blue); border: none; border-radius: 8px; color: white; font-weight: bold; cursor: pointer; transition: 0.2s; }
-        .chat-input-row button:hover { background: #2980b9; }
+        /* BANCO DE MATÉRIAS DETALHADO */
+        .tabs-materias {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
 
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .feature-card { background-color: var(--card-bg); padding: 40px 30px; border-radius: 16px; border: 1px solid var(--border-color); transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between; }
-        .feature-card:hover { transform: translateY(-5px); border-color: rgba(52, 152, 219, 0.3); }
-        .feature-card i { font-size: 2.5rem; color: var(--primary-blue); margin-bottom: 20px; }
-        .feature-card h3 { font-family: 'Poppins', sans-serif; font-size: 1.4rem; margin-bottom: 12px; }
-        .feature-card p { color: var(--text-muted); line-height: 1.6; }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 6px 12px;
+            cursor: pointer;
+            font-weight: 500;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
 
-        .about-content { display: flex; align-items: center; gap: 50px; flex-wrap: wrap; }
-        .about-text { flex: 1; min-width: 300px; }
-        .about-text p { color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 25px; }
-        .about-stats { display: flex; gap: 30px; }
-        .stat-item { background: var(--card-bg); border: 1px solid var(--border-color); padding: 20px; border-radius: 12px; text-align: center; flex: 1; }
-        .stat-item h4 { font-size: 2rem; color: var(--accent-green); font-family: 'Poppins', sans-serif; }
-        .about-image { flex: 1; min-width: 300px; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-        .about-image img { width: 100%; height: auto; display: block; }
+        .tab-btn.active {
+            color: white;
+            background: var(--input-bg);
+        }
 
-        .plans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; align-items: stretch; }
-        .plan-card { background-color: var(--card-bg); border-radius: 20px; padding: 40px 30px; border: 1px solid var(--border-color); text-align: center; display: flex; flex-direction: column; justify-content: space-between; position: relative; transition: 0.3s; }
-        .plan-card.featured { border-color: var(--primary-blue); box-shadow: 0 10px 30px rgba(52, 152, 219, 0.15); transform: scale(1.03); }
-        .plan-badge { position: absolute; top: 15px; right: 15px; background: var(--primary-blue); color: white; font-size: 0.75rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; }
-        .plan-header h3 { font-family: 'Poppins', sans-serif; font-size: 1.6rem; margin-bottom: 10px; }
-        .plan-price { font-size: 2.2rem; font-weight: 700; color: var(--text-light); margin: 20px 0; }
-        .plan-price span { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
-        .plan-features { list-style: none; text-align: left; margin-bottom: 30px; }
-        .plan-features li { margin-bottom: 12px; color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: center; gap: 10px; }
-        .plan-features li i { color: var(--accent-green); }
-        .btn-plan { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 10px; background: transparent; color: var(--text-light); font-weight: 600; cursor: pointer; transition: 0.3s; }
-        .plan-card.featured .btn-plan { background: linear-gradient(to right, var(--primary-blue), #2980b9); border: none; color: white; }
-        .btn-plan:hover { background: var(--text-light); color: var(--dark-navy); }
+        .materia-item {
+            background: var(--dark-navy);
+            padding: 18px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--primary-blue);
+            transition: var(--transition);
+        }
 
-        footer { text-align: center; padding: 40px; color: #64748b; border-top: 1px solid var(--border-color); font-size: 0.9rem; margin-top: 40px; }
+        .materia-item:hover {
+            transform: translateX(3px);
+            background: rgba(255, 255, 255, 0.02);
+        }
 
-        @media (max-width: 768px) {
-            .content-layout { grid-template-columns: 1fr; }
-            .subjects-sidebar { max-height: 280px; }
-            .checkin-container { grid-template-columns: 1fr; }
+        .materia-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .materia-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        .materia-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .badge-nivel {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .nivel-basico { background: rgba(46, 204, 113, 0.15); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.3); }
+        .nivel-intermediario { background: rgba(241, 196, 15, 0.15); color: #f1c40f; border: 1px solid rgba(241, 196, 15, 0.3); }
+        .nivel-avancado { background: rgba(231, 76, 60, 0.15); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.3); }
+
+        /* FÓRUM COMPLEXO DINÂMICO */
+        .chat-box {
+            height: 320px;
+            background: var(--dark-navy);
+            border-radius: 8px;
+            padding: 15px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .msg-container {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            animation: textFadeIn 0.3s ease-out;
+        }
+
+        @keyframes textFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .msg-time {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-left: 6px;
+        }
+
+        #typingIndicator {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-style: italic;
+            height: 18px;
+            padding-left: 5px;
+            transition: var(--transition);
+        }
+
+        .chat-input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input-group input {
+            flex: 1;
+            padding: 12px;
+            background: var(--dark-navy);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: white;
+            outline: none;
+        }
+
+        .chat-input-group input:focus { border-color: var(--primary-blue); }
+
+        /* JOGUINHO QUIZ GAMIFICADO */
+        .quiz-option {
+            background: var(--dark-navy);
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: left;
+            width: 100%;
+            color: var(--text-light);
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .quiz-option:hover {
+            background: var(--input-bg);
+            border-color: var(--primary-blue);
         }
     </style>
 </head>
 <body>
 
-    <div id="login-screen">
-        <div class="login-side">
-            <div class="login-box">
-                <div class="brand-header">
-                    <div class="logo-box"><i class="fas fa-graduation-cap fa-3x"></i></div>
-                    <h1>ClassConnect</h1>
-                    <p>Aprender Juntos</p>
-                </div>
+    <div id="overlay">
+        <div class="spinner"></div>
+        <p id="feedbackText">Carregando...</p>
+    </div>
 
-                <form id="loginForm" onsubmit="executarLogin(event)">
-                    <div class="form-group">
-                        <label for="loginUser">E-mail ou Usuário</label>
-                        <input type="text" id="loginUser" placeholder="seuemail@exemplo.com" required>
+    <div id="loginScreen">
+        <div class="login-left">
+            <div class="login-box">
+                <h2>ClassConnect</h2>
+                <p>Acesse o painel e descubra o conhecimento colaborativo.</p>
+                
+                <form onsubmit="executarLogin(event)">
+                    <div class="input-group">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="loginUser" required placeholder="E-mail ou Nome de Usuário">
                     </div>
-                    <div class="form-group">
-                        <label for="loginPass">Senha</label>
-                        <div class="password-container">
-                            <input type="password" id="loginPass" placeholder="••••••••" required>
-                            <i class="fas fa-eye toggle-password" onclick="togglePasswordVisibility(this)"></i>
-                        </div>
+                    
+                    <div class="input-group">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="loginPassword" required placeholder="Sua senha de acesso">
+                        <i id="togglePasswordIcon" class="fas fa-eye password-toggle" onclick="togglePasswordVisibility()"></i>
                     </div>
-                    <button type="submit" class="btn-entrar">Entrar</button>
-                    <div class="divider"><span>ou</span></div>
-                    <button type="button" class="btn-google" onclick="simularLoginGoogle()">
-                        <i class="fab fa-google"></i> Entrar com o Google
+
+                    <button type="submit" class="btn-login">Entrar na Conta</button>
+                    
+                    <button type="button" class="btn-alt" onclick="simularLoginGoogle()">
+                        <i class="fab fa-google" style="color: #ea4335;"></i> Conectar via Google
+                    </button>
+                    
+                    <button type="button" class="btn-alt" onclick="visitarComoConvidado()">
+                        <i class="fas fa-door-open"></i> Visitar como Visitante
                     </button>
                 </form>
-                <p class="signup-redirect">Não tem uma conta? <a href="#">Cadastre-se</a></p>
             </div>
         </div>
-        <div class="image-side">
-            <div class="overlay-text">
-                <h2>Aprender ficou mais fácil e conectado.</h2>
-                <p>Junte-se a milhares de estudantes que já organizam sua rotina acadêmica com o ClassConnect.</p>
-            </div>
+        <div class="login-right">
+            <h1 style="font-size: 2.8rem; margin-bottom: 25px; font-weight:700; line-height: 1.2;">Conectando mentes, expandindo horizontes.</h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 550px;">
+                Evolua na sua trilha de estudos através de módulos categorizados, fóruns interativos globais e dinâmicas de retenção gamificadas diárias.
+            </p>
         </div>
     </div>
 
-    <div class="success-overlay" id="loading-overlay">
-        <div class="success-overlay-content">
-            <i class="fas fa-circle-notch fa-spin fa-3x"></i>
-            <p id="feedback-text">Autenticando...</p>
-        </div>
-    </div>
-
-    <div id="main-site">
+    <div id="mainSite">
         <header>
-            <div class="nav-logo" onclick="navegarPara('dashboard')"><i class="fas fa-graduation-cap"></i> ClassConnect</div>
-            <div class="nav-actions">
-                <div class="streak-container active" id="streak-box" title="Sua ofensiva ativa de estudos!" onclick="navegarPara('checkin')" style="cursor:pointer;">
-                    <i class="fas fa-fire"></i> <span id="streak-count">0</span> dias
+            <h2 style="font-weight: 700; letter-spacing: -0.5px;">ClassConnect</h2>
+            <div class="user-profile-bar">
+                <div class="avatar-container">
+                    <div class="avatar-img" id="userAvatar">U</div>
+                    <div class="streak-badge" title="Sua ofensiva atual">
+                        <i class="fas fa-fire"></i> <span id="streakCount">0</span>
+                    </div>
                 </div>
-                <nav id="main-nav">
-                    <a onclick="navegarPara('dashboard')" id="nav-dashboard" class="active">Dashboard</a>
-                    <a onclick="navegarPara('estudos')" id="nav-estudos">Central de Estudos</a>
-                    <a onclick="navegarPara('cronograma')" id="nav-cronograma">Cronograma</a>
-                    <a onclick="navegarPara('comunidade')" id="nav-comunidade">Comunidade</a>
-                    <a onclick="navegarPara('sobre-nos')" id="nav-sobre-nos">Sobre Nós</a>
-                    <a onclick="navegarPara('planos')" id="nav-planos">Planos</a>
-                    <a onclick="logout()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>
-                </nav>
-                <button class="btn-theme-toggle" onclick="toggleTheme()" title="Alternar Modo Escuro/Claro"><i class="fas fa-moon" id="theme-icon"></i></button>
+                <div>
+                    <p style="font-weight: 600; font-size: 0.95rem;">Olá, <span id="userDisplay">Usuário</span>!</p>
+                    <span style="font-size: 0.75rem; color: var(--accent-green);" id="userPoints">0 XP</span>
+                </div>
+                <button onclick="logout()" class="btn-alt" style="margin: 0; padding: 8px 15px; font-size: 0.85rem;">Sair</button>
             </div>
         </header>
 
-        <main>
-            <section class="section active" id="dashboard">
-                <div class="hero-dashboard">
-                    <h2 class="section-title large">Olá, <span id="user-display">Estudante</span>!</h2>
-                    <p>Mantenha sua constância nos estudos ativa. Não deixe seu foguinho apagar hoje!</p>
-                    <button class="btn-checkin" onclick="navegarPara('checkin')"><i class="fas fa-calendar-check"></i> Ir para Check-in Diário</button>
-                    
-                    <div class="dashboard-grid">
-                        <div class="chart-card">
-                            <h3><i class="fas fa-chart-line" style="color: var(--primary-blue);"></i> Desempenho e Evolução Acadêmica</h3>
-                            <p>Acompanhe seu rendimento médio nos simulados e testes de fixação mensais.</p>
-                            <div class="canvas-container">
-                                <canvas id="graficoEvolucao"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section" id="checkin">
-                <h2 class="section-title">Painel do <span>Check-in Diário</span></h2>
-                <div class="checkin-container">
-                    <div class="checkin-card">
-                        <h3>Sua Constância</h3>
-                        <p style="color: var(--text-muted); margin-bottom: 20px;">Valide seu acesso diário realizando atividades ou clicando abaixo.</p>
-                        <h1 style="font-size: 2.5rem; color: #e67e22; margin-bottom: 20px;"><i class="fas fa-fire"></i> <span id="checkin-streak-display">0</span> Dias Seguidos</h1>
-                        <button class="btn-checkin" style="margin-top:0; width:100%;" onclick="computarCheckinManual()">Registrar Presença de Hoje</button>
-                        
-                        <div class="calendar-mock" id="calendario-dias"></div>
-                    </div>
-                    <div class="checkin-card" style="text-align: center;">
-                        <h3>Seu Avatar e Recompensas</h3>
-                        <p style="color: var(--text-muted);">Acumule pontos resolvendo questionários para liberar customizações.</p>
-                        <div class="avatar-box">
-                            <div class="avatar-display" id="avatar-icon">🧑‍🎓</div>
-                            <h4 style="font-size: 1.2rem; margin-bottom: 10px;">Pontos Disponíveis: <span id="points-display" style="color:var(--accent-green)">0</span> PTS</h4>
-                            <p style="font-size: 0.85rem; color: var(--text-muted);">Próximo item cosmético desbloqueia com 50 pontos.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="section" id="estudos">
-                <h2 class="section-title">Central de <span>Estudos Avançada</span></h2>
+        <main class="dashboard-grid">
+            <div class="main-content">
                 
-                <div class="accessibility-bar">
-                    <span><i class="fas fa-search-plus"></i> Ajuste de Leitura (Lupa):</span>
-                    <button class="btn-accessibility" onclick="mudarFonte(2)" title="Aumentar Letra"><i class="fas fa-plus-circle"></i> Aumentar</button>
-                    <button class="btn-accessibility" onclick="mudarFonte(-2)" title="Diminuir Letra"><i class="fas fa-minus-circle"></i> Diminuir</button>
-                    <button class="btn-accessibility" onclick="mudarFonte(0)" title="Resetar Padrão"><i class="fas fa-undo"></i> Resetar</button>
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <h3 style="margin:0;"><i class="fas fa-calendar-check" style="color: var(--streak-fire);"></i> Check-in Diário & Ofensiva</h3>
+                        <button id="btnCheckIn" onclick="realizarCheckIn()" class="btn-login" style="margin:0; width:auto; padding:8px 16px; font-size:0.85rem; background: var(--streak-fire);">Fazer Check-in de Hoje</button>
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">Mantenha sua sequência ativa acessando a plataforma diariamente para não perder seus multiplicadores de XP!</p>
+                    <div class="checkin-container" id="checkinDias"></div>
                 </div>
 
-                <div class="search-wrapper">
-                    <input type="text" id="subject-search" placeholder="🔍 Digite uma matéria ou palavra-chave para realizar a filtragem imediata..." oninput="filtrarMaterias()">
+                <div class="card">
+                    <h3><i class="fas fa-graduation-cap" style="color: var(--primary-blue);"></i> Árvore de Conhecimento Detalhada</h3>
+                    <div class="tabs-materias">
+                        <button class="tab-btn active" onclick="filtrarMaterias('todas', this)">Todas</button>
+                        <button class="tab-btn" onclick="filtrarMaterias('basico', this)">Básicas</button>
+                        <button class="tab-btn" onclick="filtrarMaterias('intermediario', this)">Intermediárias</button>
+                        <button class="tab-btn" onclick="filtrarMaterias('avancado', this)">Avançadas</button>
+                    </div>
+                    <div id="listaMateriasCompleta"></div>
                 </div>
 
-                <div class="content-layout">
-                    <div class="subjects-sidebar" id="sidebar-lista"></div>
-
-                    <div class="study-area">
-                        <div id="materia-content-wrapper" style="display: none;">
-                            <div class="level-selectors">
-                                <button class="btn-level active" onclick="mudarNivelMateria('basico')">Básico</button>
-                                <button class="btn-level" onclick="mudarNivelMateria('intermediario')">Intermediário</button>
-                                <button class="btn-level" onclick="mudarNivelMateria('avancado')">Avançado</button>
-                            </div>
-                            <div class="dynamic-text-container" id="conteudo-leitura"></div>
-                            <div class="quiz-box" id="quiz-container"></div>
-                            <button class="btn-concluir-quiz" id="btn-concluir" onclick="concluirExercicioFinal()">Concluir Matéria (+10 PTS)</button>
-                        </div>
-                        <div id="materia-placeholder" class="dynamic-text-container">
-                            <h3>Selecione um conteúdo didático no menu ao lado para iniciar seus estudos!</h3>
-                            <p>Utilize o sistema de busca inteligente acima para filtrar matérias instantaneamente.</p>
-                        </div>
+                <div class="card">
+                    <h3><i class="fas fa-chart-bar" style="color: var(--primary-blue);"></i> Métricas de Frequência de Estudos</h3>
+                    <div style="position: relative; height:200px; width:100%">
+                        <canvas id="frequenciaChart"></canvas>
                     </div>
                 </div>
-            </section>
+            </div>
 
-            <section class="section" id="cronograma">
-                <h2 class="section-title">Seu <span>Cronograma de Estudos</span> Semanal</h2>
-                <p style="text-align:center; color: var(--text-muted); margin-bottom: 30px;">Sugestão automatizada de matérias com base na organização da sua trilha acadêmica.</p>
-                <table class="schedule-table">
-                    <thead>
-                        <tr>
-                            <th>Dia da Semana</th>
-                            <th>Matéria Sugerida</th>
-                            <th>Foco Recomendado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><strong>Segunda-feira</strong></td><td>Matemática Básica / Álgebra</td><td>Operações e Funções de 1º Grau</td></tr>
-                        <tr><td><strong>Terça-feira</strong></td><td>Língua Portuguesa / Redação</td><td>Sintaxe e Estrutura Dissertativa</td></tr>
-                        <tr><td><strong>Quarta-feira</strong></td><td>História Geral / do Brasil</td><td>Brasil Império e Revoluções Industriais</td></tr>
-                        <tr><td><strong>Quinta-feira</strong></td><td>Biologia / Química</td><td>Citologia e Estruturas Atômicas</td></tr>
-                        <tr><td><strong>Sexta-feira</strong></td><td>Inglês / Geografia</td><td>Leitura Dinâmica e Geopolítica Regional</td></tr>
-                        <tr><td><strong>Sábado</strong></td><td>Artes / Física</td><td>Vanguardas Europeias e Leis de Newton</td></tr>
-                    </tbody>
-                </table>
-            </section>
-
-            <section class="section" id="comunidade">
-                <h2 class="section-title">Comunidade Ativa <span>ClassConnect</span></h2>
-                <div class="community-container">
-                    <div class="community-header">
-                        <i class="fas fa-comments" style="color: var(--primary-blue); font-size: 1.5rem;"></i>
-                        <div>
-                            <h3>Fórum Global em Tempo Real</h3>
-                            <p style="font-size: 0.85rem; color: var(--text-muted);">Interaja, tire dúvidas e colabore instantaneamente com outros estudantes logados</p>
-                        </div>
-                    </div>
-                    <div class="chat-messages" id="chat-box">
-                        <div class="msg-bubble">
-                            <div class="msg-meta">Carlos_Eduardo</div>
-                            Alguém tem dicas de canais bons para estudar a parte de Geometria Plana? Estou com um pouco de dificuldades.
-                        </div>
-                    </div>
-                    <div class="chat-input-row">
-                        <input type="text" id="chat-input" placeholder="Escreva seu comentário, dúvida ou conhecimento para a rede..." onkeypress="checarEnterChat(event)">
-                        <button onclick="enviarMensagem()"><i class="fas fa-paper-plane"></i> Enviar</button>
+            <div class="sidebar-content">
+                
+                <div class="card" id="cardQuiz">
+                    <h3><i class="fas fa-gamepad" style="color: #9b59b6;"></i> Desafio Acadêmico Universitário (+25 XP)</h3>
+                    <div id="quizContent">
+                        <p id="quizPergunta" style="font-size:0.85rem; font-weight:600; margin-bottom:12px; line-height: 1.4; color: #e2e8f0;"></p>
+                        <div id="quizOpcoes"></div>
                     </div>
                 </div>
-            </section>
 
-            <section class="section" id="sobre-nos">
-                <h2 class="section-title"><span>Conheça</span> sobre nós</h2>
-                <div class="about-content">
-                    <div class="about-text">
-                        <p>O ClassConnect foi criado por estudantes e para estudantes. Entendemos que a jornada acadêmica possui desafios imensos de organização e foco, e que o conhecimento retido aumenta drasticamente quando colaboramos.</p>
-                        <p>Nossa missão é aproximar as pessoas no ambiente educacional sob a filosofia de que o sucesso na aprendizagem é construído coletivamente.</p>
-                        <div class="about-stats">
-                            <div class="stat-item">
-                                <h4>+15k</h4>
-                                <p>Alunos Ativos</p>
-                            </div>
-                            <div class="stat-item">
-                                <h4>98%</h4>
-                                <p>Aprovação</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="about-image">
-                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80" alt="Estudantes colaborando">
+                <div class="card">
+                    <h3><i class="fas fa-comments" style="color: var(--primary-blue);"></i> Fórum Geral da Comunidade</h3>
+                    <div class="chat-box" id="forumChat"></div>
+                    <div id="typingIndicator"></div>
+                    <div class="chat-input-group">
+                        <input type="text" id="chatMessage" placeholder="Tire uma dúvida ou envie uma mensagem..." onkeydown="if(event.key === 'Enter') enviarMensagemForum()">
+                        <button onclick="enviarMensagemForum()" class="btn-login" style="margin:0; padding:12px 18px; width:auto;"><i class="fas fa-paper-plane"></i></button>
                     </div>
                 </div>
-            </section>
-
-            <section class="section" id="planos">
-                <h2 class="section-title">Escolha o seu <span>Plano</span></h2>
-                <div class="plans-grid">
-                    <div class="plan-card">
-                        <div class="plan-header">
-                            <h3>Plano Gratuito</h3>
-                            <p class="plan-card-subtext">O essencial para começar</p>
-                            <div class="plan-price">R$ 0<span>/mês</span></div>
-                        </div>
-                        <ul class="plan-features">
-                            <li><i class="fas fa-check"></i> Acesso aos painéis básicos</li>
-                            <li><i class="fas fa-check"></i> Filtro de 20 matérias base</li>
-                            <li><i class="fas fa-check"></i> 1 GB de armazenamento Cloud</li>
-                        </ul>
-                        <button class="btn-plan" onclick="alert('Plano Gratuito ativo por padrão!')">Aproveitar Agora</button>
-                    </div>
-                    <div class="plan-card featured">
-                        <div class="plan-badge">Mais Popular</div>
-                        <div class="plan-header">
-                            <h3>Plano Super</h3>
-                            <p class="plan-card-subtext">Para estudantes focados</p>
-                            <div class="plan-price">R$ 19,90<span>/mês</span></div>
-                        </div>
-                        <ul class="plan-features">
-                            <li><i class="fas fa-check"></i> Tudo do plano gratuito</li>
-                            <li><i class="fas fa-check"></i> Comunidade sem limites de envio</li>
-                            <li><i class="fas fa-check"></i> 20 GB de armazenamento Cloud</li>
-                        </ul>
-                        <button class="btn-plan" onclick="alert('Redirecionando para o ambiente de checkout seguro do Plano Super!')">Assinar Super</button>
-                    </div>
-                </div>
-            </section>
+            </div>
         </main>
-
-        <footer>
-            <p>&copy; 2026 ClassConnect - Aprender Juntos. Todos os direitos reservados.</p>
-        </footer>
     </div>
 
     <script>
-        // BANCO DE DADOS ATUALIZADO COM TRÊS NÍVEIS SEPARADOS
-        const baseConteudos = [
+        let chartInstance = null;
+        let loopForumInstance = null;
+        
+        let xpTotal = parseInt(localStorage.getItem('cc_xp')) || 0;
+        let ofensiva = parseInt(localStorage.getItem('cc_ofensiva')) || 0;
+        let ultimoCheckIn = localStorage.getItem('cc_ultimoCheckin') || "";
+
+        // Ementas Expandidas e Detalhadas
+        const bancoMaterias = [
             { 
-                id: "mat_basica", 
-                nome: "Matemática básica", 
-                desc: "Adição, subtração, multiplicação e divisão.",
-                basico: {
-                    texto: "O nível básico aborda a aritmética fundamental. A adição junta quantidades e a subtração calcula a diferença entre valores numéricos elementares.",
-                    q: "Quanto é 45 + 15?", o: ["50", "60", "65", "55"], c: 1
-                },
-                intermediario: {
-                    texto: "O nível intermediário expande para multiplicação e divisão. A multiplicação agrupa fatores iguais, enquanto a divisão fatia as quantidades de maneira equitativa.",
-                    q: "Se dividirmos 60 por 4, qual o resultado?", o: ["12", "15", "20", "10"], c: 1
-                },
-                avancado: {
-                    texto: "No nível avançado, combinamos as operações em expressões complexas que exigem prioridade matemática de execução (parênteses, chaves e ordem operacional).",
-                    q: "Qual o resultado da expressão: (45 + 15) / 4 + 5?", o: ["20", "15", "25", "30"], c: 0
-                }
+                nome: "Fundamentos de Computação e Algoritmos", 
+                nivel: "basico",
+                desc: "Análise de complexidade assintótica primitiva, lógica booleana estruturada, manipulação de arrays unidimensionais e fluxogramas de decisão de controle de execução computacional básica."
             },
             { 
-                id: "geometria", 
-                nome: "Geometria", 
-                desc: "Estudo das formas lineares, áreas e volumes espaciais.",
-                basico: {
-                    texto: "Aborda os conceitos iniciais de perímetro e formas planas simples como quadrados e triângulos retângulos regulares.",
-                    q: "Qual o perímetro de um quadrado de lado 5cm?", o: ["20cm", "25cm", "15cm", "10cm"], c: 0
-                },
-                intermediario: {
-                    texto: "Estudo das áreas bidimensionais de figuras planas e aplicação básica do Teorema de Pitágoras.",
-                    q: "Qual a área de um quadrado com lados medindo 6cm?", o: ["24cm²", "36cm²", "12cm²", "18cm²"], c: 1
-                },
-                avancado: {
-                    texto: "Análise avançada tridimensional incluindo o cálculo estrutural de volumes de prismas e pirâmides complexas.",
-                    q: "Qual o volume de um cubo com aresta de 3cm?", o: ["9cm³", "18cm³", "27cm³", "36cm³"], c: 2
-                }
+                nome: "Versionamento de Código com Git/GitHub", 
+                nivel: "basico",
+                desc: "Gerenciamento de histórico local e remoto. Domínio de comandos fundamentais (checkout, log, status) e fluxos de trabalho colaborativos em equipe utilizando Pull Requests e Code Reviews."
             },
             { 
-                id: "algebra", 
-                nome: "Álgebra", 
-                desc: "Expressões, equações de primeiro/segundo grau e incógnitas.",
-                basico: {
-                    texto: "Introdução ao conceito de variáveis e resolução de equações elementares do primeiro grau.",
-                    q: "Se x + 5 = 12, qual o valor de x?", o: ["5", "6", "7", "8"], c: 2
-                },
-                intermediario: {
-                    texto: "Uso de letras para modelagem e resolução de equações de primeiro grau mais elaboradas com múltiplos termos.",
-                    q: "Resolva a equação: 2x + 10 = 20. Qual o valor de x?", o: ["5", "10", "2", "8"], c: 0
-                },
-                avancado: {
-                    texto: "Estruturas polinomiais mais profundas e regras de equações quadráticas de segundo grau.",
-                    q: "Qual o valor positivo de x na equação x² - 9 = 0?", o: ["1", "2", "3", "4"], c: 2
-                }
+                nome: "Desenvolvimento Web com HTML5 e CSS3", 
+                nivel: "basico",
+                desc: "Estruturação semântica avançada de páginas web para acessibilidade (SEO) aliada à estilização moderna e responsiva utilizando layouts baseados em CSS Grid, Flexbox e Media Queries."
             },
             { 
-                id: "estatistica", 
-                nome: "Estatística e probabilidade", 
-                desc: "Análise de frequência, amostragem e cálculo de chances.",
-                basico: {
-                    texto: "Entendimento inicial sobre probabilidade direta e médias aritméticas simples de um conjunto.",
-                    q: "Qual a média aritmética simples entre os números 4, 6 e 8?", o: ["5", "6", "7", "8"], c: 1
-                },
-                intermediario: {
-                    texto: "Cálculo de probabilidade elemental de eventos independentes, como jogadas de dados ou moedas.",
-                    q: "Em um lançamento de moeda perfeita, qual a probabilidade de cair 'Cara'?", o: ["25%", "50%", "75%", "100%"], c: 1
-                },
-                avancado: {
-                    texto: "Leitura de gráficos complexos, cálculo de desvio padrão conceitual e conceitos de mediana estrutural e moda.",
-                    q: "Em um conjunto [2, 3, 3, 5, 7], qual número representa a Moda?", o: ["2", "3", "5", "7"], c: 1
-                }
+                nome: "Programação Orientada a Objetos (Java)", 
+                nivel: "intermediario",
+                desc: "Abstração do mundo real através de classes. Domínio completo dos pilares primordiais da engenharia de software: Encapsulamento estrito, Herança acoplada, Polimorfismo dinâmico e Interfaces tipadas."
             },
             { 
-                id: "portugues", 
-                nome: "Língua Portuguesa – gramática", 
-                desc: "Morfologia, sintaxe, regras ortográficas e concordância.",
-                basico: {
-                    texto: "Uso e identificação correta de classes gramaticais primárias, substantivos e adjetivos estruturais.",
-                    q: "Na frase 'O céu azul acalma', a palavra 'azul' é um:", o: ["Substantivo", "Verbo", "Adjetivo", "Artigo"], c: 2
-                },
-                intermediario: {
-                    texto: "Aplicação da acentuação gráfica regular pelo novo acordo ortográfico da Língua Portuguesa.",
-                    q: "Qual palavra está grafada CORRETAMENTE segundo a ortografia vigente?", o: ["Idéia", "Auto-estima", "Autoescola", "Vôo"], c: 2
-                },
-                avancado: {
-                    texto: "Regras complexas de regência verbal, concordância nominal refinada e uso obrigatório ou facultativo da crase.",
-                    q: "Assinale a frase onde a crase foi empregada CORRETAMENTE:", o: ["Fui à feira", "Disse à ele", "Andou à cavalo", "Dia à dia"], c: 0
-                }
+                nome: "Estruturas de Dados Dinâmicas e Coleções", 
+                nivel: "intermediario",
+                desc: "Alocação dinâmica de memória em profundidade. Implementação prática e análise operacional de Listas Encadeadas, Pilhas FIFO/LIFO, Filas de Prioridade, Árvores Binárias de Busca e tabelas Hash."
+            },
+            { 
+                nome: "Modelagem de Bancos de Dados Relacionais", 
+                nivel: "intermediario",
+                desc: "Criação de esquemas de dados estáveis. Aplicação rigorosa das Regras de Normalização (1FN, 2FN, 3FN), relacionamentos complexos de cardinalidade e escrita de consultas SQL estruturadas com JOINS."
+            },
+            { 
+                nome: "Arquiteturas de Software e Clean Code", 
+                nivel: "avancado",
+                desc: "Desenvolvimento de código limpo de fácil manutenção. Implementação prática dos princípios SOLID, padrões de design arquiteturais isolados (MVC, Clean Architecture) e refatoração de código legado."
+            },
+            { 
+                nome: "Segurança de Aplicações e Criptografia", 
+                nivel: "avancado",
+                desc: "Proteção de dados críticos. Mitigação ativa das principais vulnerabilidades de segurança web (OWASP Top 10), técnicas de Hashing seguro (BCrypt), criptografia simétrica/assimétrica e autenticação com JWT."
+            },
+            { 
+                nome: "Construção de APIs RESTful Robustas", 
+                nivel: "avancado",
+                desc: "Exposição de serviços escaláveis de alta performance. Gerenciamento estrito de verbos HTTP, mapeamento semântico de Status Codes, paginação de grandes volumes de dados e testes de integração automatizados."
             }
         ];
 
-        let tamanhoFonteAtual = 16;
-        let materiaSelecionadaId = "";
-        let nivelSelecionado = "basico";
-        let meuGrafico = null;
-        let quizRespondidoCorretamente = false;
-
-        function navegarPara(idSecao) {
-            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('#main-nav a').forEach(a => a.classList.remove('active'));
-            
-            const secaoAlvo = document.getElementById(idSecao);
-            if (secaoAlvo) secaoAlvo.classList.add('active');
-            
-            const navLink = document.getElementById(`nav-${idSecao}`);
-            if (navLink) navLink.classList.add('active');
-
-            if (idSecao === 'checkin') {
-                renderizarCalendario();
-                atualizarDisplaysPontuacao();
+        // Banco de Questões de Alto Nível Técnico (Universitário/Concursos)
+        const desafiosQuiz = [
+            { 
+                q: "Considerando os pilares da POO em Java, se a classe 'Arqueiro' herda de 'Heroi' e substitui o método 'atacar()', qual conceito garante que o comportamento executado em tempo de execução seja o do Arqueiro, mesmo que a referência do objeto seja do tipo Heroi?", 
+                o: ["Sobrecarga de Métodos (Overloading)", "Polimorfismo Dinâmico (Overriding / Late Binding)", "Encapsulamento por modificadores protected", "Herança Múltipla Virtual estrutural"], 
+                a: 1 
+            },
+            { 
+                q: "Na análise de complexidade de algoritmos, qual é o pior cenário de tempo de execução (Big O) para a busca de um elemento específico dentro de uma Árvore Binária de Busca (BST) perfeitamente desbalanceada (degenerada em lista)?", 
+                o: ["O(log n)", "O(1)", "O(n)", "O(n log n)"], 
+                a: 2 
+            },
+            { 
+                q: "Durante o processo de modelagem de um banco de dados relacional SQL, qual das seguintes ações garante estritamente a conformidade do esquema com a Terceira Forma Normal (3FN)?", 
+                o: ["Eliminar todas as dependências transitivas de atributos não-chave em relação à chave primária", "Remover colunas repetidas e garantir a criação de uma chave primária composta linear", "Garantir que todos os atributos não-chave dependam totalmente da chave primária inteira e não parcial", "Mesclar tabelas secundárias para diminuir a necessidade de cláusulas JOIN complexas"], 
+                a: 0 
+            },
+            { 
+                q: "No Git, qual é a diferença crucial entre os comandos 'git fetch' e 'git pull'?", 
+                o: ["Fetch baixa as alterações remotas sem mesclá-las no branch local; Pull baixa e tenta aplicar o merge automaticamente.", "Pull altera apenas o histórico local; Fetch deleta arquivos órfãos do servidor remoto.", "Fetch mescla o código diretamente na árvore de trabalho atual; Pull apenas atualiza as referências de hash da HEAD.", "Ambos realizam a mesma tarefa, porém o Fetch é exclusivo para servidores hospedados corporativamente."], 
+                a: 0 
+            },
+            { 
+                q: "O princípio da Responsabilidade Única (Single Responsibility Principle - o 'S' do SOLID) preconiza que:", 
+                o: ["Uma classe deve conter apenas um método público acessível em sua interface de abstração.", "Uma classe deve ter um, e apenas um, motivo para ser modificada no ciclo de vida do software.", "Cada projeto de software orientado a objetos deve rodar exclusivamente em uma thread lógica centralizada.", "O banco de dados acoplado à aplicação deve conter apenas uma tabela central de armazenamento."], 
+                a: 1 
             }
-        }
+        ];
 
-        function inicializarOfensiva() {
-            let streak = localStorage.getItem('classconnect_streak') || 0;
-            document.getElementById('streak-count').textContent = streak;
-        }
+        const usuariosVirtuais = [
+            { nome: "Thiago_Dev99", cor: "#3498db" },
+            { nome: "Ana_Front", cor: "#e74c3c" },
+            { nome: "Marcos_Algoritmos", cor: "#2ecc71" },
+            { nome: "Carla_SGBD", cor: "#f1c40f" }
+        ];
 
-        function atualizarDisplaysPontuacao() {
-            let streak = localStorage.getItem('classconnect_streak') || 0;
-            let pontos = localStorage.getItem('classconnect_points') || 0;
-            
-            document.getElementById('streak-count').textContent = streak;
-            if(document.getElementById('checkin-streak-display')) {
-                document.getElementById('checkin-streak-display').textContent = streak;
-                document.getElementById('points-display').textContent = pontos;
-                
-                // Evolução visual do avatar baseada nos pontos obtidos
-                const avatarIcon = document.getElementById('avatar-icon');
-                if (pontos >= 50) avatarIcon.textContent = "🧙‍♂️";
-                else if (pontos >= 20) avatarIcon.textContent = "🚀";
-                else avatarIcon.textContent = "🧑‍🎓";
-            }
-        }
+        const bancoMensagensOciosas = [
+            "Consegui normalizar o banco do projeto em 3FN hoje cedo! A quantidade de tabelas subiu mas eliminamos a redundância de dados. 🧠",
+            "Alguém prefere programar em Java usando o terminal Linux puro com Vim, ou sou o único maluco aqui?",
+            "Cuidado ao usar polimorfismo dinâmico em loops gigantescos se a performance for o core do sistema... O overhead do Late Binding pode cobrar o preço.",
+            "Acertei o desafio acadêmico sobre Big O agora! Questão digna de prova final da faculdade.",
+            "Implementando uma Árvore AVL do zero no trabalho. Balancear os nós via rotação dupla dá um nó na cabeça no começo.",
+            "Dica de segurança: nunca salvem senhas no banco usando MD5 puro. Apliquem uma função de derivação de chave como BCrypt ou Argon2 com Salt.",
+            "Se o código da sua API REST precisa de documentação externa complexa para explicar caminhos de rota, provavelmente os princípios do HATEOAS foram ignorados.",
+            "Consegui reativar minha sequência diária aqui no painel, 50 XP garantidos!"
+        ];
 
-        function computarCheckinManual() {
-            let streak = parseInt(localStorage.getItem('classconnect_streak') || 0);
-            let ultimaData = localStorage.getItem('classconnect_last_date');
-            let hoje = new Date().toDateString();
+        const respostasParaOUsuario = [
+            "Excelente colocação. Isso evita o acoplamento desnecessário de código.",
+            "Exatamente! Na engenharia de software atual, ignorar isso gera um débito técnico imenso.",
+            "Faz sentido total. Inclusive vi isso sendo cobrado em um teste técnico de estágio recentemente.",
+            "Obrigado pelo insight! Vou aplicar essa validação na refatoração das minhas classes Java amanhã.",
+            "Boa! O ClassConnect tá com uns desafios em um nível muito bom hoje."
+        ];
 
-            if (ultimaData === hoje) {
-                alert("Seu foguinho já está garantido hoje! Volte amanhã para aumentar sua sequência de estudos. 🔥");
-            } else {
-                streak += 1;
-                localStorage.setItem('classconnect_streak', streak);
-                localStorage.setItem('classconnect_last_date', hoje);
-                renderizarCalendario();
-                atualizarDisplaysPontuacao();
-                alert(`Check-in Concluído! Sua ofensiva subiu para: ${streak} dias! 🔥`);
-            }
-        }
-
-        function renderizarCalendario() {
-            const container = document.getElementById('calendario-dias');
-            if (!container) return;
-            container.innerHTML = "";
-            let hojeDia = new Date().getDate();
-            
-            for (let i = 1; i <= 14; i++) {
-                const diaDiv = document.createElement('div');
-                let ultimaData = localStorage.getItem('classconnect_last_date');
-                let fezHoje = (ultimaData === new Date().toDateString());
-                
-                if (i === hojeDia && fezHoje) {
-                    diaDiv.className = "calendar-day checked";
-                    diaDiv.innerHTML = `<i class="fas fa-fire"></i><br>${i}`;
+        function togglePasswordVisibility() {
+            const passwordField = document.getElementById('loginPassword');
+            const toggleIcon = document.getElementById('togglePasswordIcon');
+            if(passwordField && toggleIcon) {
+                if(passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    toggleIcon.className = "fas fa-eye-slash password-toggle";
                 } else {
-                    diaDiv.className = "calendar-day";
-                    diaDiv.innerHTML = `<i class="fas fa-calendar-alt"></i><br>${i}`;
+                    passwordField.type = 'password';
+                    toggleIcon.className = "fas fa-eye password-toggle";
                 }
-                container.appendChild(diaDiv);
             }
         }
 
-        const loginScreen = document.getElementById('login-screen');
-        const mainSite = document.getElementById('main-site');
-        const overlay = document.getElementById('loading-overlay');
-        const feedbackText = document.getElementById('feedback-text');
-        const userDisplay = document.getElementById('user-display');
+        function alternarTelasParaPainel(nomeUsuario) {
+            const loginScreen = document.getElementById('loginScreen');
+            const mainSite = document.getElementById('mainSite');
+            const userDisplay = document.getElementById('userDisplay');
+            const userAvatar = document.getElementById('userAvatar');
 
-        function togglePasswordVisibility(btn) {
-            const passInput = document.getElementById('loginPass');
-            if (passInput.type === 'password') {
-                passInput.type = 'text';
-                btn.className = 'fas fa-eye-slash toggle-password';
-            } else {
-                passInput.type = 'password';
-                btn.className = 'fas fa-eye toggle-password';
+            if (userDisplay) userDisplay.textContent = nomeUsuario;
+            if (userAvatar) userAvatar.textContent = nomeUsuario.charAt(0).toUpperCase();
+
+            if (loginScreen && mainSite) {
+                loginScreen.style.setProperty('display', 'none', 'important');
+                mainSite.style.setProperty('display', 'block', 'important');
             }
-        }
 
-        function toggleTheme() {
-            const currentTheme = document.documentElement.getAttribute('data-theme');
-            const themeIcon = document.getElementById('theme-icon');
-            if (currentTheme === 'light') {
-                document.documentElement.removeAttribute('data-theme');
-                themeIcon.className = 'fas fa-moon';
-                atualizarCoresGrafico('#f8fafc', '#334155');
-            } else {
-                document.documentElement.setAttribute('data-theme', 'light');
-                themeIcon.className = 'fas fa-sun';
-                atualizarCoresGrafico('#0f172a', '#cbd5e1');
-            }
-        }
-
-        function mudarFonte(acao) {
-            const container = document.getElementById('conteudo-leitura');
-            if (acao === 0) tamanhoFonteAtual = 16;
-            else tamanhoFonteAtual += acao;
-
-            if (tamanhoFonteAtual < 12) tamanhoFonteAtual = 12;
-            if (tamanhoFonteAtual > 26) tamanhoFonteAtual = 26;
-
-            container.style.fontSize = tamanhoFonteAtual + 'px';
-        }
-
-        function renderizarMenuMaterias(lista) {
-            const sidebar = document.getElementById('sidebar-lista');
-            sidebar.innerHTML = "";
+            atualizarIndicadoresInterface();
+            montarEstruturaCheckIn();
+            filtrarMaterias('todas');
+            carregarNovoDesafioQuiz();
+            renderizarGraficoFrequencia();
             
-            lista.forEach(item => {
+            inicializarHistoricoForum();
+            iniciarFluxoDeConversasAtivas();
+        }
+
+        function executarLogin(event) {
+            if (event) event.preventDefault();
+            const overlay = document.getElementById('overlay');
+            const userField = document.getElementById('loginUser');
+            const username = userField && userField.value ? userField.value.trim() : "Usuário";
+
+            if (overlay) {
+                overlay.style.setProperty('display', 'flex', 'important');
+                document.getElementById('feedbackText').textContent = "Autenticando perfil acadêmico...";
+            }
+
+            setTimeout(() => {
+                if (overlay) overlay.style.setProperty('display', 'none', 'important');
+                alternarTelasParaPainel(username);
+            }, 1000);
+        }
+
+        function simularLoginGoogle() {
+            const overlay = document.getElementById('overlay');
+            if (overlay) {
+                overlay.style.setProperty('display', 'flex', 'important');
+                document.getElementById('feedbackText').textContent = "Buscando credenciais Google OAuth...";
+            }
+            setTimeout(() => {
+                if (overlay) overlay.style.setProperty('display', 'none', 'important');
+                alternarTelasParaPainel("Usuário Google");
+            }, 1200);
+        }
+
+        function visitarComoConvidado() {
+            alternarTelasParaPainel("Visitante");
+        }
+
+        function logout() {
+            const loginScreen = document.getElementById('loginScreen');
+            const mainSite = document.getElementById('mainSite');
+            if (loginScreen && mainSite) {
+                mainSite.style.setProperty('display', 'none', 'important');
+                loginScreen.style.setProperty('display', 'flex', 'important');
+            }
+            if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
+            if (loopForumInstance) clearInterval(loopForumInstance);
+        }
+
+        function filtrarMaterias(nivel, botaoElemento) {
+            const container = document.getElementById('listaMateriasCompleta');
+            if (!container) return;
+
+            if (botaoElemento) {
+                const botoes = document.querySelectorAll('.tab-btn');
+                botoes.forEach(b => b.classList.remove('active'));
+                botaoElemento.classList.add('active');
+            }
+
+            container.innerHTML = "";
+            const materiasFiltradas = bancoMaterias.filter(m => nivel === 'todas' || m.nivel === nivel);
+
+            materiasFiltradas.forEach(m => {
                 const div = document.createElement('div');
-                div.className = `subject-menu-item ${materiaSelecionadaId === item.id ? 'active' : ''}`;
-                div.innerHTML = `<i class="fas fa-book"></i> ${item.nome}`;
-                div.onclick = () => carregarConteudoMateria(item.id);
-                sidebar.appendChild(div);
+                div.className = "materia-item";
+                div.innerHTML = `
+                    <div class="materia-header">
+                        <span class="materia-title">${m.nome}</span>
+                        <span class="badge-nivel nivel-${m.nivel}">${m.nivel}</span>
+                    </div>
+                    <p class="materia-desc">${m.desc}</p>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function montarEstruturaCheckIn() {
+            const container = document.getElementById('checkinDias');
+            if(!container) return;
+            container.innerHTML = "";
+
+            const diasSemana = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
+            const hojeIndex = new Date().getDay();
+            const ajustadoHoje = hojeIndex === 0 ? 6 : hojeIndex - 1; 
+
+            diasSemana.forEach((dia, idx) => {
+                const div = document.createElement('div');
+                div.className = "day-box";
+                if (idx === ajustadoHoje && ultimoCheckIn === new Date().toDateString()) {
+                    div.className += " completed";
+                }
+                div.innerHTML = `
+                    <span>${dia}</span>
+                    <i class="fas ${div.classList.contains('completed') ? 'fa-fire' : 'fa-circle-check'}"></i>
+                `;
+                container.appendChild(div);
             });
 
-            if (lista.length === 0) {
-                sidebar.innerHTML = "<p style='color:var(--text-muted); font-size:0.85rem; text-align:center; padding:10px;'>Nenhum conteúdo localizado.</p>";
+            const btn = document.getElementById('btnCheckIn');
+            if(ultimoCheckIn === new Date().toDateString() && btn) {
+                btn.disabled = true;
+                btn.style.background = "#475569";
+                btn.textContent = "Check-in Concluído";
             }
         }
 
-        function filtrarMaterias() {
-            const busca = document.getElementById('subject-search').value.toLowerCase();
-            const filtrados = baseConteudos.filter(item => 
-                item.nome.toLowerCase().includes(busca) || 
-                item.desc.toLowerCase().includes(busca)
-            );
-            renderizarMenuMaterias(filtrados);
+        function realizarCheckIn() {
+            const hojeStr = new Date().toDateString();
+            if (ultimoCheckIn === hojeStr) return;
+
+            ofensiva += 1;
+            xpTotal += 50;
+
+            localStorage.setItem('cc_ofensiva', ofensiva);
+            localStorage.setItem('cc_xp', xpTotal);
+            localStorage.setItem('cc_ultimoCheckin', hojeStr);
+
+            atualizarIndicadoresInterface();
+            montarEstruturaCheckIn();
+            alert("Check-in computado! Você faturou +50 XP acadêmicos.");
         }
 
-        function carregarConteudoMateria(id) {
-            materiaSelecionadaId = id;
-            quizRespondidoCorretamente = false;
-            document.getElementById('btn-concluir').style.display = "none";
+        function atualizarIndicadoresInterface() {
+            const displayOfensiva = document.getElementById('streakCount');
+            const displayXp = document.getElementById('userPoints');
+            if(displayOfensiva) displayOfensiva.textContent = ofensiva;
+            if(displayXp) displayXp.textContent = `${xpTotal} XP`;
+        }
+
+        function obterHoraAtual() {
+            const agora = new Date();
+            return agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function inicializarHistoricoForum() {
+            const chatBox = document.getElementById('forumChat');
+            if(!chatBox) return;
+
+            chatBox.innerHTML = `
+                <div class="msg-container"><strong style="color:#3498db">Thiago_Dev99:</strong> Fala galera, quem aí tá estudando para a prova de POO avançada em Java? Interfaces ainda dão um nó na cabeça de vcs? <span class="msg-time">${obterHoraAtual()}</span></div>
+                <div class="msg-container"><strong style="color:#2ecc71">Marcos_Algoritmos:</strong> Que nada, pensa na interface apenas como um contrato estrito de assinatura de métodos públicos. Ajuda no desacoplamento. <span class="msg-time">${obterHoraAtual()}</span></div>
+            `;
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function iniciarFluxoDeConversasAtivas() {
+            const planejarProximaMensagem = () => {
+                const tempoAleatorio = Math.floor(Math.random() * (15000 - 8000)) + 8000;
+                
+                loopForumInstance = setTimeout(() => {
+                    simularAcaoDeDigitacao();
+                    planejarProximaMensagem();
+                }, tempoAleatorio);
+            };
+            planejarProximaMensagem();
+        }
+
+        function simularAcaoDeDigitacao(mensagemEspecifica = null) {
+            const indicador = document.getElementById('typingIndicator');
+            const usuario = usuariosVirtuais[Math.floor(Math.random() * usuariosVirtuais.length)];
             
-            document.getElementById('materia-placeholder').style.display = "none";
-            document.getElementById('materia-content-wrapper').style.display = "block";
+            if (indicador) indicador.textContent = `${usuario.nome} está digitando uma resposta...`;
 
-            document.querySelectorAll('.btn-level').forEach(b => b.classList.remove('active'));
-            document.querySelector(`.btn-level:nth-child(1)`).classList.add('active');
-            nivelSelecionado = "basico";
+            const frase = mensagemEspecifica || bancoMensagensOciosas[Math.floor(Math.random() * bancoMensagensOciosas.length)];
+            const delayEscrita = Math.min(frase.length * 45, 2500);
 
-            renderizarEstruturaMateriaDoNivel();
+            setTimeout(() => {
+                if (indicador) indicador.textContent = "";
+                
+                const chatBox = document.getElementById('forumChat');
+                if (chatBox) {
+                    const div = document.createElement('div');
+                    div.className = "msg-container";
+                    div.innerHTML = `<strong style="color: ${usuario.cor}">${usuario.nome}:</strong> ${frase} <span class="msg-time">${obterHoraAtual()}</span>`;
+                    chatBox.appendChild(div);
+                    chatBox.scrollTop = chatBox.scrollHeight;
+                }
+            }, delayEscrita);
         }
 
-        function mudarNivelMateria(nivel) {
-            nivelSelecionado = nivel;
-            quizRespondidoCorretamente = false;
-            document.getElementById('btn-concluir').style.display = "none";
+        function enviarMensagemForum() {
+            const input = document.getElementById('chatMessage');
+            const chatBox = document.getElementById('forumChat');
+            const userDisplay = document.getElementById('userDisplay');
 
-            document.querySelectorAll('.btn-level').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
+            if(input && input.value.trim() !== "" && chatBox) {
+                const user = userDisplay ? userDisplay.textContent : "Membro";
+                const div = document.createElement('div');
+                div.className = "msg-container";
+                div.innerHTML = `<strong style="color: var(--primary-blue)">${user}:</strong> ${input.value.trim()} <span class="msg-time">${obterHoraAtual()}</span>`;
+                chatBox.appendChild(div);
+                input.value = "";
+                chatBox.scrollTop = chatBox.scrollHeight;
 
-            renderizarEstruturaMateriaDoNivel();
-        }
+                xpTotal += 2;
+                localStorage.setItem('cc_xp', xpTotal);
+                atualizarIndicadoresInterface();
 
-        function renderizarEstruturaMateriaDoNivel() {
-            const materia = baseConteudos.find(m => m.id === materiaSelecionadaId);
-            if (!materia) return;
-
-            const dadosNivel = materia[nivelSelecionado];
-
-            const areaLeitura = document.getElementById('conteudo-leitura');
-            areaLeitura.innerHTML = `
-                <h2>${materia.nome} (${nivelSelecionado.toUpperCase()})</h2>
-                <p style="font-weight:600; color:var(--text-muted); margin-bottom: 15px;">${materia.desc}</p>
-                <div>${dadosNivel.texto}</div>
-            `;
-
-            const quizContainer = document.getElementById('quiz-container');
-            quizContainer.innerHTML = `
-                <div class="quiz-title"><i class="fas fa-tasks"></i> Teste Seu Conhecimento Prático</div>
-                <p style="margin-bottom:12px;"><strong>Questão:</strong> ${dadosNivel.q}</p>
-                <div class="quiz-options">
-                    ${dadosNivel.o.map((opcao, idx) => `
-                        <button class="quiz-option" onclick="validarResposta(this, ${idx}, ${dadosNivel.c})">${opcao}</button>
-                    `).join('')}
-                </div>
-            `;
-        }
-
-        function validarResposta(botao, idx, correto) {
-            const opcoes = botao.parentElement.querySelectorAll('.quiz-option');
-            opcoes.forEach(b => b.removeAttribute('onclick'));
-
-            if (idx === correto) {
-                botao.classList.add('correct');
-                quizRespondidoCorretamente = true;
-                document.getElementById('btn-concluir').style.display = "inline-block";
-            } else {
-                botao.classList.add('wrong');
-                opcoes[correto].classList.add('correct');
-                quizRespondidoCorretamente = false;
+                if (Math.random() > 0.3) {
+                    setTimeout(() => {
+                        const respostaAleatoria = respostasParaOUsuario[Math.floor(Math.random() * respostasParaOUsuario.length)];
+                        simularAcaoDeDigitacao(respostaAleatoria);
+                    }, 2500);
+                }
             }
         }
 
-        function concluirExercicioFinal() {
-            if (!quizRespondidoCorretamente) return;
+        /* JOGUINHO DE INTERAÇÃO COM DESAFIOS AVANÇADOS */
+        let ultimaQuestaoIndex = -1;
 
-            let chaveProgresso = `progresso_${materiaSelecionadaId}_${nivelSelecionado}`;
-            let hojeStr = new Date().toDateString();
-            let jaFeitoHoje = localStorage.getItem(chaveProgresso);
+        function carregarNovoDesafioQuiz() {
+            const containerOpcoes = document.getElementById('quizOpcoes');
+            const elementoPergunta = document.getElementById('quizPergunta');
+            if (!containerOpcoes || !elementoPergunta) return;
 
-            if (jaFeitoHoje === hojeStr) {
-                alert("Você já ganhou pontos nesta matéria e nível hoje! Continue estudando outros conteúdos para pontuar.");
-                return;
+            // Evita repetir a mesma questão em sequência imediata
+            let novoIndex = Math.floor(Math.random() * desafiosQuiz.length);
+            while(novoIndex === ultimaQuestaoIndex) {
+                novoIndex = Math.floor(Math.random() * desafiosQuiz.length);
             }
+            ultimaQuestaoIndex = novoIndex;
 
-            // Atribui pontos acumulativos
-            let pontos Atuais = parseInt(localStorage.getItem('classconnect_points') || 0);
-            pontosAtuais += 10;
-            localStorage.setItem('classconnect_points', pontosAtuais);
-            localStorage.setItem(chaveProgresso, hojeStr);
+            const desafioAleatorio = desafiosQuiz[novoIndex];
+            elementoPergunta.textContent = desafioAleatorio.q;
+            containerOpcoes.innerHTML = "";
 
-            // Validação automática da Ofensiva diária
-            let streak = parseInt(localStorage.getItem('classconnect_streak') || 0);
-            let ultimaData = localStorage.getItem('classconnect_last_date');
-
-            if (ultimaData !== hojeStr) {
-                streak += 1;
-                localStorage.setItem('classconnect_streak', streak);
-                localStorage.setItem('classconnect_last_date', hojeStr);
-            }
-
-            atualizarDisplaysPontuacao();
-            alert("Parabéns! +10 Pontos de Customização adicionados e sua ofensiva diária está garantida! 🔥");
-            document.getElementById('btn-concluir').style.display = "none";
+            desafioAleatorio.o.forEach((opcao, indice) => {
+                const btn = document.createElement('button');
+                btn.className = "quiz-option";
+                btn.textContent = opcao;
+                btn.onclick = () => {
+                    if (indice === desafioAleatorio.a) {
+                        xpTotal += 25;
+                        localStorage.setItem('cc_xp', xpTotal);
+                        atualizarIndicadoresInterface();
+                        alert("Sensacional! Resposta correta técnica. Você faturou +25 XP.");
+                    } else {
+                        alert("Incorreto! A resposta correta exigia a aplicação estrita do conceito computacional teórico.");
+                    }
+                    carregarNovoDesafioQuiz();
+                };
+                containerOpcoes.appendChild(btn);
+            });
         }
 
-        // CHAT GLOBAL SIMULADO (TEMPO REAL)
-        function enviarMensagem() {
-            const input = document.getElementById('chat-input');
-            const msgTexto = input.value.trim();
-            if (!msgTexto) return;
+        function renderizarGraficoFrequencia() {
+            const ctx = document.getElementById('frequenciaChart');
+            if (!ctx) return;
 
-            const chatBox = document.getElementById('chat-box');
-            const novaMsg = document.createElement('div');
-            novaMsg.className = "msg-bubble me";
-            novaMsg.innerHTML = `<div class="msg-meta">Você</div>${msgTexto}`;
-            chatBox.appendChild(novaMsg);
-            input.value = "";
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-
-        function checarEnterChat(event) {
-            if (event.key === 'Enter') {
-                enviarMensagem();
-            }
-        }
-
-        // Feed de dados simulando usuários globais ativos trocando mensagens
-        setInterval(() => {
-            const chatBox = document.getElementById('chat-box');
-            if (!chatBox) return;
-
-            const mensagensGlobais = [
-                { user: "Mariana_Silva", msg: "Alguém conseguiu resolver o quiz avançado de álgebra?" },
-                { user: "Marcos_Dev", msg: "O sistema de ofensivas tá me salvando, 12 dias direto já!" },
-                { user: "Rodrigo_Gama", msg: "Terminei o módulo básico de matemática aqui agora, bora pros próximos." },
-                { user: "Amanda_K", msg: "Essa planilha de cronograma ajudou muito a dividir minhas tarefas da semana." }
-            ];
-
-            const escolha = mensagensGlobais[Math.floor(Math.random() * mensagensGlobais.length)];
-            const msgBot = document.createElement('div');
-            msgBot.className = "msg-bubble";
-            msgBot.innerHTML = `<div class="msg-meta">${escolha.user}</div>${escolha.msg}`;
-            chatBox.appendChild(msgBot);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }, 18000); // Roda dinamicamente a cada 18 segundos
-
-        function inicializarGrafico() {
-            const ctx = document.getElementById('graficoEvolucao').getContext('2d');
-            meuGrafico = new Chart(ctx, {
-                type: 'line',
+            chartInstance = new Chart(ctx.getContext('2d'), {
+                type: 'bar',
                 data: {
-                    labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
+                    labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
                     datasets: [{
-                        label: 'Desempenho Médio (%)',
-                        data: [45, 58, 62, 75, 81, 93],
-                        borderColor: '#3498db',
-                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                        borderWidth: 3,
-                        tension: 0.3,
-                        pointBackgroundColor: '#2ecc71',
-                        pointRadius: 5,
-                        pointHoverRadius: 8
+                        label: 'Interações Acadêmicas',
+                        data: [5, 9, 4, 14, 7, 3, 6],
+                        backgroundColor: '#3498db',
+                        borderRadius: 5
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { labels: { color: '#f8fafc', font: { family: 'Inter' } } },
-                        tooltip: { backgroundColor: '#1e293b', titleColor: '#3498db', bodyColor: '#f8fafc' }
-                    },
+                    plugins: { legend: { display: false } },
                     scales: {
-                        y: {
-                            min: 0, max: 100,
-                            grid: { color: '#334155' },
-                            ticks: { color: '#94a3b8', callback: function(v) { return v + '%'; } }
-                        },
-                        x: {
-                            grid: { color: '#334155' },
-                            ticks: { color: '#94a3b8' }
-                        }
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+                        x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
                     }
                 }
             });
-        }
-
-        function atualizarCoresGrafico(textColor, gridColor) {
-            if (!meuGrafico) return;
-            meuGrafico.options.plugins.legend.labels.color = textColor;
-            meuGrafico.options.scales.y.grid.color = gridColor;
-            meuGrafico.options.scales.x.grid.color = gridColor;
-            meuGrafico.options.scales.y.ticks.color = textColor;
-            meuGrafico.options.scales.x.ticks.color = textColor;
-            meuGrafico.update();
-        }
-
-        function executarLogin(event) {
-            event.preventDefault();
-            const user = document.getElementById('loginUser').value;
-            
-            overlay.style.display = 'flex';
-            feedbackText.textContent = "Autenticando...";
-            
-            setTimeout(() => {
-                userDisplay.textContent = user;
-                overlay.style.display = 'none';
-                loginScreen.style.display = 'none';
-                mainSite.style.display = 'block';
-                
-                inicializarOfensiva();
-                renderizarMenuMaterias(baseConteudos);
-                inicializarGrafico();
-            }, 1000);
-        }
-
-        function simularLoginGoogle() {
-            overlay.style.display = 'flex';
-            feedbackText.textContent = "Sincronizando com Google...";
-            
-            setTimeout(() => {
-                userDisplay.textContent = "Usuário Google";
-                overlay.style.display = 'none';
-                loginScreen.style.display = 'none';
-                mainSite.style.display = 'block';
-                
-                inicializarOfensiva();
-                renderizarMenuMaterias(baseConteudos);
-                inicializarGrafico();
-            }, 1000);
-        }
-
-        function logout() {
-            if (meuGrafico) {
-                meuGrafico.destroy();
-            }
-            mainSite.style.display = 'none';
-            loginScreen.style.display = 'flex';
-            document.getElementById('loginForm').reset();
-            document.getElementById('materia-content-wrapper').style.display = "none";
-            document.getElementById('materia-placeholder').style.display = "block";
-            navegarPara('dashboard');
         }
     </script>
 </body>
